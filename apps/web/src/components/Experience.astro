@@ -1,0 +1,75 @@
+---
+import type { Experience } from "@garden/content-schema";
+import Icon from "./Icon.astro";
+const { items, compact = false } = Astro.props as {
+  items: Experience[];
+  compact?: boolean;
+};
+---
+
+<div class:list={["experience-block", { compact }]}>
+  {
+    !compact && (
+      <div class="transit-line" aria-label="Career chapters">
+        {[...items].reverse().map((item, i) => (
+          <a
+            href={`#career-${items.length - 1 - i}`}
+            class:list={["station", { current: i === items.length - 1 }]}
+          >
+            <span class="station-dot" />
+            <span class="station-year">{item.period.split(" ")[1]}</span>
+            <span>{item.company.split(" · ")[0]}</span>
+          </a>
+        ))}
+      </div>
+    )
+  }
+  <div class="experience-list">
+    {
+      items.map((item, i) => (
+        <details id={`career-${i}`} open={i === 0 || compact}>
+          <>
+            <summary>
+              <>
+                <span class="career-period">{item.period}</span>
+                <span class="career-title">
+                  <>
+                    <strong>{item.company}</strong>
+                    <span>{item.role}</span>
+                  </>
+                </span>
+                <span class="career-location">{item.location}</span>
+                <span class="career-expand">
+                  <Icon name="down" size={17} />
+                </span>
+              </>
+            </summary>
+            <div class="career-body">
+              <>
+                <p>{item.summary}</p>
+                <ul>
+                  {item.evidence.map((e) => (
+                    <li>{e}</li>
+                  ))}
+                </ul>
+                <div class="tags">
+                  {item.stack.map((s) => (
+                    <span class="tag">{s}</span>
+                  ))}
+                </div>
+              </>
+            </div>
+          </>
+        </details>
+      ))
+    }
+  </div>
+</div>
+<script>
+  document.querySelectorAll<HTMLAnchorElement>(".station").forEach((a) =>
+    a.addEventListener("click", () => {
+      const target = document.querySelector<HTMLDetailsElement>(a.hash);
+      if (target) target.open = true;
+    }),
+  );
+</script>

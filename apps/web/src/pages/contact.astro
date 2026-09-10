@@ -1,0 +1,45 @@
+---
+import Shell from "../layouts/Shell.astro";
+import Icon from "../components/Icon.astro";
+import { getContent } from "../lib/content";
+const { profile } = await getContent();
+---
+
+<Shell
+  title="Let’s talk — Salman Asif"
+  description="Have a complex product or engineering challenge? Get in touch with Salman Asif."
+  ><section class="page-intro contact-page">
+    <div class="eyebrow">A GOOD SYSTEM STARTS WITH A CONVERSATION</div><h1>
+      Let’s connect<br />the next <em>few dots.</em>
+    </h1><p>
+      Have a difficult product surface to untangle, a team to build with, or an
+      idea worth exploring? That’s a good place to start.
+    </p><div class="contact-email-row">
+      <a href={`mailto:${profile.email}`} class="email-link">{profile.email}</a
+      ><button
+        class="icon-button"
+        data-copy={profile.email}
+        aria-label="Copy email address"><Icon name="mail" /></button>
+    </div><div class="hero-ctas">
+      <a
+        class="button"
+        href={`mailto:${profile.email}?subject=Let%27s%20build%20something`}
+        >Start a conversation <Icon name="diagonal" size={18} /></a
+      ><a class="text-link" href="/cv"
+        >View CV <Icon name="diagonal" size={16} /></a>
+    </div>
+  </section><div class="contact-details page-content">
+    <div>
+      <span class="eyebrow">BASED IN</span><h3>{profile.location}</h3><p>
+        Working across products, teams, and time zones.
+      </p>
+    </div><a href={profile.linkedin} target="_blank" rel="noreferrer"
+      ><span class="eyebrow">THE PROFESSIONAL SIDE</span><h3>
+        Connect on LinkedIn ↗
+      </h3></a
+    ><a href={profile.github} target="_blank" rel="noreferrer"
+      ><span class="eyebrow">THE ENGINEERING SIDE</span><h3>
+        Explore GitHub ↗
+      </h3></a>
+  </div></Shell
+>

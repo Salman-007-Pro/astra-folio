@@ -1,0 +1,39 @@
+:root {
+  --color-bg-canvas: #f5f3ed;
+  --color-bg-surface: #fffefa;
+  --color-text-primary: #172522;
+  --color-text-muted: #636b62;
+  --color-border-subtle: #d5d8cc;
+  --color-accent-signal: #264dea;
+  --color-accent-energy: #c35d31;
+  --color-success: #446b22;
+  --color-focus: #264dea;
+  --color-violet: #796397;
+  --motion-fast: 140ms;
+  --motion-ui: 220ms;
+  --motion-section: 700ms;
+  --motion-cinematic: 1100ms;
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: light;
+}
+:root[data-theme="night"] {
+  --color-bg-canvas: #172522;
+  --color-bg-surface: #20322e;
+  --color-text-primary: #f4f4e9;
+  --color-text-muted: #b5c2b5;
+  --color-border-subtle: #43574e;
+  --color-accent-signal: #a9bdff;
+  --color-accent-energy: #ffb896;
+  --color-success: #d0e579;
+  --color-focus: #c5d4ff;
+  color-scheme: dark;
+}
+@media (forced-colors: active) {
+  :root {
+    --color-text-primary: CanvasText;
+    --color-text-muted: CanvasText;
+    --color-border-subtle: CanvasText;
+    --color-accent-signal: LinkText;
+    --color-focus: Highlight;
+  }
+}

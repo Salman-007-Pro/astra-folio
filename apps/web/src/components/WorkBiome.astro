@@ -1,0 +1,70 @@
+---
+import type { Project } from "@garden/content-schema";
+import Icon from "./Icon.astro";
+const { projects } = Astro.props as { projects: Project[] };
+---
+
+<div class="work-biome">
+  <div class="biome-controls">
+    <span class="eyebrow">FOUR SYSTEMS. ONE CONNECTED WORLD.</span><div
+      class="biome-tabs"
+      role="group"
+      aria-label="Explore project machines"
+    >
+      {
+        projects
+          .filter((p) => p.featured)
+          .map((p, i) => (
+            <button
+              data-machine={p.preset}
+              data-machine-title={p.shortTitle}
+              data-machine-description={p.outcome}
+              data-machine-url={`/work/${p.slug}`}
+              aria-pressed={i === 0 ? "true" : "false"}
+            >
+              <span>0{i + 1}</span>
+              {p.shortTitle}
+              <span>↗</span>
+            </button>
+          ))
+      }
+    </div><div class="biome-description">
+      <h3 data-machine-heading>{projects[0].shortTitle}</h3><p
+        data-machine-copy
+      >
+        {projects[0].outcome}
+      </p><a
+        class="text-link"
+        data-machine-link
+        href={`/work/${projects[0].slug}`}
+        >Inside the system <Icon name="arrow" size={17} /></a>
+    </div>
+  </div><div class="biome-world" data-world-mount aria-hidden="true"></div>
+</div>
+<script>
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-machine]")
+    .forEach((button) =>
+      button.addEventListener("click", () => {
+        document
+          .querySelectorAll("[data-machine]")
+          .forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+        const heading = document.querySelector("[data-machine-heading]"),
+          copy = document.querySelector("[data-machine-copy]"),
+          link = document.querySelector<HTMLAnchorElement>(
+            "[data-machine-link]",
+          );
+        if (heading) heading.textContent = button.dataset.machineTitle || "";
+        if (copy) copy.textContent = button.dataset.machineDescription || "";
+        if (link) link.href = button.dataset.machineUrl || "/work";
+        window.dispatchEvent(
+          new CustomEvent("garden:machine", {
+            detail: {
+              preset: button.dataset.machine,
+              title: button.dataset.machineTitle,
+            },
+          }),
+        );
+      }),
+    );
+</script>

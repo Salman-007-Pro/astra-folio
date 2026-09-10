@@ -1,0 +1,29 @@
+name: Portfolio quality
+on: [push, pull_request]
+jobs:
+  public-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm budget
+      - run: pnpm exec playwright install --with-deps chrome
+      - name: Browser checks
+        run: |
+          pnpm --filter @garden/web exec astro preview --host 127.0.0.1 --port 4321
+          pnpm test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-report
+          path: playwright-report/

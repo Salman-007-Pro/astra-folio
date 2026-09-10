@@ -1,0 +1,33 @@
+---
+import type { Post } from "@garden/content-schema";
+import Icon from "./Icon.astro";
+const { posts } = Astro.props as { posts: Post[] };
+---
+
+<div class="writing-list">
+  {
+    posts.map((post, i) => (
+      <a
+        class="writing-item"
+        href={`/writing/${post.slug}`}
+        data-post-tags={post.tags.join(",")}
+      >
+        <>
+          <span class="writing-index">0{i + 1}</span>
+          <div>
+            <>
+              <span class="eyebrow">
+                {post.tags[0]}
+                <span>·</span>
+                {post.minutes} MIN READ
+              </span>
+              <h3>{post.title}</h3>
+              <p>{post.excerpt}</p>
+            </>
+          </div>
+          <Icon name="diagonal" size={27} />
+        </>
+      </a>
+    ))
+  }
+</div>

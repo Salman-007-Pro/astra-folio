@@ -1,0 +1,52 @@
+---
+import Shell from "../../layouts/Shell.astro";
+import ProjectGrid from "../../components/ProjectGrid.astro";
+import { getContent } from "../../lib/content";
+const { projects } = await getContent();
+---
+
+<Shell
+  title="Selected work — Salman Asif"
+  description="Public case studies in enterprise connector architecture, discovery workflows, build modernization, mobile products, and creative engineering."
+  ><section class="page-intro">
+    <div class="eyebrow">01 / SELECTED SYSTEMS</div><h1>
+      There’s a story<br />behind the interface.
+    </h1><p>
+      The constraints, architecture, and decisions behind products I’ve helped
+      build. Each diagram is a public-safe reconstruction.
+    </p>
+  </section><section class="page-content">
+    <div class="filter-bar" aria-label="Filter work by category">
+      {
+        ["All", "Enterprise", "Platform", "Mobile", "Creative"].map((c, i) => (
+          <button data-filter={c} aria-pressed={i === 0 ? "true" : "false"}>
+            {c}
+            {c === "All" && <span>{projects.length}</span>}
+          </button>
+        ))
+      }<span class="filter-count" role="status" data-filter-count
+        >{projects.length} projects</span>
+    </div><ProjectGrid projects={projects} />
+  </section></Shell
+>
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
+  buttons.forEach((button) =>
+    button.addEventListener("click", () => {
+      let count = 0;
+      const category = button.dataset.filter;
+      buttons.forEach((b) =>
+        b.setAttribute("aria-pressed", String(b === button)),
+      );
+      document
+        .querySelectorAll<HTMLElement>("[data-category]")
+        .forEach((el) => {
+          el.hidden = category !== "All" && el.dataset.category !== category;
+          if (!el.hidden) count++;
+        });
+      const label = document.querySelector("[data-filter-count]");
+      if (label)
+        label.textContent = `${count} project${count === 1 ? "" : "s"}`;
+    }),
+  );
+</script>

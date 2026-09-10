@@ -1,0 +1,207 @@
+---
+import "@fontsource-variable/manrope";
+import "@fontsource/dm-mono/400.css";
+import "@garden/design-tokens/theme.css";
+import "../styles/global.css";
+import "../styles/content.css";
+import "../styles/refinements.css";
+import "../styles/accessibility.css";
+import Icon from "../components/Icon.astro";
+interface Props {
+  title?: string;
+  description?: string;
+  immersive?: boolean;
+  article?: boolean;
+}
+const {
+  title = "Salman Asif — Full-stack engineer",
+  description = "I build interfaces and product systems that make difficult things feel clear, fast, and usable. Senior full-stack engineer working across web, mobile and enterprise platforms.",
+  immersive = false,
+  article = false,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site || Astro.url.origin)
+  .href;
+const links = [
+  { label: "Work", href: "/work" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Writing", href: "/writing" },
+  { label: "About", href: "/about" },
+];
+---
+
+<!doctype html>
+<html lang="en" data-motion="on">
+  <head>
+    <meta charset="UTF-8" /><meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <meta name="theme-color" content="#f5f3ed" /><title>{title}</title><meta
+      name="description"
+      content={description}
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" /><link
+      rel="canonical"
+      href={canonical}
+    />
+    <meta property="og:title" content={title} /><meta
+      property="og:description"
+      content={description}
+    /><meta property="og:type" content={article ? "article" : "website"} /><meta
+      property="og:url"
+      content={canonical}
+    /><meta name="twitter:card" content="summary" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Salman's field notes"
+      href="/rss.xml"
+    />
+    <script is:inline>
+      try {
+        const p = JSON.parse(
+          localStorage.getItem("kinetic-garden-preferences-v1") || "{}",
+        );
+        document.documentElement.dataset.theme = p.night ? "night" : "day";
+        document.documentElement.dataset.motion =
+          (p.motion ?? !matchMedia("(prefers-reduced-motion: reduce)").matches)
+            ? "on"
+            : "off";
+      } catch {}
+    </script>
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        url: canonical,
+        name: title,
+        mainEntity: {
+          "@type": "Person",
+          name: "Muhammad Salman Asif",
+          alternateName: "Salman Asif",
+          jobTitle: "Senior Software Engineer",
+          url: Astro.site?.href || Astro.url.origin,
+          sameAs: [
+            "https://github.com/Salman-007-Pro",
+            "https://www.linkedin.com/in/muhammad-salman-asif-7b902a12a/",
+          ],
+        },
+      }).replaceAll("<", "\u003c")}
+    />
+    <slot name="head" />
+  </head>
+  <body class:list={[{ immersive }]}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="wordmark" href="/" aria-label="Salman Asif, home"
+        ><span class="brand-mark">s<span>↗</span></span><span
+          >salman asif<span class="wordmark-dot">.</span></span
+        ></a
+      >
+      <nav aria-label="Main navigation" class="desktop-nav">
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              aria-current={
+                Astro.url.pathname === link.href ? "page" : undefined
+              }
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+      <div class="header-actions">
+        <a class="recruiter-link" href={immersive ? "/reading" : "/"}
+          ><span class="mode-icon">{immersive ? "▤" : "✳"}</span>{
+            immersive ? "Recruiter view" : "Explore the garden"
+          }</a
+        ><a class="contact-button" href="/contact"
+          >Let’s talk <Icon name="diagonal" size={15} /></a
+        ><button
+          class="icon-button mobile-menu-toggle"
+          aria-label="Open navigation"
+          data-menu-open><Icon name="menu" /></button>
+      </div>
+    </header>
+    <dialog id="mobile-menu" class="mobile-menu">
+      <div class="dialog-heading">
+        <span class="eyebrow">Find your way</span><button
+          class="icon-button"
+          data-dialog-close
+          aria-label="Close navigation"><Icon name="close" /></button>
+      </div><nav aria-label="Mobile navigation">
+        {
+          [
+            ...links,
+            { label: "View CV", href: "/cv" },
+            { label: "Contact", href: "/contact" },
+            {
+              label: immersive ? "Recruiter view" : "Explore the garden",
+              href: immersive ? "/reading" : "/",
+            },
+          ].map((l) => (
+            <a href={l.href}>
+              {l.label}
+              <Icon name="arrow" />
+            </a>
+          ))
+        }
+      </nav>
+    </dialog>
+    <main id="main"><slot /></main>
+    <footer class="site-footer">
+      <a class="wordmark" href="/">salman asif.</a><p>
+        Thoughtfully built. Always evolving.
+      </p><div>
+        <a
+          href="https://github.com/Salman-007-Pro"
+          target="_blank"
+          rel="noreferrer">GitHub ↗</a
+        ><a
+          href="https://www.linkedin.com/in/muhammad-salman-asif-7b902a12a/"
+          target="_blank"
+          rel="noreferrer">LinkedIn ↗</a
+        ><a href="/rss.xml">RSS</a><span>© {new Date().getFullYear()}</span>
+      </div>
+    </footer>
+    <button
+      class="settings-trigger"
+      data-settings-open
+      aria-label="Experience settings"
+      title="Experience settings"><Icon name="settings" /></button
+    >
+    <dialog id="experience-settings" class="settings-dialog">
+      <div class="dialog-heading">
+        <span class="eyebrow">Make yourself at home</span><button
+          class="icon-button"
+          data-dialog-close
+          aria-label="Close settings"><Icon name="close" /></button>
+      </div><h2>Your kind of garden.</h2><p>
+        A little quieter. A little darker. Up to you.
+      </p><label class="toggle-row"
+        >Motion <input type="checkbox" id="pref-motion" role="switch" /></label
+      ><label class="toggle-row"
+        >Sound <input type="checkbox" id="pref-sound" role="switch" /></label
+      ><label class="toggle-row"
+        >Night shift <input
+          type="checkbox"
+          id="pref-night"
+          role="switch"
+        /></label
+      ><label class="toggle-row"
+        >Blueprint view <input
+          type="checkbox"
+          id="pref-blueprint"
+          role="switch"
+        /></label
+      ><a href="/reading" class="text-link"
+        >Prefer a straight read? Recruiter view <Icon name="arrow" /></a>
+    </dialog>
+    <div role="status" class="toast" id="toast"></div>
+    <script src="../lib/ui.ts"></script>
+  </body>
+</html>

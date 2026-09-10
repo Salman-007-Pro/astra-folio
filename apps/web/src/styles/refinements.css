@@ -1,0 +1,221 @@
+.project-item,
+.work-list,
+.project-heading,
+.project-meta {
+  min-width: 0;
+}
+.work-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.project-heading {
+  gap: 18px;
+}
+.project-meta {
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+.scene-label {
+  top: auto;
+  bottom: 105px;
+  right: 7%;
+  max-width: 235px;
+}
+.scene-label span {
+  font-size: 9px;
+  letter-spacing: 0.02em;
+}
+.world-stage[data-chapter="WORK"] .scene-caption,
+.world-stage[data-chapter="WORK"] .scene-controls,
+.world-stage[data-chapter="WORK"] .scene-label {
+  display: none;
+}
+.work-biome {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 40px;
+  min-height: 530px;
+  margin: 0 0 70px;
+  border-top: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.biome-controls {
+  padding: 32px 0;
+  position: relative;
+  z-index: 3;
+}
+.biome-controls > .eyebrow {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  margin-bottom: 25px;
+}
+.biome-tabs {
+  display: flex;
+  flex-direction: column;
+}
+.biome-tabs button {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 14px;
+  border: 0;
+  border-top: 1px solid var(--color-border-subtle);
+  padding: 17px 0;
+  background: transparent;
+  text-align: left;
+}
+.biome-tabs button > span:first-child {
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+.biome-tabs button > span:last-child {
+  margin-left: auto;
+}
+.biome-tabs button[aria-pressed="true"] {
+  color: var(--color-accent-signal);
+}
+.biome-description {
+  margin-top: 25px;
+}
+.biome-description h3 {
+  font-size: 23px;
+  margin-bottom: 14px;
+}
+.biome-description p {
+  font-size: 14px;
+  margin-bottom: 20px;
+  max-width: 380px;
+}
+.biome-world {
+  min-width: 0;
+  position: relative;
+}
+.biome-world:after {
+  content: "PICK A SYSTEM. SEE THE CONNECTIONS.";
+  position: absolute;
+  bottom: 35px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+.site-header {
+  position: sticky;
+  top: 0;
+  background: color-mix(in srgb, var(--color-bg-canvas) 94%, transparent);
+  backdrop-filter: blur(12px);
+}
+.case-nav,
+.article-sidebar {
+  top: 140px;
+}
+.prose .astro-code {
+  background: #1c2c28 !important;
+  color: #e6eddf !important;
+}
+.prose .astro-code span {
+  background: transparent !important;
+}
+.scene-controls button {
+  min-height: 40px;
+}
+.toggle-row {
+  min-height: 55px;
+}
+.hero-bottom,
+.eyebrow {
+  font-size: 12px;
+}
+.chapter-dock {
+  display: none;
+}
+@media (min-width: 761px) {
+  .chapter-dock {
+    position: fixed;
+    top: 48%;
+    right: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    z-index: 15;
+  }
+  .chapter-dock a {
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--color-text-muted);
+    border-radius: 50%;
+    background: var(--color-bg-canvas);
+  }
+  .chapter-dock a[aria-current="true"] {
+    background: var(--color-accent-signal);
+    border-color: var(--color-accent-signal);
+  }
+  .chapter-dock a:hover {
+    transform: scale(1.5);
+  }
+}
+@media (max-width: 760px) {
+  .work-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .scene-label {
+    top: 39px;
+    bottom: auto;
+    right: auto;
+    left: 6%;
+    background: transparent;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    max-width: 230px;
+  }
+  .scene-label:before,
+  .scene-label span {
+    display: none;
+  }
+  .scene-label strong {
+    font-size: 11px;
+    color: var(--color-text-muted);
+  }
+  .scene-caption {
+    top: 17px;
+    left: 6%;
+    right: auto;
+    font-size: 9px;
+  }
+  .scene-controls > span {
+    display: none;
+  }
+  .scene-controls {
+    bottom: 6px;
+    justify-content: flex-end;
+  }
+  .work-biome {
+    display: none;
+  }
+  .hero-bottom {
+    font-size: 10px;
+  }
+  .project-item h3 {
+    font-size: 24px;
+  }
+  .project-meta {
+    gap: 8px;
+    font-size: 11px;
+  }
+  .case-nav,
+  .article-sidebar {
+    top: auto;
+  }
+  .hero .eyebrow {
+    font-size: 10px;
+  }
+  .hero-bottom > div:last-child {
+    font-size: 9px;
+  }
+  .site-header {
+    height: 84px;
+  }
+}
