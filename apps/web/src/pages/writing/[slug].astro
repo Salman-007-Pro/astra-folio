@@ -1,0 +1,87 @@
+---
+import Shell from "../../layouts/Shell.astro";
+import { getContent, formatDate } from "../../lib/content";
+import { renderTrustedMdx } from "../../lib/mdx";
+export async function getStaticPaths() {
+  const { posts, projects } = await getContent();
+  return posts.map((post, i) => ({
+    params: { slug: post.slug },
+    props: {
+      post,
+      related: projects.filter((p) => post.relatedProjects.includes(p.slug)),
+      next: posts[(i + 1) % posts.length],
+    },
+  }));
+}
+const { post, related, next } = Astro.props;
+const { html, headings } = await renderTrustedMdx(post.mdx);
+---
+
+<Shell title={`${post.title} — Salman Asif`} description={post.excerpt} article
+  ><script
+    is:inline
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.excerpt,
+      datePublished: post.publishedAt,
+      author: { "@type": "Person", name: "Muhammad Salman Asif" },
+      mainEntityOfPage: new URL(
+        `/writing/${post.slug}`,
+        Astro.site || Astro.url.origin,
+      ).href,
+    }).replaceAll("<", "\u003c")}
+  /><div class="reading-progress" aria-hidden="true"></div><section
+    class="page-intro"
+  >
+    <a href="/writing" class="eyebrow"
+      >← FIELD NOTES <span>/</span> {post.kind}</a
+    ><h1>{post.title}</h1><p>{post.excerpt}</p><div class="article-meta">
+      <span>Salman Asif</span><time datetime={post.publishedAt}
+        >{formatDate(post.publishedAt)}</time
+      ><span>{post.minutes} min read</span>{
+        post.tags.map((tag) => <span class="tag">{tag}</span>)
+      }
+    </div>
+  </section><div class="article-layout">
+    <aside class="article-sidebar">
+      <span class="eyebrow">IN THIS NOTE</span>{
+        headings.map((h) => <a href={`#${h.id}`}>{h.text}</a>)
+      }<button data-copy="url">Copy article link ↗</button>
+    </aside><article>
+      <div class="prose article-prose" set:html={html} /><div
+        class="article-related"
+      >
+        <h3>Connected systems</h3>{
+          related.map((p) => <a href={`/work/${p.slug}`}>{p.shortTitle} ↗</a>)
+        }<h3 style="margin-top:35px">Keep reading</h3><a
+          href={`/writing/${next.slug}`}>{next.title} ↗</a>
+      </div>
+    </article>
+  </div></Shell
+>
+<script>
+  const progress = document.querySelector<HTMLElement>(".reading-progress");
+  let queued = false;
+  function update() {
+    queued = false;
+    if (progress) {
+      const height = document.documentElement.scrollHeight - innerHeight;
+      progress.style.width = `${height > 0 ? Math.min(100, (scrollY / height) * 100) : 100}%`;
+    }
+  }
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true },
+  );
+  update();
+</script>

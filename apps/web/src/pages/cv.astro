@@ -1,0 +1,100 @@
+---
+import Shell from "../layouts/Shell.astro";
+import Icon from "../components/Icon.astro";
+import Experience from "../components/Experience.astro";
+import { getContent, formatDate } from "../lib/content";
+const { profile, resume, experience } = await getContent();
+const cms = import.meta.env.PUBLIC_CMS_URL || "";
+---
+
+<Shell
+  title="CV — Muhammad Salman Asif"
+  description={`${profile.fullName}, ${profile.role}. View and download the current CV.`}
+  ><section class="page-intro">
+    <div class="eyebrow">THE COMPLETE PICTURE</div><h1>
+      Experience,<br />in a few pages.
+    </h1><p>{profile.intro}</p><div
+      class="cv-actions"
+      data-cv-root
+      data-cms-url={cms}
+    >
+      <a
+        class="button"
+        id="cv-download"
+        href={resume.url || undefined}
+        download={resume.filename}
+        hidden={!resume.url || !resume.downloadEnabled}
+        >Download CV <Icon name="download" size={18} /></a
+      ><a
+        class="button secondary"
+        id="cv-open"
+        href={resume.url || undefined}
+        target="_blank"
+        rel="noreferrer"
+        hidden={!resume.url}>Open PDF <Icon name="diagonal" size={17} /></a
+      ><button class="text-link" data-print>Print summary</button><span
+        id="cv-date">Updated {formatDate(resume.updatedAt)}</span>
+    </div><p id="cv-status" role="status" class="small-copy"></p>
+  </section><section class="page-content cv-page">
+    <object
+      id="cv-viewer"
+      data={resume.url || undefined}
+      type="application/pdf"
+      class="cv-viewer"
+      aria-label={`${profile.fullName}'s current CV`}
+      hidden={!resume.url}
+      ><p>
+        Your browser can’t display this PDF inline. <a
+          href={resume.url || "/contact"}>Open the CV directly</a
+        >.
+      </p></object
+    ><p id="cv-missing" class="notice" hidden={!!resume.url}>
+      The PDF is being updated. The professional summary below is available, and
+      you can <a href={`mailto:${profile.email}`}>request a copy by email</a>.
+    </p><details class="cv-summary">
+      <summary>Read the accessible CV summary</summary><h2>
+        {profile.fullName}
+      </h2><p>
+        {profile.role} · {profile.location} · {profile.email}
+      </p><Experience items={experience} compact /><h3>Education</h3><p>
+        BS Software Engineering · Sir Syed University of Engineering and
+        Technology · 2017–2020
+      </p><p>English · Urdu</p>
+    </details>
+  </section></Shell
+>
+<script>
+  import { resumeSchema } from "@garden/content-schema";
+  const root = document.querySelector<HTMLElement>("[data-cv-root]");
+  if (root?.dataset.cmsUrl) {
+    try {
+      const response = await fetch(
+        new URL("/api/resume", root.dataset.cmsUrl),
+        { cache: "no-store", signal: AbortSignal.timeout(8000) },
+      );
+      if (!response.ok) throw new Error("Unavailable");
+      const current = resumeSchema.parse(await response.json());
+      for (const id of ["cv-download", "cv-open"]) {
+        const link = document.getElementById(id) as HTMLAnchorElement;
+        link.hidden =
+          !current.url || (id === "cv-download" && !current.downloadEnabled);
+        if (current.url) link.href = current.url;
+        if (id === "cv-download") link.download = current.filename;
+      }
+      const viewer = document.getElementById("cv-viewer") as HTMLObjectElement;
+      viewer.hidden = !current.url;
+      if (current.url) viewer.data = current.url;
+      document.getElementById("cv-missing")!.hidden = !!current.url;
+      document.getElementById("cv-date")!.textContent =
+        "Updated " +
+        new Date(current.updatedAt).toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        });
+    } catch {
+      document.getElementById("cv-status")!.textContent =
+        "Showing the last published CV. The latest version check is temporarily unavailable.";
+    }
+  }
+</script>

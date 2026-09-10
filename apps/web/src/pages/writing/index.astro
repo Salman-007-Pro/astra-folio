@@ -1,0 +1,60 @@
+---
+import Shell from "../../layouts/Shell.astro";
+import WritingList from "../../components/WritingList.astro";
+import { getContent } from "../../lib/content";
+const { posts } = await getContent();
+const tags = [...new Set(posts.flatMap((p) => p.tags))];
+---
+
+<Shell
+  title="Field notes — Salman Asif"
+  description="Practical engineering notes on architecture, async product behavior, build tooling, and the Kinetic Garden."
+  ><section class="page-intro">
+    <div class="eyebrow">THE OBSERVATORY / WRITING</div><h1>
+      Notes from<br />the moving parts.
+    </h1><p>
+      Architecture decisions, product behavior, and the things worth writing
+      down while building. No magic formulas. Just useful ways to think about
+      the work.
+    </p><a href="/rss.xml" class="text-link" style="margin-top:25px"
+      >Follow via RSS ↗</a>
+  </section><section class="page-content">
+    <div class="filter-bar" aria-label="Filter writing">
+      {
+        ["All notes", ...tags].map((tag, i) => (
+          <button
+            data-writing-filter={tag}
+            aria-pressed={i === 0 ? "true" : "false"}
+          >
+            {tag}
+          </button>
+        ))
+      }<span class="sr-only" data-writing-count role="status"></span>
+    </div><WritingList posts={posts} />
+  </section></Shell
+>
+<script>
+  const filters = document.querySelectorAll<HTMLButtonElement>(
+    "[data-writing-filter]",
+  );
+  filters.forEach((button) =>
+    button.addEventListener("click", () => {
+      filters.forEach((b) =>
+        b.setAttribute("aria-pressed", String(b === button)),
+      );
+      let count = 0;
+      document
+        .querySelectorAll<HTMLElement>("[data-post-tags]")
+        .forEach((post) => {
+          post.hidden =
+            button.dataset.writingFilter !== "All notes" &&
+            !post.dataset.postTags
+              ?.split(",")
+              .includes(button.dataset.writingFilter!);
+          if (!post.hidden) count++;
+        });
+      const status = document.querySelector("[data-writing-count]");
+      if (status) status.textContent = `${count} notes shown`;
+    }),
+  );
+</script>

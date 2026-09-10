@@ -1,0 +1,29 @@
+{
+  "name": "salman-kinetic-garden",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @garden/web dev",
+    "build": "pnpm --filter @garden/web build && node tooling/scripts/stage-site.mjs",
+    "check": "pnpm --filter @garden/web check && pnpm --filter @garden/cms check",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "cms:dev": "pnpm --filter @garden/cms dev",
+    "cms:build": "pnpm --filter @garden/cms build",
+    "format": "prettier --write apps packages docs tooling",
+    "budget": "node tooling/scripts/check-budget.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@axe-core/playwright": "^4.11.0",
+    "vitest": "^3.2.4",
+    "prettier": "^3.6.2",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^5.9.3",
+    "@types/node": "^24.0.0"
+  }
+}

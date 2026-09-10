@@ -1,0 +1,48 @@
+---
+import type { Project } from "@garden/content-schema";
+import SystemDiagram from "./SystemDiagram.astro";
+import Icon from "./Icon.astro";
+const { projects } = Astro.props as { projects: Project[] };
+---
+
+<div class="work-list">
+  {
+    projects.map((project, i) => (
+      <article
+        class="project-item"
+        data-category={project.category}
+        data-stack={project.stack.join(",")}
+      >
+        <a
+          href={`/work/${project.slug}`}
+          aria-label={`Read ${project.shortTitle} case study`}
+        >
+          <>
+            <div class="project-art">
+              <>
+                <SystemDiagram project={project} />
+                <span class="project-arrow">
+                  <Icon name="diagonal" size={20} />
+                </span>
+              </>
+            </div>
+            <div class="project-heading">
+              <>
+                <h3>{project.shortTitle}</h3>
+                <span class="project-number">0{i + 1}</span>
+              </>
+            </div>
+            <div class="project-meta">
+              <>
+                <span>
+                  {project.company} · {project.period}
+                </span>
+                <span>{project.category}</span>
+              </>
+            </div>
+          </>
+        </a>
+      </article>
+    ))
+  }
+</div>

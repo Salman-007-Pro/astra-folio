@@ -1,0 +1,49 @@
+.hero-bottom {
+  pointer-events: none;
+}
+.hero {
+  pointer-events: none;
+}
+.hero a,
+.hero button {
+  pointer-events: auto;
+}
+.world-stage {
+  z-index: 2;
+}
+.hero-copy {
+  z-index: 3;
+}
+.diagram-connection,
+.schema-block > div > span,
+.job-branches,
+.build-column > span:last-child,
+.mobile-architecture > div,
+.garden-diagram p {
+  color: #495545;
+}
+.mobile-flow > span:last-child {
+  background: #53623c;
+  border-color: #53623c;
+}
+.scene-controls button:disabled {
+  opacity: 0.5;
+}
+.scene-controls {
+  z-index: 6;
+}
+@media (max-width: 760px) {
+  .hero-bottom {
+    margin-top: 415px;
+  }
+  .scene-controls {
+    bottom: 30px;
+  }
+  .scene-controls button {
+    font-size: 11px;
+    padding: 9px 13px;
+  }
+  .project-number {
+    flex-shrink: 0;
+  }
+}

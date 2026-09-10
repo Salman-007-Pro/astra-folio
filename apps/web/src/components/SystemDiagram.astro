@@ -1,0 +1,190 @@
+---
+import type { Project } from "@garden/content-schema";
+const { project, compact = false } = Astro.props as {
+  project: Project;
+  compact?: boolean;
+};
+---
+
+<div
+  class:list={["system-diagram", `diagram-${project.preset}`, { compact }]}
+  role="img"
+  aria-label={`Conceptual architecture: ${project.architecture.join(" → ")}. This is an explanatory diagram, not a product screenshot.`}
+>
+  <div class="diagram-topline">
+    <span
+      >SYS.{
+        String(
+          ["connector", "discovery", "engine", "mobile", "garden"].indexOf(
+            project.preset,
+          ) + 1,
+        ).padStart(2, "0")
+      }</span
+    ><span
+      >{project.category.toUpperCase()} / {project.status.toUpperCase()}</span>
+  </div>
+  {
+    project.preset === "connector" ? (
+      <div class="connector-diagram">
+        <>
+          <div class="source-stack">
+            <>
+              <span>
+                <i /> AWS
+              </span>
+              <span>
+                <i /> AZURE
+              </span>
+              <span>
+                <i /> GCP
+              </span>
+            </>
+          </div>
+          <div class="diagram-connection">
+            <>
+              <span>metadata</span>
+              <b>→</b>
+            </>
+          </div>
+          <div class="schema-block">
+            <>
+              <div class="schema-title">✳ &nbsp; ONE UI ENGINE</div>
+              <div>
+                <>
+                  <span>type</span>
+                  <strong>select</strong>
+                </>
+              </div>
+              <div>
+                <>
+                  <span>dependsOn</span>
+                  <strong>provider</strong>
+                </>
+              </div>
+              <div>
+                <>
+                  <span>validation</span>
+                  <strong>required</strong>
+                </>
+              </div>
+              <div class="schema-result">{} &nbsp; predictable by design</div>
+            </>
+          </div>
+        </>
+      </div>
+    ) : project.preset === "discovery" ? (
+      <div class="discovery-diagram">
+        <>
+          <div class="job-line">
+            <>
+              <span>
+                01
+                <>
+                  <br />
+                  <b>Queued</b>
+                </>
+              </span>
+              <i />
+              <span class="job-active">
+                02
+                <>
+                  <br />
+                  <b>Running</b>
+                </>
+              </span>
+              <i />
+              <span>
+                03
+                <>
+                  <br />
+                  <b>Complete</b>
+                </>
+              </span>
+            </>
+          </div>
+          <div class="job-branches">
+            <>
+              <span>↳ Cancel requested</span>
+              <span>↳ Retry available</span>
+            </>
+          </div>
+          <div class="diagram-caption">
+            <span class="diagram-pulse" /> EVERY STATE HAS A WAY FORWARD
+          </div>
+        </>
+      </div>
+    ) : project.preset === "engine" ? (
+      <div class="engine-diagram">
+        <>
+          <div class="build-column">
+            <>
+              <span class="mono-small">EXISTING PRODUCT</span>
+              <strong>Vue 2</strong>
+              <span>Routes · Assets · Async imports</span>
+            </>
+          </div>
+          <span class="engine-arrow">→</span>
+          <div class="build-column new">
+            <>
+              <span class="mono-small">COMPATIBILITY FIRST</span>
+              <strong>
+                Rspack<span>↗</span>
+              </strong>
+              <span>Build · Verify · Repeat</span>
+            </>
+          </div>
+          <div class="engine-footnote">
+            <>
+              <span>✓ Runtime behavior</span>
+              <span>✓ Release checks</span>
+            </>
+          </div>
+        </>
+      </div>
+    ) : project.preset === "mobile" ? (
+      <div class="mobile-diagram">
+        <>
+          <div class="mobile-architecture">
+            <>
+              <span class="mono-small">CARGOBARN / MOBILE</span>
+              <strong>
+                From dispatch
+                <br />
+                to delivery.
+              </strong>
+              <div>
+                <>
+                  <span>Interaction</span>
+                  <b>→</b>
+                  <span>State</span>
+                  <b>→</b>
+                  <span>API</span>
+                </>
+              </div>
+            </>
+          </div>
+          <div class="mobile-flow">
+            <>
+              <span>01 &nbsp; REQUEST</span>
+              <span>02 &nbsp; IN TRANSIT</span>
+              <span>
+                03 &nbsp; DELIVERED <b>✓</b>
+              </span>
+            </>
+          </div>
+        </>
+      </div>
+    ) : (
+      <div class="garden-diagram">
+        <>
+          <span>HTML</span>
+          <b>→</b>
+          <span>REACT</span>
+          <b>→</b>
+          <span>THREE.JS</span>
+          <p>A world above. A strong foundation below.</p>
+        </>
+      </div>
+    )
+  }
+</div>

@@ -1,0 +1,13 @@
+{
+  "name": "@garden/content-schema",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./seed": "./src/seed.ts",
+    "./mdx-policy": "./src/mdx-policy.ts"
+  },
+  "dependencies": {
+    "zod": "^4.1.0"
+  }
+}

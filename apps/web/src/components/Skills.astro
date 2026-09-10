@@ -1,0 +1,98 @@
+---
+import type { Project } from "@garden/content-schema";
+const { projects } = Astro.props as { projects: Project[] };
+const categories = [
+  { title: "Product interfaces", skills: ["React", "Vue", "TypeScript"] },
+  { title: "Services & data", skills: ["Go", "Python", "REST APIs"] },
+  { title: "Mobile experiences", skills: ["React Native", "Redux"] },
+  {
+    title: "Build & platform",
+    skills: ["Rsbuild", "Rspack", "Docker", "Kubernetes"],
+  },
+  { title: "Creative engineering", skills: ["Astro", "Three.js", "Payload"] },
+];
+---
+
+<div class="skills-layout">
+  <div class="skill-categories">
+    {
+      categories.map((c) => (
+        <div class="skill-category">
+          <>
+            <h3>{c.title}</h3>
+            <div class="skill-chips">
+              {c.skills.map((skill) => (
+                <button data-skill={skill} aria-pressed="false">
+                  {skill}
+                  <span>↗</span>
+                </button>
+              ))}
+            </div>
+          </>
+        </div>
+      ))
+    }
+  </div><div class="skill-evidence">
+    <div class="eyebrow">CONNECTED TO REAL WORK</div><h3 data-skill-title>
+      Follow the evidence.
+    </h3><p>Select a technology to see where it connects to the work.</p><div
+      class="skill-projects"
+    >
+      {
+        projects.map((p) => (
+          <a href={`/work/${p.slug}`} data-skill-project={p.stack.join(",")}>
+            <>
+              <span>{p.shortTitle}</span>
+              <span>↗</span>
+            </>
+          </a>
+        ))
+      }
+    </div><button class="text-link skill-reset" data-skill-reset hidden
+      >Show all connections</button
+    ><p class="sr-only" data-skill-status role="status"></p>
+  </div>
+</div>
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>("[data-skill]");
+  function highlight(skill: string | null) {
+    buttons.forEach((b) =>
+      b.setAttribute("aria-pressed", String(b.dataset.skill === skill)),
+    );
+    let count = 0;
+    document
+      .querySelectorAll<HTMLElement>("[data-skill-project]")
+      .forEach((p) => {
+        const match =
+          !skill || p.dataset.skillProject?.split(",").includes(skill);
+        p.hidden = !match;
+        if (match) count++;
+      });
+    const title = document.querySelector("[data-skill-title]");
+    if (title) title.textContent = skill || "Follow the evidence.";
+    const reset = document.querySelector<HTMLElement>("[data-skill-reset]");
+    if (reset) reset.hidden = !skill;
+    const status = document.querySelector("[data-skill-status]");
+    if (status) status.textContent = `${count} related projects`;
+    try {
+      skill
+        ? sessionStorage.setItem("garden-skill", skill)
+        : sessionStorage.removeItem("garden-skill");
+    } catch {}
+  }
+  buttons.forEach((b) =>
+    b.addEventListener("click", () =>
+      highlight(
+        b.getAttribute("aria-pressed") === "true" ? null : b.dataset.skill!,
+      ),
+    ),
+  );
+  document
+    .querySelector("[data-skill-reset]")
+    ?.addEventListener("click", () => highlight(null));
+  try {
+    const skill = sessionStorage.getItem("garden-skill");
+    if (skill && Array.from(buttons).some((b) => b.dataset.skill === skill))
+      highlight(skill);
+  } catch {}
+</script>
