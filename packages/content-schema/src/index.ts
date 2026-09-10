@@ -48,6 +48,25 @@ export const postSchema = z.object({
   relatedProjects: z.array(z.string()),
   kind: z.string().default("Build note"),
 });
+export const collaborationDefaults = {
+  availability: "Available worldwide · Remote",
+  locations: "Al Khobar, Saudi Arabia · Karachi, Pakistan",
+  currencies: "USD / EUR",
+  callNumber: "+92 332 1318363",
+  whatsappNumber: "+966 56 379 1037",
+};
+const defaultText = (fallback: string) =>
+  z.preprocess(
+    (value) => (value === null || value === "" ? undefined : value),
+    z.string().default(fallback),
+  );
+const collaborationSchema = z.object({
+  availability: defaultText(collaborationDefaults.availability),
+  locations: defaultText(collaborationDefaults.locations),
+  currencies: defaultText(collaborationDefaults.currencies),
+  callNumber: defaultText(collaborationDefaults.callNumber),
+  whatsappNumber: defaultText(collaborationDefaults.whatsappNumber),
+});
 export const profileSchema = z.object({
   name: z.string(),
   fullName: z.string(),
@@ -59,6 +78,7 @@ export const profileSchema = z.object({
   linkedin: safeUrl,
   experienceLabel: z.string(),
   currentFocus: z.string(),
+  collaboration: z.preprocess((value) => value ?? {}, collaborationSchema),
 });
 export const resumeSchema = z.object({
   url: safeUrl.nullable(),

@@ -1,4 +1,4 @@
-import type { Portfolio } from "./index";
+import { collaborationDefaults, type Portfolio } from "./index";
 export const seed: Portfolio = {
   profile: {
     name: "Salman Asif",
@@ -13,6 +13,7 @@ export const seed: Portfolio = {
     experienceLabel: "5+ years",
     currentFocus:
       "Enterprise platforms, cross-stack architecture, and creative engineering.",
+    collaboration: collaborationDefaults,
   },
   resume: {
     url: "/media/muhammad-salman-asif-cv.pdf",

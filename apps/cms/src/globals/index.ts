@@ -1,6 +1,7 @@
 import type { Field, GlobalConfig } from "payload";
 import { adminOnly } from "../access";
 import { rebuildGlobal } from "../hooks/rebuild";
+import { collaborationDefaults } from "@garden/content-schema";
 const text = (name: string, required = true): Field => ({
   name,
   type: "text",
@@ -25,6 +26,19 @@ export const Profile: GlobalConfig = {
     text("linkedin"),
     text("experienceLabel"),
     text("currentFocus"),
+    {
+      name: "collaboration",
+      label: "Remote availability & contact",
+      type: "group",
+      fields: Object.entries(collaborationDefaults).map(
+        ([name, defaultValue]) => ({
+          name,
+          type: "text" as const,
+          required: true,
+          defaultValue,
+        }),
+      ),
+    },
     { name: "longNarrative", type: "textarea" },
     { name: "avatar", type: "upload", relationTo: "media" },
   ],

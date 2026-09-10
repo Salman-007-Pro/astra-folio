@@ -26,6 +26,13 @@ const { profile, projects, experience, posts } = await getContent();
         Hey, I’m Salman. I connect the dots between interfaces, services, and
         everything it takes to ship a product that just makes sense.
       </p>
+      <a class="hero-availability" href="/contact"
+        ><Icon name="globe" size={16} />
+        {profile.collaboration.availability}<Icon
+          name="diagonal"
+          size={14}
+        /></a
+      >
       <div class="hero-ctas">
         <a class="button" href="#work"
           >Explore my work <Icon name="arrow" size={18} /></a
@@ -38,7 +45,7 @@ const { profile, projects, experience, posts } = await getContent();
     <div class="hero-bottom">
       <div class="location">
         <Icon name="globe" size={15} />
-        AL KHOBAR, SA <span data-local-time>UTC +03:00</span>
+        AL KHOBAR / KARACHI
       </div>
       <div>
         <span>FROM THE INTERFACE TO THE INFRASTRUCTURE.</span>

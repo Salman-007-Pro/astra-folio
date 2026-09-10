@@ -7,7 +7,12 @@ import "../styles/content.css";
 import "../styles/refinements.css";
 import "../styles/accessibility.css";
 import "../styles/responsive.css";
+import "../styles/contact.css";
 import Icon from "../components/Icon.astro";
+import { getContent } from "../lib/content";
+import { contactLinks } from "../lib/contact";
+const { profile } = await getContent();
+const contacts = contactLinks(profile);
 interface Props {
   title?: string;
   description?: string;
@@ -159,13 +164,22 @@ const isCurrentPage = (href: string) =>
           ))}
       </nav>
       <div class="drawer-footer">
+        <p class="drawer-availability">{profile.collaboration.availability}</p>
         <div class="drawer-actions">
-          <a class="button" href="/contact"
-            >Let’s talk <Icon name="diagonal" size={16} /></a
+          <a
+            class="button"
+            href={contacts.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            >WhatsApp <Icon name="message" size={16} /></a
           >
-          <a class="button secondary" href="/cv"
-            >View CV <Icon name="download" size={16} /></a
+          <a class="button secondary" href={contacts.call}
+            >Call me <Icon name="phone" size={16} /></a
           >
+        </div>
+        <div class="drawer-secondary-links">
+          <a href="/contact">Contact details</a
+          ><a href="/cv">View CV <Icon name="download" size={14} /></a>
         </div>
         <a class="drawer-reading-link" href="/reading"
           >Recruiter view <Icon name="arrow" size={18} /></a

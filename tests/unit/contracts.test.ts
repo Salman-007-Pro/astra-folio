@@ -36,6 +36,19 @@ describe("published content contract", () => {
   it("supports missing CVs without inventing a URL", () => {
     expect(resumeSchema.parse({ ...seed.resume, url: null }).url).toBeNull();
   });
+  it("keeps existing CMS profiles compatible when contact fields have not been saved yet", () => {
+    for (const collaboration of [
+      undefined,
+      null,
+      { callNumber: null, whatsappNumber: "" },
+    ]) {
+      const data = portfolioSchema.parse({
+        ...seed,
+        profile: { ...seed.profile, collaboration },
+      });
+      expect(data.profile.collaboration).toEqual(seed.profile.collaboration);
+    }
+  });
 });
 describe("quality governor", () => {
   it("falls back without WebGL regardless of powerful hardware", () =>

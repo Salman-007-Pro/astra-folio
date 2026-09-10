@@ -1,6 +1,60 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+test("worldwide hiring details use the correct WhatsApp and calling channels", async ({
+  page,
+  isMobile,
+}) => {
+  for (const route of ["/contact", "/", "/about", "/reading"]) {
+    await page.goto(route);
+    const contacts = page.getByRole("group", {
+      name: "Ways to contact Salman",
+    });
+    const whatsapp = contacts.getByRole("link", { name: /WhatsApp/ });
+    const destination = new URL((await whatsapp.getAttribute("href"))!);
+    expect(destination.origin).toBe("https://wa.me");
+    expect(destination.pathname).toBe("/966563791037");
+    expect(destination.searchParams.get("text")).toContain(
+      "remote full-stack opportunity",
+    );
+    await expect(whatsapp).toHaveAttribute("target", "_blank");
+    await expect(contacts.getByRole("link", { name: /Phone/ })).toHaveAttribute(
+      "href",
+      "tel:+923321318363",
+    );
+    await expect(
+      contacts.getByRole("link", {
+        name: "salmanasif36@gmail.com",
+        exact: true,
+      }),
+    ).toHaveAttribute("href", "mailto:salmanasif36@gmail.com");
+    await expect(page.locator('a[href^="tel:+966"]')).toHaveCount(0);
+  }
+  await page.goto("/contact");
+  await expect(page.getByLabel("Remote work availability")).toContainText(
+    "Worldwide.",
+  );
+  await expect(page.getByLabel("Remote work availability")).toContainText(
+    "USD / EUR",
+  );
+  await page.getByRole("button", { name: "Copy email address" }).click();
+  await expect(page.getByRole("status")).toContainText(/copied/i);
+  if (isMobile) {
+    await page
+      .getByRole("button", { name: "Open navigation", exact: true })
+      .click();
+    const drawer = page.getByRole("dialog", { name: "Find your way." });
+    await expect(
+      drawer.getByRole("link", { name: "WhatsApp", exact: true }),
+    ).toHaveAttribute("href", /wa\.me\/966563791037/);
+    await expect(
+      drawer.getByRole("link", { name: "Call me", exact: true }),
+    ).toHaveAttribute("href", "tel:+923321318363");
+    await drawer.getByRole("link", { name: "Contact details" }).click();
+    await expect(drawer).not.toBeVisible();
+  }
+});
+
 test("case study navigation follows scrolling and direct section links", async ({
   page,
 }) => {
