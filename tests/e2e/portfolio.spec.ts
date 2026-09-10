@@ -1,5 +1,47 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+
+test("case study navigation follows scrolling and direct section links", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const route = "/work/metadata-driven-connectors";
+  await page.goto(route);
+  const nav = page.getByRole("navigation", { name: "Case study sections" });
+  const current = nav.locator('[aria-current="location"]');
+
+  for (const id of [
+    "problem",
+    "decisions",
+    "architecture",
+    "reflection",
+    "constraints",
+  ]) {
+    await page
+      .locator(`#${id}`)
+      .evaluate((section) =>
+        section.scrollIntoView({ block: "start", behavior: "instant" }),
+      );
+    await expect(current).toHaveCount(1);
+    await expect(current).toHaveAttribute("href", `#${id}`);
+    await expect(current).toBeInViewport();
+    await expect(page).toHaveURL(new RegExp(`${route}/?$`));
+  }
+
+  await nav.locator('a[href="#contribution"]').click();
+  await expect(current).toHaveAttribute("href", "#contribution");
+  await expect(page).toHaveURL(/#contribution$/);
+  await page.reload();
+  await expect(current).toHaveAttribute("href", "#contribution");
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth + 1,
+    ),
+  ).toBe(false);
+});
+
 test("core routes, project filtering, and writing navigation", async ({
   page,
 }) => {

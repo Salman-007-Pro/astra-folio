@@ -23,6 +23,19 @@ pnpm budget
 
 The browser suite uses an installed Google Chrome in isolated test contexts. The build stages static output into root `dist/` for hosting.
 
+## Formatting
+
+```sh
+pnpm format        # Format source, docs, and YAML configuration.
+pnpm format:check  # Check formatting without writing; also runs in CI.
+```
+
+Biome 2.5.13 formats JavaScript, TypeScript, JSX/TSX, JSON/JSONC, CSS, and complete Astro templates. The root `biome.json` uses two spaces, LF line endings, an 80-character line width, and Tailwind CSS directive support. Linting and import organization are disabled so these commands only format code.
+
+Astro formatting uses Biome's experimental full HTML support; keep the version pinned and review template diffs when upgrading. Prettier is retained only for Markdown, MDX, and YAML, which Biome does not yet support. See [Biome language support](https://biomejs.dev/internals/language-support/).
+
+Generated files, build output, caches, dependencies, uploaded media, and the supplied PRD are excluded. Git keeps text files on LF line endings across Windows and CI. The workspace recommends the Biome and Prettier editor extensions and selects the appropriate formatter on save for each language.
+
 ## CMS
 
 ```sh

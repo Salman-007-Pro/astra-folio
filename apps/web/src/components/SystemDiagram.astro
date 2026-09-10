@@ -13,18 +13,17 @@ const { project, compact = false } = Astro.props as {
 >
   <div class="diagram-topline">
     <span
-      >SYS.{
-        String(
+      >SYS.{String(
           ["connector", "discovery", "engine", "mobile", "garden"].indexOf(
             project.preset,
           ) + 1,
-        ).padStart(2, "0")
-      }</span
+        ).padStart(2, "0")}</span
     ><span
-      >{project.category.toUpperCase()} / {project.status.toUpperCase()}</span>
+      >{project.category.toUpperCase()}
+      / {project.status.toUpperCase()}</span
+    >
   </div>
-  {
-    project.preset === "connector" ? (
+  {project.preset === "connector" ? (
       <div class="connector-diagram">
         <>
           <div class="source-stack">
@@ -185,6 +184,5 @@ const { project, compact = false } = Astro.props as {
           <p>A world above. A strong foundation below.</p>
         </>
       </div>
-    )
-  }
+    )}
 </div>

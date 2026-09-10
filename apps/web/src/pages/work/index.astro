@@ -9,24 +9,26 @@ const { projects } = await getContent();
   title="Selected work — Salman Asif"
   description="Public case studies in enterprise connector architecture, discovery workflows, build modernization, mobile products, and creative engineering."
   ><section class="page-intro">
-    <div class="eyebrow">01 / SELECTED SYSTEMS</div><h1>
-      There’s a story<br />behind the interface.
-    </h1><p>
+    <div class="eyebrow">01 / SELECTED SYSTEMS</div>
+    <h1>There’s a story<br>behind the interface.</h1>
+    <p>
       The constraints, architecture, and decisions behind products I’ve helped
       build. Each diagram is a public-safe reconstruction.
     </p>
-  </section><section class="page-content">
+  </section>
+  <section class="page-content">
     <div class="filter-bar" aria-label="Filter work by category">
-      {
-        ["All", "Enterprise", "Platform", "Mobile", "Creative"].map((c, i) => (
+      {["All", "Enterprise", "Platform", "Mobile", "Creative"].map((c, i) => (
           <button data-filter={c} aria-pressed={i === 0 ? "true" : "false"}>
             {c}
             {c === "All" && <span>{projects.length}</span>}
           </button>
-        ))
-      }<span class="filter-count" role="status" data-filter-count
-        >{projects.length} projects</span>
-    </div><ProjectGrid projects={projects} />
+        ))}<span class="filter-count" role="status" data-filter-count
+        >{projects.length}
+        projects</span
+      >
+    </div>
+    <ProjectGrid projects={projects} />
   </section></Shell
 >
 <script>

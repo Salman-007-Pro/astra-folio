@@ -8,8 +8,7 @@ const { items, compact = false } = Astro.props as {
 ---
 
 <div class:list={["experience-block", { compact }]}>
-  {
-    !compact && (
+  {!compact && (
       <div class="transit-line" aria-label="Career chapters">
         {[...items].reverse().map((item, i) => (
           <a
@@ -22,11 +21,9 @@ const { items, compact = false } = Astro.props as {
           </a>
         ))}
       </div>
-    )
-  }
+    )}
   <div class="experience-list">
-    {
-      items.map((item, i) => (
+    {items.map((item, i) => (
         <details id={`career-${i}`} open={i === 0 || compact}>
           <>
             <summary>
@@ -61,8 +58,7 @@ const { items, compact = false } = Astro.props as {
             </div>
           </>
         </details>
-      ))
-    }
+      ))}
   </div>
 </div>
 <script>

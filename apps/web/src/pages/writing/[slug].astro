@@ -34,31 +34,37 @@ const { html, headings } = await renderTrustedMdx(post.mdx);
         Astro.site || Astro.url.origin,
       ).href,
     }).replaceAll("<", "\u003c")}
-  /><div class="reading-progress" aria-hidden="true"></div><section
-    class="page-intro"
-  >
+  />
+  <div class="reading-progress" aria-hidden="true"></div>
+  <section class="page-intro">
     <a href="/writing" class="eyebrow"
       >← FIELD NOTES <span>/</span> {post.kind}</a
-    ><h1>{post.title}</h1><p>{post.excerpt}</p><div class="article-meta">
-      <span>Salman Asif</span><time datetime={post.publishedAt}
-        >{formatDate(post.publishedAt)}</time
-      ><span>{post.minutes} min read</span>{
-        post.tags.map((tag) => <span class="tag">{tag}</span>)
-      }
+    >
+    <h1>{post.title}</h1>
+    <p>{post.excerpt}</p>
+    <div class="article-meta">
+      <span>Salman Asif</span
+      ><time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time
+      ><span>{post.minutes} min read</span>
+      {post.tags.map((tag) => <span class="tag">{tag}</span>)}
     </div>
-  </section><div class="article-layout">
+  </section>
+  <div class="article-layout">
     <aside class="article-sidebar">
-      <span class="eyebrow">IN THIS NOTE</span>{
-        headings.map((h) => <a href={`#${h.id}`}>{h.text}</a>)
-      }<button data-copy="url">Copy article link ↗</button>
-    </aside><article>
-      <div class="prose article-prose" set:html={html} /><div
-        class="article-related"
+      <span class="eyebrow">IN THIS NOTE</span>
+      {headings.map((h) => <a href={`#${h.id}`}>{h.text}</a>)}<button
+        data-copy="url"
       >
-        <h3>Connected systems</h3>{
-          related.map((p) => <a href={`/work/${p.slug}`}>{p.shortTitle} ↗</a>)
-        }<h3 style="margin-top:35px">Keep reading</h3><a
-          href={`/writing/${next.slug}`}>{next.title} ↗</a>
+        Copy article link ↗
+      </button>
+    </aside>
+    <article>
+      <div class="prose article-prose" set:html={html} />
+      <div class="article-related">
+        <h3>Connected systems</h3>
+        {related.map((p) => <a href={`/work/${p.slug}`}>{p.shortTitle} ↗</a>)}
+        <h3 style="margin-top:35px">Keep reading</h3>
+        <a href={`/writing/${next.slug}`}>{next.title} ↗</a>
       </div>
     </article>
   </div></Shell

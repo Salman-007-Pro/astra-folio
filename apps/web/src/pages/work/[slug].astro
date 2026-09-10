@@ -20,41 +20,52 @@ const { project, next } = Astro.props;
   <section class="page-intro case-intro">
     <a href="/work" class="eyebrow"
       >← ALL WORK <span>/</span> {project.category}</a
-    ><h1>{project.title}</h1><p>{project.outcome}</p><div class="case-facts">
-      <div><span>ROLE</span><strong>{project.role}</strong></div><div>
+    >
+    <h1>{project.title}</h1>
+    <p>{project.outcome}</p>
+    <div class="case-facts">
+      <div><span>ROLE</span><strong>{project.role}</strong></div>
+      <div>
         <span>CONTEXT</span><strong>{project.company}</strong>
-      </div><div><span>PERIOD</span><strong>{project.period}</strong></div><div>
+      </div>
+      <div><span>PERIOD</span><strong>{project.period}</strong></div>
+      <div>
         <span>STATUS</span><strong>{project.status}</strong>
       </div>
-    </div><div class="tags">
+    </div>
+    <div class="tags">
       {project.stack.map((s) => <span class="tag">{s}</span>)}
     </div>
   </section>
   <div class="case-art"><SystemDiagram project={project} /></div>
   <div class="case-layout">
-    <aside class="case-nav" aria-label="Case study sections">
-      <span class="eyebrow">IN THIS SYSTEM</span><a href="#problem"
-        >01 · The problem</a
-      ><a href="#constraints">02 · The constraints</a><a href="#decisions"
-        >03 · The decisions</a
-      ><a href="#architecture">04 · The architecture</a><a href="#contribution"
-        >05 · My contribution</a
-      ><a href="#outcome">06 · The outcome</a><a href="#reflection"
-        >07 · Looking forward</a>
-    </aside><article class="case-body">
+    <nav class="case-nav" aria-label="Case study sections">
+      <span class="eyebrow">IN THIS SYSTEM</span
+      ><a href="#problem">01 · The problem</a
+      ><a href="#constraints">02 · The constraints</a
+      ><a href="#decisions">03 · The decisions</a
+      ><a href="#architecture">04 · The architecture</a
+      ><a href="#contribution">05 · My contribution</a
+      ><a href="#outcome">06 · The outcome</a
+      ><a href="#reflection">07 · Looking forward</a>
+    </nav>
+    <article class="case-body">
       <section id="problem">
-        <span class="eyebrow">01 / CONTEXT</span><h2>
-          The problem underneath.
-        </h2><p>{project.problem}</p>
-      </section><section id="constraints">
-        <span class="eyebrow">02 / REALITY</span><h2>
-          What shaped the solution.
-        </h2><ul>{project.constraints.map((c) => <li>{c}</li>)}</ul>
-      </section><section id="decisions">
-        <span class="eyebrow">03 / ENGINEERING JUDGMENT</span><h2>
-          The important decisions.
-        </h2>{
-          project.decisions.map((d, i) => (
+        <span class="eyebrow">01 / CONTEXT</span>
+        <h2>The problem underneath.</h2>
+        <p>{project.problem}</p>
+      </section>
+      <section id="constraints">
+        <span class="eyebrow">02 / REALITY</span>
+        <h2>What shaped the solution.</h2>
+        <ul>
+          {project.constraints.map((c) => <li>{c}</li>)}
+        </ul>
+      </section>
+      <section id="decisions">
+        <span class="eyebrow">03 / ENGINEERING JUDGMENT</span>
+        <h2>The important decisions.</h2>
+        {project.decisions.map((d, i) => (
             <div class="decision">
               <>
                 <span>0{i + 1}</span>
@@ -66,35 +77,106 @@ const { project, next } = Astro.props;
                 </div>
               </>
             </div>
-          ))
-        }
-      </section><section id="architecture">
-        <span class="eyebrow">04 / THE CONNECTIONS</span><h2>
-          A simpler view of the system.
-        </h2><ol class="architecture-flow">
+          ))}
+      </section>
+      <section id="architecture">
+        <span class="eyebrow">04 / THE CONNECTIONS</span>
+        <h2>A simpler view of the system.</h2>
+        <ol class="architecture-flow">
           {project.architecture.map((a) => <li>{a}</li>)}
-        </ol><p class="small-copy">
+        </ol>
+        <p class="small-copy">
           Conceptual flow. Simplified to explain the engineering without
           exposing internal implementation.
         </p>
-      </section><section id="contribution">
-        <span class="eyebrow">05 / OWNERSHIP</span><h2>
-          Where I made a difference.
-        </h2><p>{project.contribution}</p>
-      </section><section id="outcome">
-        <span class="eyebrow">06 / WHAT CHANGED</span><h2>The result.</h2><p>
+      </section>
+      <section id="contribution">
+        <span class="eyebrow">05 / OWNERSHIP</span>
+        <h2>Where I made a difference.</h2>
+        <p>{project.contribution}</p>
+      </section>
+      <section id="outcome">
+        <span class="eyebrow">06 / WHAT CHANGED</span>
+        <h2>The result.</h2>
+        <p>
           {project.impact}
         </p>
-      </section><section id="reflection">
-        <span class="eyebrow">07 / NEXT ITERATION</span><h2>
-          What I’d explore next.
-        </h2><p>{project.reflection}</p>
-      </section><p class="notice">{project.confidentiality}</p>
+      </section>
+      <section id="reflection">
+        <span class="eyebrow">07 / NEXT ITERATION</span>
+        <h2>What I’d explore next.</h2>
+        <p>{project.reflection}</p>
+      </section>
+      <p class="notice">{project.confidentiality}</p>
     </article>
   </div>
   <a class="next-project section" href={`/work/${next.slug}`}
     ><div>
-      <span class="eyebrow">NEXT SYSTEM</span><h2>{next.shortTitle}</h2>
-    </div><Icon name="arrow" size={45} /></a
+      <span class="eyebrow">NEXT SYSTEM</span>
+      <h2>{next.shortTitle}</h2>
+    </div>
+    <Icon name="arrow" size={45} /></a
   >
 </Shell>
+
+<script>
+  const nav = document.querySelector<HTMLElement>(".case-nav");
+  if (nav) {
+    const entries = Array.from(
+      nav.querySelectorAll<HTMLAnchorElement>("a[href^='#']"),
+    ).flatMap((link) => {
+      const section = document.getElementById(link.hash.slice(1));
+      return section ? [{ link, section }] : [];
+    });
+    let current: HTMLAnchorElement | undefined;
+    let pending = false;
+
+    function updateCurrentSection() {
+      pending = false;
+      // Keep the current section selected through tall content and the gaps
+      // between sections. The reading line also clears the anchor offset.
+      const readingLine = Math.max(200, Math.min(innerHeight * 0.25, 240));
+      let active = entries[0];
+      for (const entry of entries) {
+        if (entry.section.getBoundingClientRect().top > readingLine) break;
+        active = entry;
+      }
+      if (!active || current === active.link) return;
+      current?.removeAttribute("aria-current");
+      current = active.link;
+      current.setAttribute("aria-current", "location");
+
+      // Move only the horizontal mobile menu; never move page scroll or focus.
+      if (nav && nav.scrollWidth > nav.clientWidth) {
+        const linkBounds = current.getBoundingClientRect();
+        const navBounds = nav.getBoundingClientRect();
+        if (
+          linkBounds.left < navBounds.left ||
+          linkBounds.right > navBounds.right
+        ) {
+          nav.scrollTo({
+            left:
+              nav.scrollLeft +
+              linkBounds.left -
+              navBounds.left -
+              (nav.clientWidth - linkBounds.width) / 2,
+            behavior: "instant",
+          });
+        }
+      }
+    }
+
+    function scheduleUpdate() {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(updateCurrentSection);
+    }
+
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    window.addEventListener("hashchange", scheduleUpdate);
+    window.addEventListener("pageshow", scheduleUpdate);
+    void document.fonts.ready.then(scheduleUpdate);
+    scheduleUpdate();
+  }
+</script>

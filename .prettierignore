@@ -1,4 +1,5 @@
 node_modules
+**/node_modules
 **/dist
 **/.next
 **/.astro
@@ -7,3 +8,7 @@ playwright-report
 pnpm-lock.yaml
 salman_immersive_portfolio_master_prd.md
 **/payload-types.ts
+.sites-runtime
+.content-cache
+coverage
+apps/cms/media

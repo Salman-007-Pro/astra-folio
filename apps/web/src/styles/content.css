@@ -581,12 +581,27 @@
 }
 .about-layout {
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: 75px;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: clamp(40px, 7vw, 110px);
   margin-top: 40px;
 }
 .about-layout h2 {
+  font-size: clamp(2.5rem, 4.3vw, 4.5rem);
   line-height: 1.2;
+  margin-bottom: 28px;
+}
+.about-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(40px, 5vw, 80px);
+}
+.about-intro > :last-child {
+  justify-self: end;
+}
+.about-intro h1 {
+  font-size: clamp(3rem, 5.6vw, 6rem);
 }
 .about-layout em,
 .page-intro em {
@@ -595,7 +610,7 @@
   font-weight: 400;
 }
 .about-layout p {
-  font-size: 15px;
+  font-size: 16px;
   margin-bottom: 25px;
 }
 .about-layout .large-copy {
@@ -758,18 +773,34 @@
   height: fit-content;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  font-size: 12px;
+  gap: 6px;
+  min-width: 0;
+  font-size: 14px;
   color: var(--color-text-muted);
 }
 .case-nav .eyebrow {
   margin-bottom: 20px;
   color: var(--color-text-primary);
 }
-.case-nav a:hover {
+.case-nav a {
+  padding: 9px 12px;
+  border-left: 2px solid transparent;
+  border-radius: 0 5px 5px 0;
+  transition:
+    color var(--motion-ui),
+    background-color var(--motion-ui),
+    border-color var(--motion-ui);
+}
+.case-nav a:hover,
+.case-nav a[aria-current="location"] {
   color: var(--color-accent-signal);
 }
+.case-nav a[aria-current="location"] {
+  border-color: var(--color-accent-signal);
+  background: color-mix(in srgb, var(--color-accent-signal) 8%, transparent);
+}
 .case-body section {
+  scroll-margin-top: 40px;
   margin-bottom: 70px;
 }
 .case-body .eyebrow {
@@ -1433,7 +1464,11 @@
     font-size: 22px;
   }
   .about-layout p {
-    font-size: 14px;
+    font-size: 16px;
+  }
+  .about-intro {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
   }
   .contact-headline {
     margin: 30px 0 35px;
@@ -1503,19 +1538,30 @@
     gap: 35px;
   }
   .case-nav {
-    position: static;
+    position: sticky;
+    top: 0;
+    z-index: 5;
     display: flex;
     flex-direction: row;
     overflow-x: auto;
-    gap: 22px;
+    gap: 8px;
     white-space: nowrap;
-    padding-bottom: 15px;
+    padding-block: 12px;
+    background: var(--color-bg-canvas);
+    scrollbar-width: thin;
     border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .case-nav a {
+    flex-shrink: 0;
+    border-left: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 5px 5px 0 0;
   }
   .case-nav .eyebrow {
     display: none;
   }
   .case-body section {
+    scroll-margin-top: 76px;
     margin-bottom: 48px;
   }
   .case-body h2 {
@@ -1656,7 +1702,7 @@
     gap: 12px;
   }
   .article-sidebar .eyebrow {
-    grid-column: 1/-1;
+    grid-column: 1 / -1;
     margin-bottom: 7px;
   }
   .article-sidebar button {

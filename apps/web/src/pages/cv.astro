@@ -11,13 +11,10 @@ const cms = import.meta.env.PUBLIC_CMS_URL || "";
   title="CV — Muhammad Salman Asif"
   description={`${profile.fullName}, ${profile.role}. View and download the current CV.`}
   ><section class="page-intro">
-    <div class="eyebrow">THE COMPLETE PICTURE</div><h1>
-      Experience,<br />in a few pages.
-    </h1><p>{profile.intro}</p><div
-      class="cv-actions"
-      data-cv-root
-      data-cms-url={cms}
-    >
+    <div class="eyebrow">THE COMPLETE PICTURE</div>
+    <h1>Experience,<br>in a few pages.</h1>
+    <p>{profile.intro}</p>
+    <div class="cv-actions" data-cv-root data-cms-url={cms}>
       <a
         class="button"
         id="cv-download"
@@ -31,11 +28,14 @@ const cms = import.meta.env.PUBLIC_CMS_URL || "";
         href={resume.url || undefined}
         target="_blank"
         rel="noreferrer"
-        hidden={!resume.url}>Open PDF <Icon name="diagonal" size={17} /></a
-      ><button class="text-link" data-print>Print summary</button><span
-        id="cv-date">Updated {formatDate(resume.updatedAt)}</span>
-    </div><p id="cv-status" role="status" class="small-copy"></p>
-  </section><section class="page-content cv-page">
+        hidden={!resume.url}
+        >Open PDF <Icon name="diagonal" size={17} /></a
+      ><button class="text-link" data-print>Print summary</button
+      ><span id="cv-date">Updated {formatDate(resume.updatedAt)}</span>
+    </div>
+    <p id="cv-status" role="status" class="small-copy"></p>
+  </section>
+  <section class="page-content cv-page">
     <object
       id="cv-viewer"
       data={resume.url || undefined}
@@ -43,23 +43,29 @@ const cms = import.meta.env.PUBLIC_CMS_URL || "";
       class="cv-viewer"
       aria-label={`${profile.fullName}'s current CV`}
       hidden={!resume.url}
-      ><p>
-        Your browser can’t display this PDF inline. <a
-          href={resume.url || "/contact"}>Open the CV directly</a
-        >.
-      </p></object
-    ><p id="cv-missing" class="notice" hidden={!!resume.url}>
+    >
+      <p>
+        Your browser can’t display this PDF inline.
+        <a href={resume.url || "/contact"}>Open the CV directly</a>.
+      </p>
+    </object>
+    <p id="cv-missing" class="notice" hidden={!!resume.url}>
       The PDF is being updated. The professional summary below is available, and
       you can <a href={`mailto:${profile.email}`}>request a copy by email</a>.
-    </p><details class="cv-summary">
-      <summary>Read the accessible CV summary</summary><h2>
+    </p>
+    <details class="cv-summary">
+      <summary>Read the accessible CV summary</summary>
+      <h2>
         {profile.fullName}
-      </h2><p>
-        {profile.role} · {profile.location} · {profile.email}
-      </p><Experience items={experience} compact /><h3>Education</h3><p>
+      </h2>
+      <p>{profile.role} · {profile.location} · {profile.email}</p>
+      <Experience items={experience} compact />
+      <h3>Education</h3>
+      <p>
         BS Software Engineering · Sir Syed University of Engineering and
         Technology · 2017–2020
-      </p><p>English · Urdu</p>
+      </p>
+      <p>English · Urdu</p>
     </details>
   </section></Shell
 >

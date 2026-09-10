@@ -10,27 +10,29 @@ const tags = [...new Set(posts.flatMap((p) => p.tags))];
   title="Field notes — Salman Asif"
   description="Practical engineering notes on architecture, async product behavior, build tooling, and the Kinetic Garden."
   ><section class="page-intro">
-    <div class="eyebrow">THE OBSERVATORY / WRITING</div><h1>
-      Notes from<br />the moving parts.
-    </h1><p>
+    <div class="eyebrow">THE OBSERVATORY / WRITING</div>
+    <h1>Notes from<br>the moving parts.</h1>
+    <p>
       Architecture decisions, product behavior, and the things worth writing
       down while building. No magic formulas. Just useful ways to think about
       the work.
-    </p><a href="/rss.xml" class="text-link" style="margin-top:25px"
-      >Follow via RSS ↗</a>
-  </section><section class="page-content">
+    </p>
+    <a href="/rss.xml" class="text-link" style="margin-top:25px"
+      >Follow via RSS ↗</a
+    >
+  </section>
+  <section class="page-content">
     <div class="filter-bar" aria-label="Filter writing">
-      {
-        ["All notes", ...tags].map((tag, i) => (
+      {["All notes", ...tags].map((tag, i) => (
           <button
             data-writing-filter={tag}
             aria-pressed={i === 0 ? "true" : "false"}
           >
             {tag}
           </button>
-        ))
-      }<span class="sr-only" data-writing-count role="status"></span>
-    </div><WritingList posts={posts} />
+        ))}<span class="sr-only" data-writing-count role="status"></span>
+    </div>
+    <WritingList posts={posts} />
   </section></Shell
 >
 <script>

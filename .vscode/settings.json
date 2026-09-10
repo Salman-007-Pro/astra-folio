@@ -1,0 +1,10 @@
+{
+  "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css][html][astro][graphql]": {
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.formatOnSave": true
+  },
+  "[markdown][mdx][yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  }
+}
