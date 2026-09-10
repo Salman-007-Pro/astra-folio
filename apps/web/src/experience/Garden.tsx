@@ -74,14 +74,25 @@ export default function Garden() {
   }, []);
   useEffect(() => {
     const mount = document.querySelector<HTMLElement>("[data-world-mount]");
+    const heroMount = document.querySelector<HTMLElement>(
+      "[data-hero-world-mount]",
+    );
     let scheduled = false;
     const update = () => {
       scheduled = false;
-      if (!stage.current || !mount) return;
-      const rect = mount.getBoundingClientRect();
-      const work = innerWidth > 760 && rect.top < innerHeight * 0.72;
+      if (
+        !stage.current ||
+        document.documentElement.classList.contains("dialog-open")
+      )
+        return;
+      const work =
+        !!mount &&
+        innerWidth > 760 &&
+        mount.getBoundingClientRect().top < innerHeight * 0.72;
+      const destination = innerWidth <= 760 ? heroMount : work ? mount : null;
       stage.current.dataset.chapter = work ? "WORK" : "HERO";
-      if (work) {
+      if (destination) {
+        const rect = destination.getBoundingClientRect();
         Object.assign(stage.current.style, {
           top: `${rect.top + scrollY}px`,
           left: `${rect.left}px`,
@@ -90,7 +101,7 @@ export default function Garden() {
           right: "auto",
           minHeight: "0",
         });
-        setFocus(machine.current);
+        setFocus(work ? machine.current : "all");
       } else {
         stage.current.removeAttribute("style");
         setFocus("all");
@@ -112,11 +123,21 @@ export default function Garden() {
     addEventListener("scroll", scroll, { passive: true });
     addEventListener("resize", scroll);
     addEventListener("garden:machine", select);
+    const resizeObserver = new ResizeObserver(scroll);
+    for (const element of [
+      mount,
+      heroMount,
+      document.querySelector(".hero-copy"),
+    ]) {
+      if (element) resizeObserver.observe(element);
+    }
+    void document.fonts.ready.then(scroll);
     update();
     return () => {
       removeEventListener("scroll", scroll);
       removeEventListener("resize", scroll);
       removeEventListener("garden:machine", select);
+      resizeObserver.disconnect();
     };
   }, []);
   return (
@@ -169,25 +190,29 @@ export default function Garden() {
           </span>
         </div>
       )}
-      <div className="scene-controls">
-        <span>
-          {preferences.motion
-            ? "A living system. Go on, touch it."
-            : "A still moment in the garden."}
-        </span>
-        <button
-          disabled={!ready}
-          onClick={() => {
-            setUnfold((x) => x + 1);
-            setSelected(
-              unfold > 3 ? "Curiosity is a feature." : "A little room to grow.",
-            );
-          }}
-          aria-label="Unfold the signal seed"
-        >
-          {unfold % 2 ? "↙ Reassemble" : "↗ Unfold the seed"}
-        </button>
-      </div>
+      {quality !== "FALLBACK" && (
+        <div className="scene-controls">
+          <span>
+            {preferences.motion
+              ? "A living system. Go on, touch it."
+              : "A still moment in the garden."}
+          </span>
+          <button
+            disabled={!ready}
+            onClick={() => {
+              setUnfold((x) => x + 1);
+              setSelected(
+                unfold > 3
+                  ? "Curiosity is a feature."
+                  : "A little room to grow.",
+              );
+            }}
+            aria-label="Unfold the signal seed"
+          >
+            {unfold % 2 ? "↙ Reassemble" : "↗ Unfold the seed"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

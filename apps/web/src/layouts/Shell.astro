@@ -6,6 +6,7 @@ import "../styles/global.css";
 import "../styles/content.css";
 import "../styles/refinements.css";
 import "../styles/accessibility.css";
+import "../styles/responsive.css";
 import Icon from "../components/Icon.astro";
 interface Props {
   title?: string;
@@ -27,6 +28,12 @@ const links = [
   { label: "Writing", href: "/writing" },
   { label: "About", href: "/about" },
 ];
+const isCurrentPage = (href: string) =>
+  !href.includes("#") &&
+  (href === "/"
+    ? Astro.url.pathname === "/"
+    : Astro.url.pathname.replace(/\/$/, "") === href ||
+      Astro.url.pathname.startsWith(`${href}/`));
 ---
 
 <!doctype html>
@@ -96,9 +103,7 @@ const links = [
         {links.map((link) => (
             <a
               href={link.href}
-              aria-current={
-                Astro.url.pathname === link.href ? "page" : undefined
-              }
+              aria-current={isCurrentPage(link.href) ? "page" : undefined}
             >
               {link.label}
             </a>
@@ -113,39 +118,59 @@ const links = [
         ><button
           class="icon-button mobile-menu-toggle"
           aria-label="Open navigation"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+          aria-haspopup="dialog"
           data-menu-open
         >
           <Icon name="menu" />
         </button>
       </div>
     </header>
-    <dialog id="mobile-menu" class="mobile-menu">
-      <div class="dialog-heading">
-        <span class="eyebrow">Find your way</span
-        ><button
+    <dialog
+      id="mobile-menu"
+      class="mobile-menu"
+      aria-labelledby="mobile-menu-title"
+    >
+      <div class="drawer-header">
+        <a class="wordmark" href="/" aria-label="Salman Asif, home"
+          >salman asif<span class="wordmark-dot">.</span></a
+        >
+        <button
           class="icon-button"
           data-dialog-close
           aria-label="Close navigation"
+          autofocus
         >
           <Icon name="close" />
         </button>
       </div>
-      <nav aria-label="Mobile navigation">
-        {[
-            ...links,
-            { label: "View CV", href: "/cv" },
-            { label: "Contact", href: "/contact" },
-            {
-              label: immersive ? "Recruiter view" : "Explore the garden",
-              href: immersive ? "/reading" : "/",
-            },
-          ].map((l) => (
-            <a href={l.href}>
-              {l.label}
-              <Icon name="arrow" />
+      <div class="drawer-intro">
+        <span class="eyebrow">THE KINETIC GARDEN</span>
+        <h2 id="mobile-menu-title">Find your way.</h2>
+      </div>
+      <nav class="drawer-nav" aria-label="Mobile navigation">
+        {[{ label: "Home", href: "/" }, ...links].map((link, index) => (
+            <a href={link.href} aria-current={isCurrentPage(link.href) ? "page" : undefined}>
+              <span class="drawer-link-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+              <span>{link.label}</span>
+              <Icon name="diagonal" size={18} />
             </a>
           ))}
       </nav>
+      <div class="drawer-footer">
+        <div class="drawer-actions">
+          <a class="button" href="/contact"
+            >Let’s talk <Icon name="diagonal" size={16} /></a
+          >
+          <a class="button secondary" href="/cv"
+            >View CV <Icon name="download" size={16} /></a
+          >
+        </div>
+        <a class="drawer-reading-link" href="/reading"
+          >Recruiter view <Icon name="arrow" size={18} /></a
+        >
+      </div>
     </dialog>
     <main id="main"><slot /></main>
     <footer class="site-footer">
@@ -168,12 +193,18 @@ const links = [
     <button
       class="settings-trigger"
       data-settings-open
+      aria-controls="experience-settings"
+      aria-haspopup="dialog"
       aria-label="Experience settings"
       title="Experience settings"
     >
       <Icon name="settings" />
     </button>
-    <dialog id="experience-settings" class="settings-dialog">
+    <dialog
+      id="experience-settings"
+      class="settings-dialog"
+      aria-labelledby="settings-title"
+    >
       <div class="dialog-heading">
         <span class="eyebrow">Make yourself at home</span
         ><button
@@ -184,7 +215,7 @@ const links = [
           <Icon name="close" />
         </button>
       </div>
-      <h2>Your kind of garden.</h2>
+      <h2 id="settings-title">Your kind of garden.</h2>
       <p>A little quieter. A little darker. Up to you.</p>
       <label class="toggle-row"
         >Motion <input type="checkbox" id="pref-motion" role="switch"></label

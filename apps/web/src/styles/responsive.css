@@ -1,0 +1,272 @@
+/* Shared responsive corrections and the mobile navigation drawer. */
+html.dialog-open {
+  overflow: hidden;
+}
+.hero-scene-slot {
+  display: none;
+}
+.icon-button,
+.settings-trigger {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+.settings-dialog {
+  margin: auto;
+  width: min(480px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.mobile-menu {
+  position: fixed;
+  inset: 0 0 0 auto;
+  margin: 0;
+  width: min(400px, calc(100% - 24px));
+  max-width: none;
+  height: 100dvh;
+  max-height: 100dvh;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid var(--color-border-subtle);
+  border-radius: 0;
+  background: var(--color-bg-canvas);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  box-shadow: -20px 0 80px rgb(0 0 0 / 12%);
+}
+.mobile-menu[open] {
+  display: flex;
+  flex-direction: column;
+}
+.drawer-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+  padding: max(18px, env(safe-area-inset-top)) 24px 18px;
+  background: var(--color-bg-canvas);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.drawer-header .wordmark {
+  gap: 0;
+  font-size: 21px;
+}
+.drawer-header .icon-button {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 50%;
+}
+.drawer-intro {
+  padding: 30px 28px 24px;
+}
+.drawer-intro .eyebrow {
+  color: var(--color-text-muted);
+  font-size: 11px;
+  margin-bottom: 12px;
+}
+.drawer-intro h2 {
+  font-size: 32px;
+  letter-spacing: -0.045em;
+}
+.mobile-menu .drawer-nav {
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+.mobile-menu .drawer-nav a {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 16px;
+  min-height: 58px;
+  padding: 12px;
+  border: 0;
+  border-radius: 6px;
+  font-size: 24px;
+  letter-spacing: -0.035em;
+}
+.drawer-link-number {
+  color: var(--color-text-muted);
+  font:
+    12px "DM Mono",
+    monospace;
+  letter-spacing: 0;
+}
+.drawer-nav a > svg {
+  opacity: 0;
+}
+.drawer-nav a:hover,
+.drawer-nav a[aria-current="page"] {
+  color: var(--color-accent-signal);
+  background: color-mix(in srgb, var(--color-accent-signal) 8%, transparent);
+}
+.drawer-nav a:hover > svg,
+.drawer-nav a[aria-current="page"] > svg {
+  opacity: 1;
+}
+.drawer-footer {
+  margin-top: auto;
+  padding: 28px 28px max(20px, env(safe-area-inset-bottom));
+  flex-shrink: 0;
+}
+.drawer-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.drawer-actions .button {
+  padding: 14px 12px;
+  gap: 10px;
+  min-height: 48px;
+}
+.drawer-reading-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  margin-top: 16px;
+  font-size: 14px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+.article-layout > *,
+.article-prose,
+.about-story > *,
+.case-body {
+  min-width: 0;
+}
+.article-prose,
+.case-body,
+.email-link {
+  overflow-wrap: anywhere;
+}
+.article-prose pre {
+  max-width: 100%;
+  overflow-wrap: normal;
+}
+@media (max-width: 1023px) {
+  .desktop-nav,
+  .header-actions > .recruiter-link,
+  .contact-button {
+    display: none;
+  }
+  .mobile-menu-toggle {
+    display: grid;
+  }
+  .site-header {
+    height: 84px;
+  }
+}
+@media (max-width: 760px) {
+  .hero h1 {
+    font-size: clamp(32px, 10.5vw, 69px);
+  }
+  .hero .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+  .hero .hero-ctas {
+    gap: 12px;
+  }
+  .world-stage:not([style]) {
+    visibility: hidden;
+  }
+  .article-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .article-sidebar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .article-sidebar a {
+    overflow-wrap: anywhere;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .hero-ctas {
+    flex-wrap: wrap;
+    gap: 16px 22px;
+  }
+  .text-link,
+  .filter-bar button,
+  .skill-chips button,
+  .contact-socials a,
+  .site-footer a {
+    min-height: 44px;
+    align-items: center;
+  }
+  .contact-socials a,
+  .site-footer a {
+    display: inline-flex;
+  }
+  .settings-trigger {
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  .settings-dialog {
+    padding: 24px;
+  }
+  .settings-dialog h2 {
+    font-size: 30px;
+  }
+  .page-intro h1 {
+    font-size: clamp(36px, 10.5vw, 48px);
+    overflow-wrap: anywhere;
+  }
+  .case-body p,
+  .case-body li,
+  .prose p,
+  .career-body,
+  .reading-section > p,
+  .reading-projects p {
+    font-size: 16px;
+  }
+  .hero-bottom {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    margin-top: 0;
+  }
+  .hero-scene-slot {
+    display: block;
+    height: 420px;
+    margin-top: 24px;
+  }
+  .scene-caption,
+  .scene-label {
+    left: 0;
+  }
+  .scene-controls {
+    left: 0;
+    right: 0;
+    bottom: 20px;
+  }
+  .scene-controls button {
+    min-height: 44px;
+    font-size: 12px;
+  }
+  .scene-fallback {
+    padding: 24px;
+  }
+  .scene-fallback p {
+    font-size: 16px;
+  }
+  .hero-bottom > div:last-child {
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 380px) {
+  .hero .hero-ctas .button {
+    width: 100%;
+  }
+}
+@media (max-height: 500px) {
+  .drawer-intro {
+    padding-block: 20px 12px;
+  }
+  .mobile-menu .drawer-nav a {
+    min-height: 48px;
+    font-size: 20px;
+  }
+}
