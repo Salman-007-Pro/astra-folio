@@ -9,16 +9,115 @@ const settings = document.querySelector<HTMLDialogElement>(
   "#experience-settings",
 );
 const menu = document.querySelector<HTMLDialogElement>("#mobile-menu");
+const menuToggle =
+  document.querySelector<HTMLButtonElement>("[data-menu-open]");
+let restorePageScroll: (() => void) | undefined;
+
+function syncDialogs(scrollPosition = window.scrollY) {
+  const open = !!document.querySelector("dialog[open]");
+  menuToggle?.setAttribute("aria-expanded", String(!!menu?.open));
+  if (open && !restorePageScroll) {
+    const y = scrollPosition;
+    const body = document.body;
+    const saved = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+    };
+    const gutter = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.classList.add("dialog-open");
+    Object.assign(body.style, {
+      position: "fixed",
+      top: `-${y}px`,
+      left: "0",
+      right: `${gutter}px`,
+    });
+    restorePageScroll = () => {
+      Object.assign(body.style, saved);
+      document.documentElement.classList.remove("dialog-open");
+      window.scrollTo({ top: y, behavior: "instant" });
+    };
+  } else if (!open && restorePageScroll) {
+    restorePageScroll();
+    restorePageScroll = undefined;
+  }
+}
+
+function showDialog(dialog: HTMLDialogElement | null) {
+  if (!dialog || dialog.open) return;
+  const scrollPosition = window.scrollY;
+  dialog.showModal();
+  syncDialogs(scrollPosition);
+  if (dialog === menu && preferences.motion) {
+    dialog.animate(
+      [{ transform: "translateX(100%)" }, { transform: "translateX(0)" }],
+      {
+        duration: 280,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+      },
+    );
+  }
+}
+
+function closeDialog(dialog: HTMLDialogElement, animate = true) {
+  if (!dialog.open || dialog.dataset.closing) return;
+  const finish = () => {
+    delete dialog.dataset.closing;
+    dialog.close();
+    syncDialogs();
+  };
+  if (dialog === menu && animate && preferences.motion) {
+    dialog.dataset.closing = "true";
+    const animation = dialog.animate(
+      [
+        { transform: getComputedStyle(dialog).transform },
+        { transform: "translateX(100%)" },
+      ],
+      { duration: 180, easing: "ease-in", fill: "forwards" },
+    );
+    void animation.finished.then(() => {
+      finish();
+      animation.cancel();
+    }, finish);
+  } else {
+    finish();
+  }
+}
 document
   .querySelector("[data-settings-open]")
-  ?.addEventListener("click", () => settings?.showModal());
-document
-  .querySelector("[data-menu-open]")
-  ?.addEventListener("click", () => menu?.showModal());
+  ?.addEventListener("click", () => showDialog(settings));
+menuToggle?.addEventListener("click", () => showDialog(menu));
+
+matchMedia("(min-width: 1024px)").addEventListener("change", (event) => {
+  if (event.matches && menu?.open) closeDialog(menu, false);
+});
 document.querySelectorAll<HTMLDialogElement>("dialog").forEach((dialog) => {
   dialog
     .querySelector("[data-dialog-close]")
-    ?.addEventListener("click", () => dialog.close());
+    ?.addEventListener("click", () => closeDialog(dialog));
+  dialog.addEventListener("close", () => syncDialogs());
+  dialog.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeDialog(dialog);
+  });
+  dialog.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab") return;
+    const focusable = Array.from(
+      dialog.querySelectorAll<HTMLElement>(
+        'a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex="0"]',
+      ),
+    ).filter((element) => element.getClientRects().length > 0);
+    const first = focusable[0];
+    const last = focusable.at(-1);
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last?.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first?.focus();
+    }
+  });
   dialog.addEventListener("click", (e) => {
     if (e.target === dialog) {
       const r = dialog.getBoundingClientRect();
@@ -28,12 +127,23 @@ document.querySelectorAll<HTMLDialogElement>("dialog").forEach((dialog) => {
         e.clientY < r.top ||
         e.clientY > r.bottom
       )
-        dialog.close();
+        closeDialog(dialog);
     }
   });
-  dialog
-    .querySelectorAll("a")
-    .forEach((a) => a.addEventListener("click", () => dialog.close()));
+  dialog.querySelectorAll("a").forEach((a) =>
+    a.addEventListener("click", (event) => {
+      if (
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      )
+        return;
+      // Restore page scrolling before the browser follows a same-page anchor.
+      closeDialog(dialog, false);
+    }),
+  );
 });
 (["motion", "sound", "night", "blueprint"] as (keyof Preferences)[]).forEach(
   (key) => {
@@ -118,6 +228,7 @@ document
 document.addEventListener("keydown", (e) => {
   if ((e.metaKey || e.ctrlKey) && e.key === "k") {
     e.preventDefault();
-    settings?.open ? settings.close() : settings?.showModal();
+    if (menu?.open) closeDialog(menu, false);
+    settings?.open ? closeDialog(settings) : showDialog(settings);
   }
 });
