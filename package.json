@@ -14,16 +14,17 @@
     "test:e2e": "playwright test",
     "cms:dev": "pnpm --filter @garden/cms dev",
     "cms:build": "pnpm --filter @garden/cms build",
-    "format": "prettier --write apps packages docs tooling",
+    "format": "biome format --write . && prettier --write \"**/*.{md,mdx,yml,yaml}\"",
+    "format:check": "biome format . && prettier --check \"**/*.{md,mdx,yml,yaml}\"",
     "budget": "node tooling/scripts/check-budget.mjs"
   },
   "devDependencies": {
-    "@playwright/test": "^1.56.0",
     "@axe-core/playwright": "^4.11.0",
-    "vitest": "^3.2.4",
+    "@biomejs/biome": "2.5.13",
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^24.0.0",
     "prettier": "^3.6.2",
-    "prettier-plugin-astro": "^0.14.1",
     "typescript": "^5.9.3",
-    "@types/node": "^24.0.0"
+    "vitest": "^3.2.4"
   }
 }

@@ -5,8 +5,7 @@ const { posts } = Astro.props as { posts: Post[] };
 ---
 
 <div class="writing-list">
-  {
-    posts.map((post, i) => (
+  {posts.map((post, i) => (
       <a
         class="writing-item"
         href={`/writing/${post.slug}`}
@@ -28,6 +27,5 @@ const { posts } = Astro.props as { posts: Post[] };
           <Icon name="diagonal" size={27} />
         </>
       </a>
-    ))
-  }
+    ))}
 </div>

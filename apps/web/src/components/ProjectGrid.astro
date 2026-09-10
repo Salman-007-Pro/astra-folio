@@ -6,8 +6,7 @@ const { projects } = Astro.props as { projects: Project[] };
 ---
 
 <div class="work-list">
-  {
-    projects.map((project, i) => (
+  {projects.map((project, i) => (
       <article
         class="project-item"
         data-category={project.category}
@@ -43,6 +42,5 @@ const { projects } = Astro.props as { projects: Project[] };
           </>
         </a>
       </article>
-    ))
-  }
+    ))}
 </div>

@@ -15,8 +15,7 @@ const categories = [
 
 <div class="skills-layout">
   <div class="skill-categories">
-    {
-      categories.map((c) => (
+    {categories.map((c) => (
         <div class="skill-category">
           <>
             <h3>{c.title}</h3>
@@ -30,27 +29,26 @@ const categories = [
             </div>
           </>
         </div>
-      ))
-    }
-  </div><div class="skill-evidence">
-    <div class="eyebrow">CONNECTED TO REAL WORK</div><h3 data-skill-title>
-      Follow the evidence.
-    </h3><p>Select a technology to see where it connects to the work.</p><div
-      class="skill-projects"
-    >
-      {
-        projects.map((p) => (
+      ))}
+  </div>
+  <div class="skill-evidence">
+    <div class="eyebrow">CONNECTED TO REAL WORK</div>
+    <h3 data-skill-title>Follow the evidence.</h3>
+    <p>Select a technology to see where it connects to the work.</p>
+    <div class="skill-projects">
+      {projects.map((p) => (
           <a href={`/work/${p.slug}`} data-skill-project={p.stack.join(",")}>
             <>
               <span>{p.shortTitle}</span>
               <span>↗</span>
             </>
           </a>
-        ))
-      }
-    </div><button class="text-link skill-reset" data-skill-reset hidden
-      >Show all connections</button
-    ><p class="sr-only" data-skill-status role="status"></p>
+        ))}
+    </div>
+    <button class="text-link skill-reset" data-skill-reset hidden>
+      Show all connections
+    </button>
+    <p class="sr-only" data-skill-status role="status"></p>
   </div>
 </div>
 <script>

@@ -205,9 +205,11 @@
     gap: 8px;
     font-size: 11px;
   }
-  .case-nav,
   .article-sidebar {
     top: auto;
+  }
+  .case-nav {
+    top: 84px;
   }
   .hero .eyebrow {
     font-size: 10px;

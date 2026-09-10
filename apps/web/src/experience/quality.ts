@@ -23,7 +23,13 @@ export const qualityConfig = {
   FALLBACK: { dpr: 1, particles: 0, segments: 12, shadows: false },
 };
 export type Chapter =
-  "HERO" | "WORK" | "EXPERIENCE" | "SKILLS" | "WRITING" | "ABOUT" | "CONTACT";
+  | "HERO"
+  | "WORK"
+  | "EXPERIENCE"
+  | "SKILLS"
+  | "WRITING"
+  | "ABOUT"
+  | "CONTACT";
 export const chapters: Chapter[] = [
   "HERO",
   "WORK",

@@ -8,6 +8,7 @@ import Skills from "../components/Skills.astro";
 import WritingList from "../components/WritingList.astro";
 import ContactBlock from "../components/ContactBlock.astro";
 import WorkBiome from "../components/WorkBiome.astro";
+import Portrait from "../components/Portrait.astro";
 import { getContent } from "../lib/content";
 const { profile, projects, experience, posts } = await getContent();
 ---
@@ -17,47 +18,62 @@ const { profile, projects, experience, posts } = await getContent();
   <section class="hero" id="home" data-chapter="HERO">
     <div class="hero-copy">
       <div class="eyebrow">
-        <span class="line"></span> FULL-STACK ENGINEER. SYSTEMS THINKER.
-      </div><h1>Complex systems.<br />Clear <em>experiences.</em></h1><p
-        class="hero-description"
-      >
+        <span class="line"></span>
+        FULL-STACK ENGINEER. SYSTEMS THINKER.
+      </div>
+      <h1>Complex systems.<br>Clear <em>experiences.</em></h1>
+      <p class="hero-description">
         Hey, I’m Salman. I connect the dots between interfaces, services, and
         everything it takes to ship a product that just makes sense.
-      </p><div class="hero-ctas">
+      </p>
+      <div class="hero-ctas">
         <a class="button" href="#work"
           >Explore my work <Icon name="arrow" size={18} /></a
         ><a class="text-link" href="/cv"
-          >View my CV <Icon name="diagonal" size={16} /></a>
+          >View my CV <Icon name="diagonal" size={16} /></a
+        >
       </div>
     </div>
     <div class="hero-bottom">
       <div class="location">
-        <Icon name="globe" size={15} /> AL KHOBAR, SA <span data-local-time
-          >UTC +03:00</span>
-      </div><div>
+        <Icon name="globe" size={15} />
+        AL KHOBAR, SA <span data-local-time>UTC +03:00</span>
+      </div>
+      <div>
         <span>FROM THE INTERFACE TO THE INFRASTRUCTURE.</span>
-      </div><div>SCROLL TO EXPLORE <Icon name="down" size={15} /></div>
+      </div>
+      <div>SCROLL TO EXPLORE <Icon name="down" size={15} /></div>
     </div>
   </section>
   <div class="proof-strip">
-    <span>ENGINEERING ACROSS THE STACK</span><div>Vue / React</div><i>✳</i><div>
-      Go / Python
-    </div><i>✳</i><div>React Native</div><i>✳</i><div>Cloud & delivery</div>
+    <span>ENGINEERING ACROSS THE STACK</span>
+    <div>Vue / React</div>
+    <i>✳</i>
+    <div>Go / Python</div>
+    <i>✳</i>
+    <div>React Native</div>
+    <i>✳</i>
+    <div>Cloud & delivery</div>
   </div>
   <section class="section" id="work" data-chapter="WORK">
     <div class="section-header">
       <div>
         <div class="eyebrow">
-          <span class="section-number">01 /</span> SELECTED WORK
-        </div><h2>Built for the<br />beautifully complex.</h2>
-      </div><p>
+          <span class="section-number">01 /</span>
+          SELECTED WORK
+        </div>
+        <h2>Built for the<br>beautifully complex.</h2>
+      </div>
+      <p>
         Enterprise systems, mobile products, and the engineering decisions that
         make them work.
-      </p><a href="/work" class="text-link"
-        >All selected work <Icon name="diagonal" size={16} /></a>
-    </div><WorkBiome projects={projects} /><ProjectGrid
-      projects={projects.filter((p) => p.featured)}
-    />
+      </p>
+      <a href="/work" class="text-link"
+        >All selected work <Icon name="diagonal" size={16} /></a
+      >
+    </div>
+    <WorkBiome projects={projects} />
+    <ProjectGrid projects={projects.filter((p) => p.featured)} />
   </section>
   <section
     class="section experience-section"
@@ -67,53 +83,72 @@ const { profile, projects, experience, posts } = await getContent();
     <div class="section-header">
       <div>
         <div class="eyebrow">
-          <span class="section-number">02 /</span> THE JOURNEY SO FAR
-        </div><h2>Built things.<br />Learned things. Repeat.</h2>
-      </div><p>
+          <span class="section-number">02 /</span>
+          THE JOURNEY SO FAR
+        </div>
+        <h2>Built things.<br>Learned things. Repeat.</h2>
+      </div>
+      <p>
         From early startup releases to enterprise systems. Every chapter adds a
         different kind of perspective.
       </p>
-    </div><Experience items={experience} />
+    </div>
+    <Experience items={experience} />
   </section>
   <section class="section" id="skills" data-chapter="SKILLS">
     <div class="section-header">
       <div>
         <div class="eyebrow">
-          <span class="section-number">03 /</span> A CONNECTED TOOLKIT
-        </div><h2>The right tools.<br />The whole picture.</h2>
-      </div><p>
+          <span class="section-number">03 /</span>
+          A CONNECTED TOOLKIT
+        </div>
+        <h2>The right tools.<br>The whole picture.</h2>
+      </div>
+      <p>
         Technologies matter most when they solve something. Follow a connection
         to see them in context.
       </p>
-    </div><Skills projects={projects} />
+    </div>
+    <Skills projects={projects} />
   </section>
   <section class="section writing-section" id="writing" data-chapter="WRITING">
     <div class="section-header">
       <div>
         <div class="eyebrow">
-          <span class="section-number">04 /</span> THE OBSERVATORY
-        </div><h2>Field notes<br />from the build.</h2>
-      </div><a class="text-link" href="/writing"
-        >All writing <Icon name="diagonal" size={16} /></a>
-    </div><WritingList posts={posts} />
+          <span class="section-number">04 /</span>
+          THE OBSERVATORY
+        </div>
+        <h2>Field notes<br>from the build.</h2>
+      </div>
+      <a class="text-link" href="/writing"
+        >All writing <Icon name="diagonal" size={16} /></a
+      >
+    </div>
+    <WritingList posts={posts} />
   </section>
   <section class="section about-section" id="about" data-chapter="ABOUT">
     <div class="eyebrow">
-      <span class="section-number">05 /</span> THE HUMAN IN THE SYSTEM
-    </div><div class="about-layout">
-      <h2>
-        Curious by default.<br />An engineer<br /><em>by practice.</em>
-      </h2><div>
+      <span class="section-number">05 /</span>
+      THE HUMAN IN THE SYSTEM
+    </div>
+    <div class="about-layout">
+      <Portrait name={profile.name} />
+      <div class="about-copy">
+        <h2>Curious by default.<br>An engineer<br><em>by practice.</em></h2>
         <p class="large-copy">
           I like the problems that look simple from the outside and have ten
           moving parts underneath.
-        </p><p>
-          I’ve spent {profile.experienceLabel.toLowerCase()} working where interfaces,
-          backend services, and product expectations meet. Sometimes that means untangling
-          state. Sometimes it means tracing a failure across the stack. Always, it
-          means making the result easier for someone else to use.
-        </p><a class="text-link" href="/about"
-          >A little more about me <Icon name="diagonal" size={16} /></a>
+        </p>
+        <p>
+          I’ve spent {profile.experienceLabel.toLowerCase()} working where
+          interfaces, backend services, and product expectations meet. Sometimes
+          that means untangling state. Sometimes it means tracing a failure
+          across the stack. Always, it means making the result easier for
+          someone else to use.
+        </p>
+        <a class="text-link" href="/about"
+          >A little more about me <Icon name="diagonal" size={16} /></a
+        >
       </div>
     </div>
   </section>

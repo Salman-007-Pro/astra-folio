@@ -6,19 +6,26 @@ const { profile } = Astro.props as { profile: Profile };
 
 <section class="section contact-section" id="contact" data-chapter="CONTACT">
   <div class="eyebrow">
-    <span class="section-number">06 /</span> THE NEXT CONNECTION
-  </div><div class="contact-headline">
-    <h2>Something complex<br />on your mind?</h2><a
+    <span class="section-number">06 /</span>
+    THE NEXT CONNECTION
+  </div>
+  <div class="contact-headline">
+    <h2>Something complex<br>on your mind?</h2>
+    <a
       href={`mailto:${profile.email}`}
       class="contact-orb"
-      aria-label="Email Salman"><Icon name="diagonal" size={58} /></a>
-  </div><div class="contact-bottom">
+      aria-label="Email Salman"
+      ><Icon name="diagonal" size={58} /></a
+    >
+  </div>
+  <div class="contact-bottom">
     <p>
-      That’s usually where I enjoy starting.<br />Let’s make something that
-      makes sense.
-    </p><div>
-      <a class="email-link" href={`mailto:${profile.email}`}>{profile.email}</a
-      ><div class="contact-socials">
+      That’s usually where I enjoy starting.<br>Let’s make something that makes
+      sense.
+    </p>
+    <div>
+      <a class="email-link" href={`mailto:${profile.email}`}>{profile.email}</a>
+      <div class="contact-socials">
         <a href={profile.linkedin} target="_blank" rel="noreferrer"
           >LinkedIn ↗</a
         ><a href={profile.github} target="_blank" rel="noreferrer">GitHub ↗</a

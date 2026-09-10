@@ -4,5 +4,5 @@ packages:
 onlyBuiltDependencies:
   - esbuild
   - sharp
-  - '@swc/core'
-  - '@tailwindcss/oxide'
+  - "@swc/core"
+  - "@tailwindcss/oxide"
