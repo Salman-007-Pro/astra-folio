@@ -1,5 +1,9 @@
 # Content and publishing
 
+For commands and environment configuration, use the [Payload setup guide](payload-setup.md). For JSON-only mode, use the [customization guide](customization.md).
+
+`content/portfolio.json` is the static source. Site Settings → Website copy, games & appearance stores the same `site` object for branding, About copy, default palette, arcade visibility, and result quotes. Profile, Projects, Experience, Blog Posts, and Resume Settings complete `/api/portfolio`. Skills and Experiments are scaffolded collections and are not currently consumed by the frontend snapshot. Portrait filenames still refer to source assets committed to the web app.
+
 Start the CMS separately on port 3001. The public Astro site has no admin link. Create the first admin through Payload's first-user flow. All subsequent writes require an authenticated admin. Media accepts raster images and PDFs, capped at 10 MB; SVG/HTML uploads are excluded.
 
 Collections: Projects, Experience, Skills, Blog Posts, Experiments, Media, Users. Globals: Site Settings, Profile, Resume Settings. Editorial collections and globals use versions and drafts. Public collection reads filter to published records. `/api/portfolio` returns only validated public fields, never auth records or tokens.

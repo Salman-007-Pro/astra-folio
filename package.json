@@ -14,6 +14,9 @@
     "test:e2e": "playwright test",
     "cms:dev": "pnpm --filter @garden/cms dev",
     "cms:build": "pnpm --filter @garden/cms build",
+    "cms:start": "pnpm --filter @garden/cms start",
+    "cms:seed": "pnpm --filter @garden/cms seed",
+    "cms:doctor": "node tooling/scripts/cms-doctor.mjs",
     "format": "biome format --write . && prettier --write \"**/*.{md,mdx,yml,yaml}\"",
     "format:check": "biome format . && prettier --check \"**/*.{md,mdx,yml,yaml}\"",
     "budget": "node tooling/scripts/check-budget.mjs"

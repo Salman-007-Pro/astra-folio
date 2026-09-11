@@ -1,6 +1,6 @@
 # Architecture
 
-The public site is Astro 7.3.2 with a single React Three Fiber island. Static routes share validated content records. The same canvas moves between the hero and desktop work biome without creating a second WebGL context. Mobile retains a dedicated hero composition and semantic work diagrams.
+The public site is Astro 7.3.2 with one React Three Fiber garden and a separate React arcade island. Static routes share validated content records from `content/portfolio.json` or Payload. The same canvas moves between the hero and desktop work biome without creating a second WebGL context. Mobile retains a dedicated hero composition and semantic work diagrams. Card flip, Snake, and Orbit shooter use DOM/SVG rendering and pure game engines; they do not add WebGL contexts.
 
 The separate Next/Payload application owns projects, experience, skills, blog posts, experiments, media, profile, site settings, and current CV metadata. PostgreSQL stores content. R2 is optional for hosted media; local development stores files in the ignored CMS media directory.
 
@@ -12,6 +12,6 @@ Native dialogs provide focus trapping and restoration. Motion/sound/theme/bluepr
 
 ## Content provenance
 
-Latest source: Muhammad_Salman_Asif_CV_.pdf, modified 2026-09-02, supplied directly by the owner. Older 2026-06-30 CV used for cross-checking. Latest location (Al Khobar), cross-stack service work, role dates, email, GitHub and LinkedIn are used. The public PDF is the supplied latest document, unchanged. No telephone number is repeated in the HTML.
+Latest source: Muhammad_Salman_Asif_CV_.pdf, modified 2026-09-02, supplied directly by the owner. Older 2026-06-30 CV used for cross-checking. The public PDF is the supplied latest document, unchanged. Subsequent owner instructions provide worldwide remote availability, USD/EUR engagements, Al Khobar/Karachi, the Pakistan calling number, and Saudi WhatsApp number displayed in the contact UI.
 
 Case studies are editorial expansions of documented CV facts. Architecture illustrations are conceptual. No confidential screenshots or metrics are supplied. Forward-looking reflections are written as proposals rather than historical achievements. Three engineering notes contain conceptual examples and implementation decisions; they require editorial review before broad public launch.

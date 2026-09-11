@@ -2,17 +2,19 @@
 import type { Project } from "@garden/content-schema";
 import Icon from "./Icon.astro";
 const { projects } = Astro.props as { projects: Project[] };
+const featured = projects.filter((project) => project.featured);
+const first = featured[0];
 ---
 
-<div class="work-biome">
+{first && <div class="work-biome">
   <div class="biome-controls">
-    <span class="eyebrow">FOUR SYSTEMS. ONE CONNECTED WORLD.</span>
+    <span class="eyebrow">SELECTED SYSTEMS. ONE CONNECTED WORLD.</span>
     <div class="biome-tabs" role="group" aria-label="Explore project machines">
-      {projects
-          .filter((p) => p.featured)
+      {featured
           .map((p, i) => (
             <button
               data-machine={p.preset}
+              data-machine-slug={p.slug}
               data-machine-title={p.shortTitle}
               data-machine-description={p.outcome}
               data-machine-url={`/work/${p.slug}`}
@@ -25,17 +27,17 @@ const { projects } = Astro.props as { projects: Project[] };
           ))}
     </div>
     <div class="biome-description">
-      <h3 data-machine-heading>{projects[0].shortTitle}</h3>
+      <h3 data-machine-heading>{first.shortTitle}</h3>
       <p data-machine-copy>
-        {projects[0].outcome}
+        {first.outcome}
       </p>
-      <a class="text-link" data-machine-link href={`/work/${projects[0].slug}`}
+      <a class="text-link" data-machine-link href={`/work/${first.slug}`}
         >Inside the system <Icon name="arrow" size={17} /></a
       >
     </div>
   </div>
   <div class="biome-world" data-world-mount aria-hidden="true"></div>
-</div>
+</div>}
 <script>
   document
     .querySelectorAll<HTMLButtonElement>("[data-machine]")
@@ -57,6 +59,7 @@ const { projects } = Astro.props as { projects: Project[] };
             detail: {
               preset: button.dataset.machine,
               title: button.dataset.machineTitle,
+              slug: button.dataset.machineSlug,
             },
           }),
         );

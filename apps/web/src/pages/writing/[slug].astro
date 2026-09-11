@@ -15,9 +15,13 @@ export async function getStaticPaths() {
 }
 const { post, related, next } = Astro.props;
 const { html, headings } = await renderTrustedMdx(post.mdx);
+const { profile } = await getContent();
 ---
 
-<Shell title={`${post.title} — Salman Asif`} description={post.excerpt} article
+<Shell
+  title={`${post.title} — ${profile.name}`}
+  description={post.excerpt}
+  article
   ><script
     is:inline
     slot="head"
@@ -28,12 +32,12 @@ const { html, headings } = await renderTrustedMdx(post.mdx);
       headline: post.title,
       description: post.excerpt,
       datePublished: post.publishedAt,
-      author: { "@type": "Person", name: "Muhammad Salman Asif" },
+      author: { "@type": "Person", name: profile.fullName },
       mainEntityOfPage: new URL(
         `/writing/${post.slug}`,
         Astro.site || Astro.url.origin,
       ).href,
-    }).replaceAll("<", "\u003c")}
+    }).replaceAll("<", "\\u003c")}
   />
   <div class="reading-progress" aria-hidden="true"></div>
   <section class="page-intro">
@@ -43,7 +47,7 @@ const { html, headings } = await renderTrustedMdx(post.mdx);
     <h1>{post.title}</h1>
     <p>{post.excerpt}</p>
     <div class="article-meta">
-      <span>Salman Asif</span
+      <span>{profile.name}</span
       ><time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time
       ><span>{post.minutes} min read</span>
       {post.tags.map((tag) => <span class="tag">{tag}</span>)}

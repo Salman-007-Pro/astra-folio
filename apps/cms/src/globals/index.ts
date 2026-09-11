@@ -1,7 +1,8 @@
 import type { Field, GlobalConfig } from "payload";
 import { adminOnly } from "../access";
 import { rebuildGlobal } from "../hooks/rebuild";
-import { collaborationDefaults } from "@garden/content-schema";
+import { collaborationDefaults, siteSchema } from "@garden/content-schema";
+import { seed } from "@garden/content-schema/seed";
 const text = (name: string, required = true): Field => ({
   name,
   type: "text",
@@ -48,6 +49,19 @@ export const SiteSettings: GlobalConfig = {
   slug: "site-settings",
   fields: [
     text("title"),
+    {
+      name: "websiteContent",
+      label: "Website copy, games & appearance",
+      type: "json",
+      defaultValue: seed.site,
+      admin: {
+        description:
+          "Same shape as the site object in content/portfolio.json. Includes branding, portrait, About copy, default palette, and game quotes. Publish changes, then rebuild the frontend.",
+      },
+      validate: (value: unknown) =>
+        siteSchema.safeParse(value).success ||
+        "Use the complete site object from content/portfolio.json; quote lists must contain at least one message.",
+    },
     { name: "description", type: "textarea" },
     text("canonicalDomain"),
     text("availability", false),

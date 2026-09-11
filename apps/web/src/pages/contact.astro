@@ -7,8 +7,8 @@ const { profile } = await getContent();
 ---
 
 <Shell
-  title="Let’s talk — Salman Asif"
-  description="Hire Salman Asif for remote full-stack engineering worldwide. Open to USD and EUR opportunities. Get in touch by WhatsApp, phone, or email."
+  title={`Let’s talk — ${profile.name}`}
+  description={`Hire ${profile.name}. ${profile.collaboration.availability}. Get in touch by WhatsApp, phone, or email.`}
   ><section class="page-intro contact-page">
     <div class="contact-intro-grid">
       <div>

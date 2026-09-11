@@ -36,6 +36,26 @@ describe("published content contract", () => {
   it("supports missing CVs without inventing a URL", () => {
     expect(resumeSchema.parse({ ...seed.resume, url: null }).url).toBeNull();
   });
+  it("uses JSON appearance defaults for older CMS snapshots", () => {
+    for (const site of [undefined, null])
+      expect(portfolioSchema.parse({ ...seed, site }).site).toEqual(seed.site);
+  });
+  it("rejects empty result messages and unknown palettes", () => {
+    for (const games of [
+      { ...seed.site.games, winQuotes: [] },
+      { ...seed.site.games, lossQuotes: [""] },
+    ])
+      expect(
+        portfolioSchema.safeParse({ ...seed, site: { ...seed.site, games } })
+          .success,
+      ).toBe(false);
+    expect(
+      portfolioSchema.safeParse({
+        ...seed,
+        site: { ...seed.site, defaultPalette: "unknown" },
+      }).success,
+    ).toBe(false);
+  });
   it("keeps existing CMS profiles compatible when contact fields have not been saved yet", () => {
     for (const collaboration of [
       undefined,

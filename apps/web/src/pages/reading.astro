@@ -6,24 +6,24 @@ import WritingList from "../components/WritingList.astro";
 import Skills from "../components/Skills.astro";
 import ContactChannels from "../components/ContactChannels.astro";
 import { getContent } from "../lib/content";
-const { profile, projects, experience, posts } = await getContent();
+const { profile, projects, experience, posts, site } = await getContent();
 ---
 
 <Shell
-  title="Recruiter view — Salman Asif, senior full-stack engineer"
+  title={`Recruiter view — ${profile.name}, ${profile.role}`}
   description={profile.intro}
   ><div class="reading-wrap">
     <section class="reading-hero">
       <span class="eyebrow">THE SHORT VERSION / RECRUITER VIEW</span>
       <h1>
-        {profile.name}<span>Senior full-stack engineer.</span>
+        {profile.name}<span>{profile.role}.</span>
       </h1>
       <p>{profile.intro}</p>
       <div class="reading-proof">
         <span>{profile.experienceLabel} of product engineering</span
         ><span>{profile.collaboration.availability}</span
         ><span>{profile.collaboration.currencies} compensation</span
-        ><span>English & Urdu</span>
+        ><span>{site.languages.join(" & ")}</span>
       </div>
       <div class="hero-ctas">
         <a class="button" href="/cv"
@@ -81,10 +81,7 @@ const { profile, projects, experience, posts } = await getContent();
     </section>
     <section class="reading-section">
       <h2>Education & contact</h2>
-      <p>
-        BS Software Engineering · Sir Syed University of Engineering and
-        Technology · 2017–2020
-      </p>
+      <p>{site.education}</p>
       <p class="reading-location">
         Local connections: {profile.collaboration.locations}
       </p>

@@ -1,13 +1,13 @@
 import { getPayload } from "payload";
 import config from "./payload.config";
 import { seed } from "@garden/content-schema/seed";
-const payload = await getPayload({ config });
 const list = (items: string[]) => items.map((value) => ({ value }));
 // Explicit command only. Never runs when the server starts.
 if (process.env.ALLOW_SEED !== "true")
   throw new Error(
     "Set ALLOW_SEED=true for an intentional bootstrap into an empty development CMS.",
   );
+const payload = await getPayload({ config });
 for (const collection of ["projects", "experience", "blog-posts"] as const) {
   const existing = await payload.find({ collection, limit: 1 });
   if (existing.totalDocs)
@@ -15,13 +15,18 @@ for (const collection of ["projects", "experience", "blog-posts"] as const) {
       `${collection} is not empty; refusing to overwrite content.`,
     );
 }
-await payload.updateGlobal({ slug: "profile", data: seed.profile });
+await payload.updateGlobal({
+  slug: "profile",
+  data: { ...seed.profile, _status: "published" },
+});
 await payload.updateGlobal({
   slug: "site-settings",
   data: {
-    title: "Salman Asif — Full-stack engineer",
+    title: `${seed.profile.name} — ${seed.profile.role}`,
     canonicalDomain: process.env.PUBLIC_SITE_URL || "http://localhost:4321",
     description: seed.profile.intro,
+    websiteContent: seed.site,
+    _status: "published",
   },
 });
 for (const [order, p] of seed.projects.entries())

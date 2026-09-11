@@ -11,10 +11,11 @@ export async function getStaticPaths() {
   }));
 }
 const { project, next } = Astro.props;
+const { profile } = await getContent();
 ---
 
 <Shell
-  title={`${project.shortTitle} — Salman Asif`}
+  title={`${project.shortTitle} — ${profile.name}`}
   description={project.outcome}
 >
   <section class="page-intro case-intro">

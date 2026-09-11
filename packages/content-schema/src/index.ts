@@ -1,4 +1,5 @@
 import { z } from "zod";
+import staticContent from "../../../content/portfolio.json";
 export const safeUrl = z.string().refine((value) => {
   try {
     return ["https:", "http:"].includes(new URL(value).protocol);
@@ -48,13 +49,7 @@ export const postSchema = z.object({
   relatedProjects: z.array(z.string()),
   kind: z.string().default("Build note"),
 });
-export const collaborationDefaults = {
-  availability: "Available worldwide · Remote",
-  locations: "Al Khobar, Saudi Arabia · Karachi, Pakistan",
-  currencies: "USD / EUR",
-  callNumber: "+92 332 1318363",
-  whatsappNumber: "+966 56 379 1037",
-};
+export const collaborationDefaults = staticContent.profile.collaboration;
 const defaultText = (fallback: string) =>
   z.preprocess(
     (value) => (value === null || value === "" ? undefined : value),
@@ -86,13 +81,51 @@ export const resumeSchema = z.object({
   updatedAt: z.string(),
   downloadEnabled: z.boolean(),
 });
+export const gameSettingsSchema = z.object({
+  enabled: z.boolean(),
+  title: z.string(),
+  intro: z.string(),
+  winQuotes: z.array(z.string().min(1)).min(1),
+  lossQuotes: z.array(z.string().min(1)).min(1),
+});
+export const siteSchema = z.object({
+  title: z.string(),
+  url: safeUrl,
+  brandName: z.string(),
+  brandMark: z.string(),
+  defaultPalette: z.enum(["garden", "ocean", "ember"]),
+  footer: z.string(),
+  portrait: z.object({ file: z.string(), caption: z.string() }),
+  locationShort: z.string(),
+  hero: z.object({
+    eyebrow: z.string(),
+    title: z.string(),
+    accent: z.string(),
+    description: z.string(),
+  }),
+  about: z.object({
+    teaser: z.string(),
+    summary: z.string(),
+    currentRole: z.string(),
+    currentCompany: z.string(),
+    interests: z.array(z.string()),
+    sections: z.array(
+      z.object({ title: z.string(), paragraphs: z.array(z.string()) }),
+    ),
+  }),
+  education: z.string(),
+  languages: z.array(z.string()),
+  games: gameSettingsSchema,
+});
 export const portfolioSchema = z.object({
   profile: profileSchema,
   projects: z.array(projectSchema),
   experience: z.array(experienceSchema),
   posts: z.array(postSchema),
   resume: resumeSchema,
+  site: z.preprocess((value) => value ?? staticContent.site, siteSchema),
 });
+export type GameSettings = z.infer<typeof gameSettingsSchema>;
 export type Project = z.infer<typeof projectSchema>;
 export type Experience = z.infer<typeof experienceSchema>;
 export type Post = z.infer<typeof postSchema>;

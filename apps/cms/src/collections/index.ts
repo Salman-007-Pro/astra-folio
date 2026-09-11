@@ -40,7 +40,12 @@ const base = (
 });
 export const Users: CollectionConfig = {
   slug: "users",
-  auth: { tokenExpiration: 7200, maxLoginAttempts: 8, lockTime: 600000 },
+  auth: {
+    tokenExpiration: 7200,
+    maxLoginAttempts: 8,
+    lockTime: 600000,
+    useAPIKey: true,
+  },
   admin: { useAsTitle: "email" },
   access: {
     read: adminOnly,

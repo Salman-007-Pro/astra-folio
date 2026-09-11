@@ -9,6 +9,7 @@ import {
 } from "react";
 import { readPreferences, type Preferences } from "../lib/preferences";
 import { classifyQuality, type Quality } from "./quality";
+import type { SceneProject } from "./World";
 const World = lazy(() => import("./World"));
 class SceneBoundary extends Component<
   { children: ReactNode; onFailure: () => void },
@@ -25,7 +26,13 @@ class SceneBoundary extends Component<
     return this.state.failed ? null : this.props.children;
   }
 }
-export default function Garden() {
+export default function Garden({
+  projects,
+  title,
+}: {
+  projects: SceneProject[];
+  title: string;
+}) {
   const [ready, setReady] = useState(false);
   const [quality, setQuality] = useState<Quality>("MEDIUM");
   const [preferences, setPreferences] = useState<Preferences>({
@@ -33,12 +40,15 @@ export default function Garden() {
     sound: false,
     night: false,
     blueprint: false,
+    lightPalette: "garden",
+    darkPalette: "garden",
   });
   const [selected, setSelected] = useState("The signal seed");
   const [unfold, setUnfold] = useState(0);
   const stage = useRef<HTMLDivElement>(null);
   const [focus, setFocus] = useState("all");
-  const machine = useRef("connector");
+  const [selectedSlug, setSelectedSlug] = useState(projects[0]?.slug);
+  const machine = useRef(projects[0]?.preset || "garden");
   useEffect(() => {
     setPreferences(readPreferences());
     const nav = navigator as Navigator & {
@@ -114,10 +124,12 @@ export default function Garden() {
       }
     };
     const select = (event: Event) => {
-      const detail = (event as CustomEvent<{ preset: string; title: string }>)
-        .detail;
+      const detail = (
+        event as CustomEvent<{ preset: string; title: string; slug: string }>
+      ).detail;
       machine.current = detail.preset;
       setSelected(detail.title);
+      setSelectedSlug(detail.slug);
       update();
     };
     addEventListener("scroll", scroll, { passive: true });
@@ -149,7 +161,7 @@ export default function Garden() {
       aria-label="An interactive kinetic garden. All projects are also available in the selected work section."
     >
       <div className="scene-caption">
-        <span>✳</span> THE KINETIC GARDEN <span>01—06</span>
+        <span>✳</span> {title.toUpperCase()} <span>01—06</span>
       </div>
       {quality === "FALLBACK" ? (
         <div className="scene-fallback">
@@ -168,6 +180,8 @@ export default function Garden() {
           <SceneBoundary onFailure={() => setQuality("FALLBACK")}>
             <Suspense fallback={null}>
               <World
+                projects={projects}
+                selectedSlug={selectedSlug}
                 quality={quality}
                 preferences={preferences}
                 unfold={unfold}

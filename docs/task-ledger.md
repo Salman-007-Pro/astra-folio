@@ -1,5 +1,17 @@
 # Phase ledger
 
+## September 12, 2026 update
+
+- Added the homepage arcade and `/play`: card flip, Snake, and Orbit shooter, with original result quotes, pause/replay, and keyboard/touch controls.
+- Added independent light/dark Garden, Ocean, and Ember palette preferences.
+- Moved static content to `content/portfolio.json`, including branding, biography, projects, contact channels, and appearance/game settings. 3D project destinations also follow this data.
+- Added Payload Website Content configuration, explicit seeding/API-key support, an env diagnostic, and complete setup/customization guides. Actual CMS env files, database, and uploaded data were not modified.
+- Verified 25 unit tests, Astro/CMS type checks, and 35 production browser checks with one intentionally skipped duplicate palette matrix on mobile. Responsive route checks cover 320–1024px, with 17 HTML pages including Play.
+- Inspected desktop/mobile arcade and palette screenshots; corrected the smallest-screen result panel and moved Snake direction controls next to its board.
+- Live CMS database publishing, media persistence, and production migrations still need the owner's configured services and an end-to-end check. Earlier milestone notes below are historical, not a claim that these services are connected.
+
+## Initial implementation milestones
+
 | Gate                   | Status                | Evidence / remaining work                                                                                                                                                                                   |
 | ---------------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Research               | PASS                  | Versions verified against npm. Both owner-supplied CVs read; latest September 2026 CV used.                                                                                                                 |

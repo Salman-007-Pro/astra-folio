@@ -3,14 +3,23 @@ export type Preferences = {
   sound: boolean;
   night: boolean;
   blueprint: boolean;
+  lightPalette: Palette;
+  darkPalette: Palette;
 };
+export const palettes = ["garden", "ocean", "ember"] as const;
+export type Palette = (typeof palettes)[number];
+export const isPalette = (value: unknown): value is Palette =>
+  palettes.includes(value as Palette);
 export const preferenceKey = "kinetic-garden-preferences-v1";
 export function readPreferences(): Preferences {
-  const defaults = {
+  const palette = document.documentElement.dataset.defaultPalette;
+  const defaults: Preferences = {
     motion: !matchMedia("(prefers-reduced-motion: reduce)").matches,
     sound: false,
-    night: false,
+    night: matchMedia("(prefers-color-scheme: dark)").matches,
     blueprint: false,
+    lightPalette: isPalette(palette) ? palette : "garden",
+    darkPalette: isPalette(palette) ? palette : "garden",
   };
   try {
     const saved = JSON.parse(localStorage.getItem(preferenceKey) || "{}");
@@ -18,9 +27,17 @@ export function readPreferences(): Preferences {
       ...defaults,
       ...Object.fromEntries(
         Object.entries(saved).filter(
-          ([k, v]) => k in defaults && typeof v === "boolean",
+          ([k, v]) =>
+            ["motion", "sound", "night", "blueprint"].includes(k) &&
+            typeof v === "boolean",
         ),
       ),
+      lightPalette: isPalette(saved.lightPalette)
+        ? saved.lightPalette
+        : defaults.lightPalette,
+      darkPalette: isPalette(saved.darkPalette)
+        ? saved.darkPalette
+        : defaults.darkPalette,
     };
   } catch {
     return defaults;
@@ -34,6 +51,9 @@ export function writePreferences(preferences: Preferences) {
   }
   document.documentElement.dataset.theme = preferences.night ? "night" : "day";
   document.documentElement.dataset.motion = preferences.motion ? "on" : "off";
+  document.documentElement.dataset.palette = preferences.night
+    ? preferences.darkPalette
+    : preferences.lightPalette;
   window.dispatchEvent(
     new CustomEvent("garden:preferences", { detail: preferences }),
   );

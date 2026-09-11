@@ -3,80 +3,45 @@ import Shell from "../layouts/Shell.astro";
 import ContactBlock from "../components/ContactBlock.astro";
 import Portrait from "../components/Portrait.astro";
 import { getContent } from "../lib/content";
-const { profile } = await getContent();
+const { profile, site } = await getContent();
 ---
 
-<Shell
-  title="About — Salman Asif"
-  description="Senior full-stack engineer with a frontend foundation and cross-stack ownership across enterprise systems, mobile products, services, and delivery."
-  ><section class="page-intro about-intro">
+<Shell title={`About — ${profile.name}`} description={profile.intro}>
+  <section class="page-intro about-intro">
     <div>
       <div class="eyebrow">THE HUMAN IN THE SYSTEM</div>
       <h1>I care how it works.<br>And how it <em>feels.</em></h1>
       <p>{profile.intro}</p>
     </div>
-    <Portrait name={profile.name} priority />
+    <Portrait
+      name={profile.name}
+      file={site.portrait.file}
+      caption={site.portrait.caption}
+      priority
+    />
   </section>
   <div class="about-story page-content">
     <div class="about-sidebar">
       <span class="eyebrow">LOCAL CONNECTIONS</span
-      ><strong>{profile.collaboration.locations}</strong
-      ><span class="eyebrow">WORKING TOGETHER</span
-      ><strong>{profile.collaboration.availability}</strong
-      ><span>Senior Software Engineer<br>Veeam · Securiti AI</span
-      ><span class="eyebrow">ALWAYS EXPLORING</span
+      ><strong>{profile.collaboration.locations}</strong>
+      <span class="eyebrow">WORKING TOGETHER</span
+      ><strong>{profile.collaboration.availability}</strong>
+      <span>{site.about.currentRole}<br>{site.about.currentCompany}</span>
+      <span class="eyebrow">ALWAYS EXPLORING</span
       ><span
-        >Creative WebGL<br>Realtime systems<br>AI product ideas<br>Developer
-        workflows</span
+        >{site.about.interests.map((interest) => <Fragment>{interest}<br /></Fragment>)}</span
       >
     </div>
     <article class="prose">
-      <h2>Start with the whole picture.</h2>
+      {site.about.sections.map((section) => <Fragment><h2>{section.title}</h2>{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</Fragment>)}
       <p>
-        I’m Salman, a full-stack engineer with a strong frontend foundation. The
-        work I enjoy most sits between product behavior, service contracts,
-        state, and the small interface details that make a difficult workflow
-        feel obvious.
-      </p>
-      <p>
-        My path has taken me from startup React products and React Native apps
-        to enterprise privacy and data-security systems. Along the way, I’ve
-        learned that a reliable interface starts well before the component: in
-        the contract, the state model, the failure paths, and the decisions
-        about what happens next.
-      </p>
-      <h2>Fix the cause. Keep the system clear.</h2>
-      <p>
-        When a production issue crosses several layers, I follow it. That can
-        mean tracing Vuex state, checking an API payload, working through a Go
-        or Python service response, or investigating a difference in a
-        deployment environment.
-      </p>
-      <p>
-        I like architecture that a team can keep working with. Reusable
-        patterns, explicit state, and a smaller change surface are often more
-        valuable than an impressive abstraction that only one person
-        understands.
-      </p>
-      <h2>Make room for curiosity.</h2>
-      <p>
-        This garden is a place to explore the more playful side of that
-        thinking. Three.js, motion, and interactive systems let me turn
-        otherwise invisible connections into something tangible.
-      </p>
-      <p>
-        I’m interested in problems that need someone to move comfortably between
-        product questions and implementation detail — and stay with the work
-        through review, release, and the next iteration.
-      </p>
-      <p>
-        I work remotely with teams anywhere in the world, and I’m open to
-        opportunities with compensation in USD or EUR. Share the role, the
+        {profile.collaboration.availability}. Open to opportunities with
+        compensation in {profile.collaboration.currencies}. Share the role, the
         challenge, and your team’s working hours, and let’s see where I can
         help.
       </p>
       <a href="/cv" class="text-link">The complete professional story →</a>
     </article>
   </div>
-  <ContactBlock profile={profile} /></Shell
->
+  <ContactBlock profile={profile} />
+</Shell>

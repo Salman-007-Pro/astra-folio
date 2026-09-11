@@ -4,10 +4,11 @@ import WritingList from "../../components/WritingList.astro";
 import { getContent } from "../../lib/content";
 const { posts } = await getContent();
 const tags = [...new Set(posts.flatMap((p) => p.tags))];
+const { profile } = await getContent();
 ---
 
 <Shell
-  title="Field notes — Salman Asif"
+  title={`Field notes — ${profile.name}`}
   description="Practical engineering notes on architecture, async product behavior, build tooling, and the Kinetic Garden."
   ><section class="page-intro">
     <div class="eyebrow">THE OBSERVATORY / WRITING</div>

@@ -21,7 +21,7 @@ async function resume(req: PayloadRequest) {
       ? new URL(pdf.url, process.env.CMS_PUBLIC_URL || "http://localhost:3001")
           .href
       : null,
-    filename: settings.filename || "Muhammad_Salman_Asif_CV.pdf",
+    filename: settings.filename || "CV.pdf",
     updatedAt:
       settings.versionDate || settings.updatedAt || new Date().toISOString(),
     downloadEnabled: settings.downloadEnabled ?? true,
@@ -40,29 +40,42 @@ export const endpoints: Endpoint[] = [
     path: "/portfolio",
     method: "get",
     handler: async (req) => {
-      const [profile, projects, experience, posts, currentResume] =
-        await Promise.all([
-          req.payload.findGlobal({ slug: "profile", ...publicOptions(req) }),
-          req.payload.find({
-            collection: "projects",
-            sort: "order",
-            limit: 100,
-            ...publicOptions(req),
-          }),
-          req.payload.find({
-            collection: "experience",
-            sort: "order",
-            limit: 100,
-            ...publicOptions(req),
-          }),
-          req.payload.find({
-            collection: "blog-posts",
-            sort: "-publishedAt",
-            limit: 1000,
-            ...publicOptions(req),
-          }),
-          resume(req),
-        ]);
+      const [
+        profile,
+        projects,
+        experience,
+        posts,
+        currentResume,
+        siteSettings,
+      ] = await Promise.all([
+        req.payload.findGlobal({ slug: "profile", ...publicOptions(req) }),
+        req.payload.find({
+          collection: "projects",
+          sort: "order",
+          limit: 100,
+          where: { _status: { equals: "published" } },
+          ...publicOptions(req),
+        }),
+        req.payload.find({
+          collection: "experience",
+          sort: "order",
+          limit: 100,
+          where: { _status: { equals: "published" } },
+          ...publicOptions(req),
+        }),
+        req.payload.find({
+          collection: "blog-posts",
+          sort: "-publishedAt",
+          limit: 1000,
+          where: { _status: { equals: "published" } },
+          ...publicOptions(req),
+        }),
+        resume(req),
+        req.payload.findGlobal({
+          slug: "site-settings",
+          ...publicOptions(req),
+        }),
+      ]);
       const content = portfolioSchema.parse({
         profile,
         projects: projects.docs.map((p: any) => ({
@@ -82,6 +95,7 @@ export const endpoints: Endpoint[] = [
           relatedProjects: values(p.relatedProjects),
         })),
         resume: currentResume,
+        site: siteSettings.websiteContent,
       });
       return Response.json(content, {
         headers: { "Cache-Control": "no-store" },

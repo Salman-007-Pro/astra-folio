@@ -1,239 +1,159 @@
 # Salman Asif · The Kinetic Garden
 
-Semantic-first portfolio for Muhammad Salman Asif: a static Astro site, one lazy Three.js garden, public case studies, writing, a recruiter CV view, and a separately deployed Payload CMS.
+A full-stack engineer’s portfolio with a procedural Three.js garden, detailed case studies, and an interactive arcade. Built with Astro, React, TypeScript, and an optional Payload CMS.
 
-The public site is HTML first. The WebGL scene is an enhancement, never the only way to read the work. Career facts come from the owner-supplied September 2026 CV. The public PDF is that file, unchanged.
+The site delivers readable static HTML first. The 3D world and games load as enhancements. Run the complete portfolio from one JSON file, then connect Payload when you want an editorial workflow.
 
 ## Features
 
-- Immersive homepage with one React Three Fiber canvas that moves between the hero and the desktop work biome
-- Semantic routes for work, case studies, writing, about, reading, contact, and CV
-- Recruiter-friendly CV page with a direct PDF download and optional live resume metadata
-- Night Shift, blueprint, reduced-motion, and quality preferences stored locally
-- Payload CMS for projects, experience, skills, writing, experiments, media, profile, and resume settings
-- Strict build-time content validation — a configured-but-unavailable CMS fails the build instead of publishing partial data
-- Restricted Markdown/MDX pipeline, RSS, sitemap, robots, `llms.txt`, and `profile.json`
-- Performance budget check on static JS; reading routes never import the 3D world
+- One lazy React Three Fiber canvas shared by the homepage hero and desktop work section
+- Work filters, seven-part case studies with scroll-following navigation, engineering notes, RSS, and a quiet reading view
+- Professional portrait, CV summary, PDF download, and worldwide remote contact channels
+- Mobile navigation drawer with keyboard focus handling and scroll restoration
+- **Card flip, Signal snake, and Orbit shooter** on the homepage and `/play`, with encouraging win/loss messages
+- **Garden, Ocean, and Ember** palettes, each with light and dark colors; light and dark selections are remembered independently
+- Reduced motion, optional sound, blueprint mode, and adaptive 3D quality
+- Reusable **[`content/portfolio.json`](content/portfolio.json)** for identity, copy, work, contact details, CV, and game quotes
+- Optional **Payload 3 + PostgreSQL** for drafts, publishing, media, and validated public content
+- Biome formatting, TypeScript, Vitest, Playwright, axe accessibility checks, and a compressed JavaScript budget
 
-## Architecture
+## Run locally
 
-```text
-pnpm workspace
-├── apps/web              Astro 7 static site + one R3F island
-├── apps/cms              Payload 3 on Next.js + PostgreSQL
-├── packages/content-schema   Shared Zod contracts and MDX policy
-├── packages/design-tokens    Theme tokens and CSS
-└── tooling/              Stage-site, budget, webhook verifier
-```
-
-`apps/web` is the public surface. It builds to static HTML and stages output into root `dist/` for hosting.
-
-`apps/cms` is a separate Node service. It owns drafts, versions, media, and the `/api/portfolio` snapshot. Static Sites hosting publishes only the Astro frontend.
-
-Without `CMS_URL`, the site uses the verified CV-backed bootstrap snapshot. With `CMS_URL`, the build loads and validates `/api/portfolio`. Invalid or unreachable CMS content fails the build on purpose.
-
-```text
-Owner CV ──► bootstrap snapshot ──► Astro build ──► dist/
-                 ▲
-Payload admin ───┴── /api/portfolio (validated public fields only)
-                 └── /api/resume   (optional runtime CV refresh)
-```
-
-See [docs/architecture.md](docs/architecture.md) and [docs/decisions/001-platform.md](docs/decisions/001-platform.md).
-
-## Requirements
-
-- Node 22.12 or newer (Node 24 in CI)
-- pnpm 10.32.1
-- Google Chrome for the Playwright browser suite
-- Docker, only if you run the CMS locally (PostgreSQL 17)
-
-## Quick start
+Requirements: **Node 22.12+** (Node 24 recommended) and **pnpm 10.32.1**. Google Chrome is needed for browser tests. PostgreSQL is only needed for the optional CMS; Docker Compose can provide it locally.
 
 ```sh
-pnpm install
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open [http://127.0.0.1:4321](http://127.0.0.1:4321). The homepage, work, writing, and CV routes work from bootstrap content — no CMS required.
+Open [http://127.0.0.1:4321](http://127.0.0.1:4321). No environment file or CMS is required for the static version. An existing `CMS_URL` in `apps/web/.env` selects CMS content instead.
 
-```sh
-pnpm check          # Astro + CMS typecheck
-pnpm test           # Unit contracts and webhook verifier
-pnpm test:e2e       # Browser checks against a local preview
-pnpm build          # Static site → root dist/
-pnpm budget         # Compressed JS budget for the public build
-```
+## Make it yours
 
-The browser suite uses an installed Google Chrome in isolated test contexts.
+Edit [`content/portfolio.json`](content/portfolio.json), replace the portrait and PDF, then run `pnpm check` and `pnpm build`.
 
-## Public routes
+| JSON section | Controls                                                                        |
+| ------------ | ------------------------------------------------------------------------------- |
+| `profile`    | Identity, role, social links, contact channels, and remote availability         |
+| `site`       | Branding, URL, hero/About copy, education, languages, portrait, default palette |
+| `site.games` | Arcade visibility, introduction, and win/loss quote lists                       |
+| `projects`   | Work cards, filters, case studies, and architecture labels                      |
+| `experience` | Career timeline and supporting details                                          |
+| `posts`      | Writing metadata and restricted Markdown content                                |
+| `resume`     | PDF URL, filename, date, and download availability                              |
 
-| Route                                   | Purpose                                                               |
-| --------------------------------------- | --------------------------------------------------------------------- |
-| `/`                                     | Immersive homepage: hero, selected work, experience, writing, contact |
-| `/work`                                 | Selected work index                                                   |
-| `/work/[slug]`                          | Case study                                                            |
-| `/writing`                              | Engineering notes and articles                                        |
-| `/writing/[slug]`                       | Article                                                               |
-| `/about`                                | Profile and approach                                                  |
-| `/reading`                              | Calm reading view — no Three.js import                                |
-| `/cv`                                   | Recruiter CV, PDF download, optional live resume metadata             |
-| `/contact`                              | Remote availability and contact channels                              |
-| `/sitemap.xml` `/rss.xml` `/robots.txt` | Discovery                                                             |
-| `/llms.txt` `/profile.json`             | Machine-readable profile                                              |
+Shared Zod contracts validate JSON during builds. Keep the structure and replace values with your own verified information. Follow the **[customization guide](docs/customization.md)** for assets, themes, content relationships, and domains.
 
-## CMS
+## Games and appearance
 
-The public site has no admin link. Start Payload on port 3001, create the first administrator there, then publish content.
+| Game          | Goal                                     | Controls                                                               |
+| ------------- | ---------------------------------------- | ---------------------------------------------------------------------- |
+| Card flip     | Match six pairs within 18 moves          | Tap/click; Tab and Enter. No timer                                     |
+| Signal snake  | Collect ten signals without a collision  | Arrow keys/WASD with board focused, or direction buttons; Space pauses |
+| Orbit shooter | Clear fifteen targets before five escape | Tap/click targets; Tab and Enter/Space                                 |
 
-```sh
-docker compose up -d postgres
-cp apps/cms/.env.example apps/cms/.env
-# Set a PAYLOAD_SECRET of at least 32 characters.
-pnpm --filter @garden/cms generate:importmap
-pnpm cms:dev
-```
+Rounds start on request and pause when the browser loses focus, the game leaves view, or a site dialog opens. Resume and restart are explicit. Switching games starts a fresh round. Results choose a message from your JSON quote lists. Scores stay in memory and are not sent to a server.
 
-Open [http://localhost:3001/admin](http://localhost:3001/admin).
+Open **Experience settings** to select a palette. **Night Shift** changes mode. Each mode keeps its own palette selection in local storage. The initial mode follows the visitor’s system preference when no choice is saved. `site.defaultPalette` sets the initial palette for both modes.
 
-Then point the site at the CMS:
+## Payload configuration
 
-```sh
-cp apps/web/.env.example apps/web/.env
-```
+Payload is optional and runs as a **separate Node service**. Static website hosting does not run the CMS, PostgreSQL, or uploaded-file storage.
 
-Set `CMS_URL` and `PUBLIC_CMS_URL` to the CMS origin. Leave `CMS_URL` empty to keep using bootstrap content.
+The **[Payload setup guide](docs/payload-setup.md)** covers every environment variable, local PostgreSQL, the first admin, seeding, PDF uploads, API keys, migrations, R2 storage, and publishing.
 
-Production CMS deployments need migrations, persistent storage, and backups:
+1. Create `apps/cms/.env` from its example and configure the database and a random secret.
+2. Run `pnpm cms:doctor`, generate the import map, and start `pnpm cms:dev`.
+3. Create your first administrator at [http://localhost:3001/admin](http://localhost:3001/admin).
+4. Seed an empty development CMS or enter content manually; review and publish it.
+5. Set `CMS_URL` in `apps/web/.env`, then rebuild the frontend.
 
-```sh
-pnpm --filter @garden/cms migrate:create
-pnpm --filter @garden/cms migrate
-pnpm cms:build
-```
+`cms:doctor` validates environment values without connecting to a database or changing data. Seeding is separately enabled. No CMS credentials are included in this repository.
 
-Publishing can notify `BUILD_WEBHOOK_URL` with an HMAC-SHA256 signature of `timestamp + '.' + rawBody`. The repo ships a verifier for an external receiver. There is no unsigned public deploy endpoint. A failed rebuild leaves the previous deployment untouched.
+### Frontend environment
 
-See [docs/content-model.md](docs/content-model.md).
+Use [`apps/web/.env.example`](apps/web/.env.example) as a template. Edit existing environment files rather than overwriting them.
 
-## Environment
+| Variable          | Purpose                                                                       |
+| ----------------- | ----------------------------------------------------------------------------- |
+| `PUBLIC_SITE_URL` | Canonical website origin; use your HTTPS domain in production                 |
+| `CMS_URL`         | Server-only build-time CMS origin. Leave empty for JSON content               |
+| `PUBLIC_CMS_URL`  | Optional public CMS origin for refreshing CV download metadata in the browser |
+| `CMS_READ_TOKEN`  | Optional server-only Payload Users API key. Never use a `PUBLIC_` prefix      |
 
-`apps/web/.env`
+`CMS_URL` selects a complete published snapshot; it does not merge CMS records with JSON arrays. A configured CMS that is unavailable or invalid fails the build. Deploy only successful builds so the previous release stays available.
 
-| Variable          | Role                                                            |
-| ----------------- | --------------------------------------------------------------- |
-| `PUBLIC_SITE_URL` | Canonical public origin                                         |
-| `CMS_URL`         | Build-time portfolio snapshot. Omit to use bootstrap content    |
-| `PUBLIC_CMS_URL`  | Browser-visible CMS origin for live CV metadata only            |
-| `CMS_READ_TOKEN`  | Optional server-only read key. Never prefix this with `PUBLIC_` |
+## Deploy your own domain
 
-`apps/cms/.env`
+1. Set `PUBLIC_SITE_URL=https://your-domain.example` in the hosting build environment, or `apps/web/.env` for a local build. Also update `site.url` when reusing the project.
+2. Run `pnpm build` and `pnpm budget`.
+3. Upload root **`dist/`** to your static host and connect your domain there.
 
-| Variable                                     | Role                                 |
-| -------------------------------------------- | ------------------------------------ |
-| `DATABASE_URL`                               | PostgreSQL connection                |
-| `PAYLOAD_SECRET`                             | Payload auth secret, 32+ characters  |
-| `CMS_PUBLIC_URL`                             | Public CMS origin                    |
-| `PUBLIC_SITE_URL`                            | Allowed public site origin           |
-| `R2_*`                                       | Optional Cloudflare R2 media storage |
-| `BUILD_WEBHOOK_URL` / `BUILD_WEBHOOK_SECRET` | Optional signed rebuild hook         |
+Keep the output structure intact. Use normal static HTML routing with `404.html`, not a universal SPA rewrite. Payload needs its own Node deployment.
 
-`.env` files are gitignored. Never commit secrets.
+Built JS/CSS and optimized portraits use content-hashed filenames. HTML should revalidate so visitors discover changed asset URLs. [`apps/web/public/_headers`](apps/web/public/_headers) supplies policies for hosts supporting that format; configure equivalent rules elsewhere. Raw `public/` files retain their names: rename replacement PDFs/images and update their JSON URLs for guaranteed versioned URLs. Cache busting still requires uploading the new build.
 
-Local Postgres from Compose:
+CMS edits reach static pages **after a rebuild and deployment**. Optional live CV metadata is the exception. See [publishing and rebuilds](docs/payload-setup.md#publishing-and-automatic-rebuilds) before enabling webhooks.
 
-```text
-postgresql://garden:garden_local_only@localhost:5432/garden
-```
+## Commands
 
-## Scripts
+| Command             | Purpose                                                     |
+| ------------------- | ----------------------------------------------------------- |
+| `pnpm dev`          | Astro development server at `127.0.0.1:4321`                |
+| `pnpm build`        | Build and stage root `dist/`                                |
+| `pnpm check`        | Astro and CMS TypeScript checks                             |
+| `pnpm test`         | Content, game engines, and webhook unit tests               |
+| `pnpm test:e2e`     | Playwright + axe against a running local preview            |
+| `pnpm budget`       | Compressed JavaScript budget after building                 |
+| `pnpm format`       | Biome for source; Prettier for Markdown/MDX/YAML            |
+| `pnpm format:check` | Check formatting without edits                              |
+| `pnpm cms:doctor`   | Validate CMS env without printing secrets                   |
+| `pnpm cms:dev`      | Payload development server on port 3001                     |
+| `pnpm cms:seed`     | Bootstrap empty development CMS; requires `ALLOW_SEED=true` |
+| `pnpm cms:build`    | Build the separate production CMS                           |
+| `pnpm cms:start`    | Start the built CMS on port 3001                            |
 
-| Command             | What it does                                   |
-| ------------------- | ---------------------------------------------- |
-| `pnpm dev`          | Astro site on `127.0.0.1:4321`                 |
-| `pnpm build`        | Build the site and stage `dist/`               |
-| `pnpm cms:dev`      | Payload admin on `:3001`                       |
-| `pnpm cms:build`    | Production CMS build                           |
-| `pnpm check`        | Typecheck web and CMS                          |
-| `pnpm test`         | Vitest unit suite                              |
-| `pnpm test:e2e`     | Playwright + axe checks                        |
-| `pnpm format`       | Format source, docs, and YAML                  |
-| `pnpm format:check` | CI-safe format check                           |
-| `pnpm budget`       | Fail the build if static JS exceeds the budget |
-
-Astro daemon helpers:
+Test a production frontend build:
 
 ```sh
 pnpm --filter @garden/web exec astro dev stop
-pnpm --filter @garden/web exec astro dev status
-pnpm --filter @garden/web exec astro dev logs
+pnpm build
+pnpm --filter @garden/web exec astro preview --host 127.0.0.1 --port 4321
+pnpm test:e2e
+pnpm --filter @garden/web exec astro preview stop
 ```
 
-On Windows, creating a new imported file in the same edit can leave Astro HMR with a stale missing-import error. Restart the daemon if that happens.
+Astro also supports `astro dev status` and `astro dev logs`. Restart the daemon if Windows HMR retains a missing-import error after creating a file.
 
-## Scene, motion, and access
+## Project structure
 
-- One primary canvas, lazy-imported after semantic HTML
-- Desktop work reuses that canvas; mobile keeps a dedicated hero composition plus HTML diagrams
-- All geometry is procedural — no GLB, HDR, or texture downloads
-- GSAP owns seed expansion and focus entrances; R3F owns continuous motion; native scroll owns stage placement
-- Reduced motion freezes ambient animation and keeps the same DOM controls
-- Rendering pauses when the scene is offscreen or in a background tab
-- Quality caps DPR and particle counts from viewport, memory, save-data, and measured frame time
-- Sound starts only after a user gesture
-- Native dialogs trap and restore focus
-- No analytics ship by default
-
-See [docs/motion-system.md](docs/motion-system.md) and [docs/performance-budget.md](docs/performance-budget.md).
-
-Targets for field p75: LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.10. Those need production observation. Headless Chrome does not prove mid-range phone performance or Safari.
-
-## Content rules
-
-- The latest owner-provided CV is the authority for dates, location, email, GitHub, and LinkedIn
-- Case studies expand documented CV facts. Architecture drawings are conceptual
-- No confidential screenshots, invented metrics, or employer-internal material
-- Forward-looking notes are proposals, not shipped outcomes
-- Markdown allowlist: text, code fences, and safe links. Imports, JSX, raw HTML, and JS expressions are rejected
-- Public `/api/portfolio` returns validated public fields only — never users or tokens
-- Drafts stay in Payload admin. Do not expose them on the public snapshot endpoint
-
-## Formatting
-
-```sh
-pnpm format
-pnpm format:check
+```text
+content/portfolio.json          Reusable static content
+apps/web/                       Astro + React games + Three.js garden
+apps/cms/                       Payload on Next.js, PostgreSQL, optional R2
+packages/content-schema/        Shared validation and Markdown policy
+packages/design-tokens/         Base design tokens
+tooling/scripts/                Build staging, budget, CMS doctor, webhook verifier
+tests/                          Unit, responsive, browser and accessibility checks
+docs/                           Configuration and architecture guides
 ```
 
-Biome 2.5.13 formats JavaScript, TypeScript, JSX/TSX, JSON/JSONC, CSS, and Astro templates. Root `biome.json` uses two spaces, LF, an 80-character line, and Tailwind directive support. Linting and import organization are off — these commands only format.
+Pages: `/`, `/work`, `/work/[slug]`, `/writing`, `/writing/[slug]`, `/about`, `/play`, `/reading`, `/cv`, and `/contact`. Discovery: `/sitemap.xml`, `/rss.xml`, `/robots.txt`, `/llms.txt`, and `/profile.json`.
 
-Prettier still owns Markdown, MDX, and YAML. Generated files, build output, caches, dependencies, uploaded media, and the local master PRD stay excluded. Git keeps text files on LF across Windows and CI.
+## Quality and content
 
-## Quality and CI
+CI runs formatting, type checks, unit tests, static build, JS budget, and browser tests. Biome 2.5.13 formats JS/TS/JSX/TSX, JSON, CSS, and Astro. Prettier handles Markdown/MDX/YAML. Formatting commands do not enable linting or import organization.
 
-`.github/workflows/quality.yml` runs on push and pull request:
+The garden uses procedural geometry, caps quality, pauses offscreen, and respects reduced motion. Reading pages do not load the 3D world. Games support touch and keyboard; dialogs restore focus. No analytics ship by default. Automated checks do not replace physical-device testing or production field performance measurements.
 
-1. `pnpm format:check`
-2. `pnpm check`
-3. `pnpm test`
-4. `pnpm build`
-5. `pnpm budget`
-6. Playwright against `astro preview` on Chrome
+Career facts follow the owner-provided CV and subsequent contact updates. Case-study diagrams are conceptual; there are no private employer screenshots or invented metrics. Replace personal data and review all copy when reusing the project. Markdown rejects imports, JSX, raw HTML, executable expressions, and unsafe links. Public snapshots exclude drafts and authentication records.
 
-Failed browser runs upload `playwright-report/`.
+## Guides
 
-## Docs
-
-| Doc                                                              | Contents                                    |
-| ---------------------------------------------------------------- | ------------------------------------------- |
-| [docs/architecture.md](docs/architecture.md)                     | Site/CMS split, content loading, MDX policy |
-| [docs/content-model.md](docs/content-model.md)                   | Collections, publishing, CV, preview policy |
-| [docs/motion-system.md](docs/motion-system.md)                   | Scene ownership and reduced motion          |
-| [docs/performance-budget.md](docs/performance-budget.md)         | Budgets and what tests do not prove         |
-| [docs/implementation-plan.md](docs/implementation-plan.md)       | Scope, gates, content gaps                  |
-| [docs/task-ledger.md](docs/task-ledger.md)                       | Verification status                         |
-| [docs/agent-runbook.md](docs/agent-runbook.md)                   | Local commands and guardrails               |
-| [docs/decisions/001-platform.md](docs/decisions/001-platform.md) | Why Astro + Payload, not a single Next app  |
-
-Public launch still needs owner-approved copy, a configured CMS, and field performance checks. Do not describe unrun device tests as complete.
+- [Customize content, assets, games, and themes](docs/customization.md)
+- [Payload, env, media, and deployment](docs/payload-setup.md)
+- [Architecture](docs/architecture.md)
+- [Content model](docs/content-model.md)
+- [Motion system](docs/motion-system.md)
+- [Performance budget](docs/performance-budget.md)
+- [Platform decision](docs/decisions/001-platform.md)

@@ -12,7 +12,10 @@ const { profile } = Astro.props as { profile: Profile };
   </div>
   <div class="contact-headline">
     <h2>Something complex<br>on your mind?</h2>
-    <a href="/contact" class="contact-orb" aria-label="Contact Salman"
+    <a
+      href="/contact"
+      class="contact-orb"
+      aria-label={`Contact ${profile.name.split(" ")[0]}`}
       ><Icon name="diagonal" size={58} /></a
     >
   </div>

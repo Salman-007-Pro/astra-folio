@@ -3,10 +3,11 @@ import Shell from "../../layouts/Shell.astro";
 import ProjectGrid from "../../components/ProjectGrid.astro";
 import { getContent } from "../../lib/content";
 const { projects } = await getContent();
+const { profile } = await getContent();
 ---
 
 <Shell
-  title="Selected work — Salman Asif"
+  title={`Selected work — ${profile.name}`}
   description="Public case studies in enterprise connector architecture, discovery workflows, build modernization, mobile products, and creative engineering."
   ><section class="page-intro">
     <div class="eyebrow">01 / SELECTED SYSTEMS</div>

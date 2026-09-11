@@ -1,8 +1,4 @@
-import {
-  readPreferences,
-  writePreferences,
-  type Preferences,
-} from "./preferences";
+import { readPreferences, writePreferences, isPalette } from "./preferences";
 let preferences = readPreferences();
 writePreferences(preferences);
 const settings = document.querySelector<HTMLDialogElement>(
@@ -145,18 +141,28 @@ document.querySelectorAll<HTMLDialogElement>("dialog").forEach((dialog) => {
     }),
   );
 });
-(["motion", "sound", "night", "blueprint"] as (keyof Preferences)[]).forEach(
-  (key) => {
-    const input = document.querySelector<HTMLInputElement>(`#pref-${key}`);
-    if (!input) return;
-    input.checked = preferences[key];
+(["motion", "sound", "night", "blueprint"] as const).forEach((key) => {
+  const input = document.querySelector<HTMLInputElement>(`#pref-${key}`);
+  if (!input) return;
+  input.checked = preferences[key];
+  input.addEventListener("change", () => {
+    preferences = { ...preferences, [key]: input.checked };
+    writePreferences(preferences);
+    if (key === "sound" && input.checked) ping();
+  });
+});
+document
+  .querySelectorAll<HTMLInputElement>("[data-palette-mode]")
+  .forEach((input) => {
+    const key =
+      input.dataset.paletteMode === "night" ? "darkPalette" : "lightPalette";
+    input.checked = preferences[key] === input.value;
     input.addEventListener("change", () => {
-      preferences = { ...preferences, [key]: input.checked };
+      if (!input.checked || !isPalette(input.value)) return;
+      preferences = { ...preferences, [key]: input.value };
       writePreferences(preferences);
-      if (key === "sound" && input.checked) ping();
     });
-  },
-);
+  });
 let audioContext: AudioContext | undefined;
 function ping() {
   try {

@@ -16,8 +16,11 @@ import gsap from "gsap";
 import { sceneTokens as c } from "@garden/design-tokens";
 import { qualityConfig, type Quality } from "./quality";
 import type { Preferences } from "../lib/preferences";
+export type SceneProject = { slug: string; shortTitle: string; preset: string };
 
 type Props = {
+  projects: SceneProject[];
+  selectedSlug?: string;
   quality: Quality;
   preferences: Preferences;
   unfold: number;
@@ -213,10 +216,12 @@ function Seed({
   );
 }
 function Connector({
+  project,
   motion,
   blueprint,
   onSelect,
 }: {
+  project?: SceneProject;
   motion: boolean;
   blueprint: boolean;
   onSelect: (s: string) => void;
@@ -232,11 +237,11 @@ function Connector({
       rotation={[0, -0.2, 0]}
       onPointerOver={(e) => {
         e.stopPropagation();
-        onSelect("01 / Metadata-driven connectors");
+        onSelect(project?.shortTitle || "The connector system");
       }}
       onClick={(e) => {
         e.stopPropagation();
-        window.location.assign("/work/metadata-driven-connectors");
+        window.location.assign(project ? `/work/${project.slug}` : "/work");
       }}
     >
       <Plinth radius={0.84} height={0.22} wireframe={blueprint} />
@@ -278,9 +283,11 @@ function Connector({
   );
 }
 function Mobile({
+  project,
   blueprint,
   onSelect,
 }: {
+  project?: SceneProject;
   blueprint: boolean;
   onSelect: (s: string) => void;
 }) {
@@ -290,11 +297,11 @@ function Mobile({
       rotation={[0, -0.6, 0.08]}
       onPointerOver={(e) => {
         e.stopPropagation();
-        onSelect("04 / CargoBarn mobile");
+        onSelect(project?.shortTitle || "The mobile system");
       }}
       onClick={(e) => {
         e.stopPropagation();
-        window.location.assign("/work/cargobarn");
+        window.location.assign(project ? `/work/${project.slug}` : "/work");
       }}
     >
       <Plinth radius={0.92} height={0.19} wireframe={blueprint} />
@@ -344,10 +351,12 @@ function Mobile({
   );
 }
 function Observatory({
+  project,
   motion,
   blueprint,
   onSelect,
 }: {
+  project?: SceneProject;
   motion: boolean;
   blueprint: boolean;
   onSelect: (s: string) => void;
@@ -362,11 +371,11 @@ function Observatory({
       position={[1.25, 0.27, -2.44]}
       onPointerOver={(e) => {
         e.stopPropagation();
-        onSelect("02 / Discovery & data workflows");
+        onSelect(project?.shortTitle || "The discovery system");
       }}
       onClick={(e) => {
         e.stopPropagation();
-        location.assign("/work/discovery-workflows");
+        location.assign(project ? `/work/${project.slug}` : "/work");
       }}
     >
       <Plinth radius={0.75} height={0.18} wireframe={blueprint} />
@@ -424,10 +433,12 @@ function Cable({
   );
 }
 function Engine({
+  project,
   motion,
   blueprint,
   onSelect,
 }: {
+  project?: SceneProject;
   motion: boolean;
   blueprint: boolean;
   onSelect: (s: string) => void;
@@ -441,11 +452,11 @@ function Engine({
     <group
       onPointerOver={(e) => {
         e.stopPropagation();
-        onSelect("03 / Build & delivery modernization");
+        onSelect(project?.shortTitle || "The build system");
       }}
       onClick={(e) => {
         e.stopPropagation();
-        location.assign("/work/build-modernization");
+        location.assign(project ? `/work/${project.slug}` : "/work");
       }}
     >
       <Plinth radius={1.08} height={0.22} wireframe={blueprint} />
@@ -537,6 +548,8 @@ function Dust({ count, motion }: { count: number; motion: boolean }) {
   );
 }
 function Scene({
+  projects,
+  selectedSlug,
   quality,
   preferences,
   unfold,
@@ -545,6 +558,10 @@ function Scene({
   onFailure,
   onQuality,
 }: Props) {
+  const projectFor = (preset: string) =>
+    projects.find(
+      (project) => project.preset === preset && project.slug === selectedSlug,
+    ) || projects.find((project) => project.preset === preset);
   const root = useRef<THREE.Group>(null);
   const { gl, camera, size, invalidate, setDpr } = useThree();
   const [active, setActive] = useState(true);
@@ -671,9 +688,18 @@ function Scene({
         />
       </Environment>
       <group ref={root} position={[0, -0.05, 0]}>
+        {focus === "garden" && (
+          <Seed
+            motion={motion}
+            unfold={unfold}
+            blueprint={preferences.blueprint}
+            onSelect={onSelect}
+          />
+        )}
         {focus === "connector" && (
           <group position={[2.6, -0.06, 1.62]}>
             <Connector
+              project={projectFor("connector")}
               motion={motion}
               blueprint={preferences.blueprint}
               onSelect={onSelect}
@@ -683,6 +709,7 @@ function Scene({
         {focus === "discovery" && (
           <group position={[-1.25, -0.27, 2.44]}>
             <Observatory
+              project={projectFor("discovery")}
               motion={motion}
               blueprint={preferences.blueprint}
               onSelect={onSelect}
@@ -691,11 +718,16 @@ function Scene({
         )}
         {focus === "mobile" && (
           <group position={[-2.3, 0.27, -1.17]}>
-            <Mobile blueprint={preferences.blueprint} onSelect={onSelect} />
+            <Mobile
+              project={projectFor("mobile")}
+              blueprint={preferences.blueprint}
+              onSelect={onSelect}
+            />
           </group>
         )}
         {focus === "engine" && (
           <Engine
+            project={projectFor("engine")}
             motion={motion}
             blueprint={preferences.blueprint}
             onSelect={onSelect}
@@ -710,12 +742,18 @@ function Scene({
               onSelect={onSelect}
             />
             <Connector
+              project={projectFor("connector")}
               motion={motion}
               blueprint={preferences.blueprint}
               onSelect={onSelect}
             />
-            <Mobile blueprint={preferences.blueprint} onSelect={onSelect} />
+            <Mobile
+              project={projectFor("mobile")}
+              blueprint={preferences.blueprint}
+              onSelect={onSelect}
+            />
             <Observatory
+              project={projectFor("discovery")}
               motion={motion}
               blueprint={preferences.blueprint}
               onSelect={onSelect}

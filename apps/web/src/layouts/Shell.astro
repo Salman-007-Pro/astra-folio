@@ -8,10 +8,11 @@ import "../styles/refinements.css";
 import "../styles/accessibility.css";
 import "../styles/responsive.css";
 import "../styles/contact.css";
+import "../styles/themes.css";
 import Icon from "../components/Icon.astro";
 import { getContent } from "../lib/content";
 import { contactLinks } from "../lib/contact";
-const { profile } = await getContent();
+const { profile, site } = await getContent();
 const contacts = contactLinks(profile);
 interface Props {
   title?: string;
@@ -20,8 +21,8 @@ interface Props {
   article?: boolean;
 }
 const {
-  title = "Salman Asif — Full-stack engineer",
-  description = "I build interfaces and product systems that make difficult things feel clear, fast, and usable. Senior full-stack engineer working across web, mobile and enterprise platforms.",
+  title = `${profile.name} — ${profile.role}`,
+  description = profile.intro,
   immersive = false,
   article = false,
 } = Astro.props;
@@ -32,6 +33,7 @@ const links = [
   { label: "Experience", href: "/#experience" },
   { label: "Writing", href: "/writing" },
   { label: "About", href: "/about" },
+  ...(site.games.enabled ? [{ label: "Play", href: "/play" }] : []),
 ];
 const isCurrentPage = (href: string) =>
   !href.includes("#") &&
@@ -42,7 +44,12 @@ const isCurrentPage = (href: string) =>
 ---
 
 <!doctype html>
-<html lang="en" data-motion="on">
+<html
+  lang="en"
+  data-motion="on"
+  data-default-palette={site.defaultPalette}
+  data-palette={site.defaultPalette}
+>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -59,7 +66,7 @@ const isCurrentPage = (href: string) =>
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="Salman's field notes"
+      title={`${profile.name}'s field notes`}
       href="/rss.xml"
     >
     <script is:inline>
@@ -67,7 +74,19 @@ const isCurrentPage = (href: string) =>
         const p = JSON.parse(
           localStorage.getItem("kinetic-garden-preferences-v1") || "{}",
         );
-        document.documentElement.dataset.theme = p.night ? "night" : "day";
+        const night =
+          typeof p.night === "boolean"
+            ? p.night
+            : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = night ? "night" : "day";
+        const palette = night ? p.darkPalette : p.lightPalette;
+        document.documentElement.dataset.palette = [
+          "garden",
+          "ocean",
+          "ember",
+        ].includes(palette)
+          ? palette
+          : document.documentElement.dataset.defaultPalette;
         document.documentElement.dataset.motion =
           (p.motion ?? !matchMedia("(prefers-reduced-motion: reduce)").matches)
             ? "on"
@@ -84,25 +103,22 @@ const isCurrentPage = (href: string) =>
         name: title,
         mainEntity: {
           "@type": "Person",
-          name: "Muhammad Salman Asif",
-          alternateName: "Salman Asif",
-          jobTitle: "Senior Software Engineer",
+          name: profile.fullName,
+          alternateName: profile.name,
+          jobTitle: profile.role,
           url: Astro.site?.href || Astro.url.origin,
-          sameAs: [
-            "https://github.com/Salman-007-Pro",
-            "https://www.linkedin.com/in/muhammad-salman-asif-7b902a12a/",
-          ],
+          sameAs: [profile.github, profile.linkedin],
         },
-      }).replaceAll("<", "\u003c")}
+      }).replaceAll("<", "\\u003c")}
     />
     <slot name="head" />
   </head>
   <body class:list={[{ immersive }]}>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-      <a class="wordmark" href="/" aria-label="Salman Asif, home"
-        ><span class="brand-mark">s<span>↗</span></span
-        ><span>salman asif<span class="wordmark-dot">.</span></span></a
+      <a class="wordmark" href="/" aria-label={`${profile.name}, home`}
+        ><span class="brand-mark">{site.brandMark}<span>↗</span></span
+        ><span>{site.brandName}<span class="wordmark-dot">.</span></span></a
       >
       <nav aria-label="Main navigation" class="desktop-nav">
         {links.map((link) => (
@@ -138,8 +154,8 @@ const isCurrentPage = (href: string) =>
       aria-labelledby="mobile-menu-title"
     >
       <div class="drawer-header">
-        <a class="wordmark" href="/" aria-label="Salman Asif, home"
-          >salman asif<span class="wordmark-dot">.</span></a
+        <a class="wordmark" href="/" aria-label={`${profile.name}, home`}
+          >{site.brandName}<span class="wordmark-dot">.</span></a
         >
         <button
           class="icon-button"
@@ -151,7 +167,7 @@ const isCurrentPage = (href: string) =>
         </button>
       </div>
       <div class="drawer-intro">
-        <span class="eyebrow">THE KINETIC GARDEN</span>
+        <span class="eyebrow">{site.title}</span>
         <h2 id="mobile-menu-title">Find your way.</h2>
       </div>
       <nav class="drawer-nav" aria-label="Mobile navigation">
@@ -188,18 +204,11 @@ const isCurrentPage = (href: string) =>
     </dialog>
     <main id="main"><slot /></main>
     <footer class="site-footer">
-      <a class="wordmark" href="/">salman asif.</a>
-      <p>Thoughtfully built. Always evolving.</p>
+      <a class="wordmark" href="/">{site.brandName}.</a>
+      <p>{site.footer}</p>
       <div>
-        <a
-          href="https://github.com/Salman-007-Pro"
-          target="_blank"
-          rel="noreferrer"
-          >GitHub ↗</a
-        ><a
-          href="https://www.linkedin.com/in/muhammad-salman-asif-7b902a12a/"
-          target="_blank"
-          rel="noreferrer"
+        <a href={profile.github} target="_blank" rel="noreferrer">GitHub ↗</a
+        ><a href={profile.linkedin} target="_blank" rel="noreferrer"
           >LinkedIn ↗</a
         ><a href="/rss.xml">RSS</a><span>© {new Date().getFullYear()}</span>
       </div>
@@ -244,6 +253,21 @@ const isCurrentPage = (href: string) =>
       ><a href="/reading" class="text-link"
         >Prefer a straight read? Recruiter view <Icon name="arrow" /></a
       >
+      {(["day", "night"] as const).map((mode) => (
+        <fieldset class="palette-picker" data-palette-picker={mode}>
+          <legend>{mode === "day" ? "Light color palette" : "Dark color palette"}</legend>
+          <p>Your light and dark choices are saved separately.</p>
+          <div class="palette-options">
+            {[{ value: "garden", label: "Garden" }, { value: "ocean", label: "Ocean" }, { value: "ember", label: "Ember" }].map((palette) => (
+              <label class="palette-choice">
+                <input type="radio" name={`palette-${mode}`} value={palette.value} data-palette-mode={mode} checked={site.defaultPalette === palette.value} />
+                <span class="palette-preview" data-swatch={palette.value} data-swatch-mode={mode} aria-hidden="true"></span>
+                <span>{palette.label}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      ))}
     </dialog>
     <div role="status" class="toast" id="toast"></div>
     <script src="../lib/ui.ts"></script>

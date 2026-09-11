@@ -1,9 +1,11 @@
 ---
+import { getContent } from "../lib/content";
 import Shell from "../layouts/Shell.astro";
 import Icon from "../components/Icon.astro";
+const { profile } = await getContent();
 ---
 
-<Shell title="A path not yet planted — Salman Asif"
+<Shell title={`A path not yet planted — ${profile.name}`}
   ><section class="not-found">
     <span class="eyebrow">404 / UNCHARTED GROUND</span>
     <h1>This path hasn’t<br>been planted yet.</h1>

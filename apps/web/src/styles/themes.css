@@ -1,0 +1,160 @@
+:root {
+  --color-section: #e7eddc;
+  --color-channel: #293fac;
+  --color-channel-hover: #223590;
+}
+:root[data-theme="night"] {
+  --color-section: #21372c;
+}
+:root[data-palette="ocean"] {
+  --color-bg-canvas: #eff7fb;
+  --color-bg-surface: #ffffff;
+  --color-text-primary: #112e3b;
+  --color-text-muted: #4e6571;
+  --color-border-subtle: #bed5df;
+  --color-accent-signal: #00658a;
+  --color-accent-energy: #a74428;
+  --color-success: #28664a;
+  --color-focus: #00658a;
+  --color-section: #dceef3;
+  --color-channel: #00658a;
+  --color-channel-hover: #004f6c;
+}
+:root[data-theme="night"][data-palette="ocean"] {
+  --color-bg-canvas: #081a29;
+  --color-bg-surface: #102b3e;
+  --color-text-primary: #e5f6ff;
+  --color-text-muted: #a1bacb;
+  --color-border-subtle: #34536b;
+  --color-accent-signal: #68d8fc;
+  --color-accent-energy: #ffc390;
+  --color-success: #91e2bb;
+  --color-focus: #68d8fc;
+  --color-section: #113344;
+}
+:root[data-palette="ember"] {
+  --color-bg-canvas: #fff5ee;
+  --color-bg-surface: #fffcf9;
+  --color-text-primary: #3a2224;
+  --color-text-muted: #795b58;
+  --color-border-subtle: #e1c9bd;
+  --color-accent-signal: #b33c23;
+  --color-accent-energy: #8550a0;
+  --color-success: #46652a;
+  --color-focus: #b33c23;
+  --color-section: #f5e5da;
+  --color-channel: #a73b27;
+  --color-channel-hover: #872d1e;
+}
+:root[data-theme="night"][data-palette="ember"] {
+  --color-bg-canvas: #23141a;
+  --color-bg-surface: #35212b;
+  --color-text-primary: #fff0e6;
+  --color-text-muted: #d0b2ad;
+  --color-border-subtle: #684952;
+  --color-accent-signal: #ffab8b;
+  --color-accent-energy: #d0b1f4;
+  --color-success: #bdde94;
+  --color-focus: #ffab8b;
+  --color-section: #422831;
+}
+:root[data-palette] .contact-section,
+:root[data-palette] .about-section,
+:root[data-palette] .experience-section {
+  background: var(--color-section);
+  color: var(--color-text-primary);
+}
+:root[data-palette] .contact-section .eyebrow {
+  color: var(--color-text-muted);
+}
+.contact-channel.channel-primary {
+  background: var(--color-channel);
+  border-color: var(--color-channel);
+}
+.contact-channel.channel-primary:hover {
+  background: var(--color-channel-hover);
+}
+.palette-picker {
+  border: 0;
+  padding: 0;
+  margin-top: 24px;
+  min-width: 0;
+}
+.palette-picker legend {
+  font-size: 16px;
+  font-weight: 600;
+}
+.palette-picker > p {
+  font-size: 14px;
+  margin: 8px 0 16px;
+  color: var(--color-text-muted);
+}
+:root[data-theme="night"] [data-palette-picker="day"],
+:root:not([data-theme="night"]) [data-palette-picker="night"] {
+  display: none;
+}
+.palette-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.palette-choice {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.palette-choice input {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  accent-color: var(--color-accent-signal);
+  width: 16px;
+  height: 16px;
+}
+.palette-choice:has(input:checked) {
+  border-color: var(--color-accent-signal);
+  box-shadow: 0 0 0 1px var(--color-accent-signal);
+}
+.palette-choice:has(input:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+.palette-preview {
+  width: 100%;
+  height: 46px;
+  border-radius: 4px;
+  background: linear-gradient(120deg, #f5f3ed 55%, #264dea 55%);
+}
+[data-swatch="ocean"] {
+  background: linear-gradient(120deg, #eff7fb 55%, #00658a 55%);
+}
+[data-swatch="ember"] {
+  background: linear-gradient(120deg, #fff5ee 55%, #b33c23 55%);
+}
+[data-swatch="garden"][data-swatch-mode="night"] {
+  background: linear-gradient(120deg, #172522 55%, #a9bdff 55%);
+}
+[data-swatch="ocean"][data-swatch-mode="night"] {
+  background: linear-gradient(120deg, #081a29 55%, #68d8fc 55%);
+}
+[data-swatch="ember"][data-swatch-mode="night"] {
+  background: linear-gradient(120deg, #23141a 55%, #ffab8b 55%);
+}
+@media (forced-colors: active) {
+  :root[data-palette] {
+    --color-bg-canvas: Canvas;
+    --color-bg-surface: Canvas;
+    --color-text-primary: CanvasText;
+    --color-text-muted: CanvasText;
+    --color-border-subtle: CanvasText;
+    --color-section: Canvas;
+    --color-accent-signal: LinkText;
+    --color-focus: Highlight;
+  }
+}

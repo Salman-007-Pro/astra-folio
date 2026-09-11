@@ -3,12 +3,12 @@ import Shell from "../layouts/Shell.astro";
 import Icon from "../components/Icon.astro";
 import Experience from "../components/Experience.astro";
 import { getContent, formatDate } from "../lib/content";
-const { profile, resume, experience } = await getContent();
+const { profile, resume, experience, site } = await getContent();
 const cms = import.meta.env.PUBLIC_CMS_URL || "";
 ---
 
 <Shell
-  title="CV — Muhammad Salman Asif"
+  title={`CV — ${profile.fullName}`}
   description={`${profile.fullName}, ${profile.role}. View and download the current CV.`}
   ><section class="page-intro">
     <div class="eyebrow">THE COMPLETE PICTURE</div>
@@ -61,11 +61,8 @@ const cms = import.meta.env.PUBLIC_CMS_URL || "";
       <p>{profile.role} · {profile.location} · {profile.email}</p>
       <Experience items={experience} compact />
       <h3>Education</h3>
-      <p>
-        BS Software Engineering · Sir Syed University of Engineering and
-        Technology · 2017–2020
-      </p>
-      <p>English · Urdu</p>
+      <p>{site.education}</p>
+      <p>{site.languages.join(" · ")}</p>
     </details>
   </section></Shell
 >

@@ -4,7 +4,8 @@ dist/
 .astro/
 .next/
 .env
-.env.*.local
+.env.*
+!.env.example
 salman_immersive_portfolio_master_prd.md
 .sites-runtime/
 test-results/

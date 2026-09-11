@@ -1,0 +1,20 @@
+---
+import Shell from "../layouts/Shell.astro";
+import Arcade from "../games/Arcade";
+import { getContent } from "../lib/content";
+const { profile, site } = await getContent();
+---
+
+<Shell title={`The arcade — ${profile.name}`} description={site.games.intro}>
+  <section class="page-intro play-page">
+    <div class="eyebrow">THE PLAYGROUND / TAKE A LITTLE BREAK</div>
+    <h1>{site.games.title}</h1>
+    <p>{site.games.intro}</p>
+    {site.games.enabled ? <Arcade client:load settings={site.games} /> : <p>The arcade is taking a break. <a href="/work">Explore the work →</a></p>}
+    <noscript
+      ><p>
+        These games need JavaScript. <a href="/reading">Read the portfolio →</a>
+      </p></noscript
+    >
+  </section>
+</Shell>

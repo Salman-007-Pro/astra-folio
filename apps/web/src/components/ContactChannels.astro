@@ -6,7 +6,11 @@ const { profile } = Astro.props as { profile: Profile };
 const links = contactLinks(profile);
 ---
 
-<div class="contact-channels" role="group" aria-label="Ways to contact Salman">
+<div
+  class="contact-channels"
+  role="group"
+  aria-label={`Ways to contact ${profile.name.split(" ")[0]}`}
+>
   <a
     class="contact-channel channel-primary"
     href={links.whatsapp}
