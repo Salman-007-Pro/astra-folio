@@ -256,7 +256,7 @@
       "company": "Veeam · Securiti AI",
       "role": "Senior Software Engineer",
       "period": "Dec 2025 — Present",
-      "location": "Al Khobar, Saudi Arabia",
+      "location": "United States (company HQ)",
       "summary": "Cross-stack ownership in enterprise privacy, data security, governance, and AI-trust products.",
       "evidence": [
         "Trace production failures across Vue/Vuex, API contracts, and Go/Python service behavior.",
@@ -269,7 +269,7 @@
       "company": "Securiti.ai",
       "role": "Senior Software Engineer",
       "period": "Sep 2024 — Nov 2025",
-      "location": "Karachi, Pakistan",
+      "location": "United States (company HQ)",
       "summary": "Led frontend workstreams and cross-stack coordination for enterprise connector and data-platform features.",
       "evidence": [
         "Re-architected connector configuration into a metadata-driven UI engine.",
@@ -282,7 +282,7 @@
       "company": "Securiti.ai",
       "role": "Software Development Engineer",
       "period": "Nov 2022 — Sep 2024",
-      "location": "Karachi, Pakistan",
+      "location": "United States (company HQ)",
       "summary": "Built resilient product behavior across discovery, cloud connectors, catalog, and permissions workflows.",
       "evidence": [
         "Aligned pagination, filters, status enums, and validation behavior with backend service teams.",
