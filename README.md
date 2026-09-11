@@ -10,7 +10,7 @@ The site delivers readable static HTML first. The 3D world and games load as enh
 - Work filters, seven-part case studies with scroll-following navigation, engineering notes, RSS, and a quiet reading view
 - Professional portrait, CV summary, PDF download, and worldwide remote contact channels
 - Mobile navigation drawer with keyboard focus handling and scroll restoration
-- **Card flip, Signal snake, and Orbit shooter** on the homepage and `/play`, with encouraging win/loss messages
+- **Card flip, Signal snake, Orbit shooter, and Racing Classic** on the homepage and `/play`, with encouraging win/loss messages
 - **Garden, Ocean, and Ember** palettes, each with light and dark colors; light and dark selections are remembered independently
 - Reduced motion, optional sound, blueprint mode, and adaptive 3D quality
 - Reusable **[`content/portfolio.json`](content/portfolio.json)** for identity, copy, work, contact details, CV, and game quotes
@@ -46,13 +46,14 @@ Shared Zod contracts validate JSON during builds. Keep the structure and replace
 
 ## Games and appearance
 
-| Game          | Goal                                     | Controls                                                               |
-| ------------- | ---------------------------------------- | ---------------------------------------------------------------------- |
-| Card flip     | Match six pairs within 18 moves          | Tap/click; Tab and Enter. No timer                                     |
-| Signal snake  | Collect ten signals without a collision  | Arrow keys/WASD with board focused, or direction buttons; Space pauses |
-| Orbit shooter | Clear fifteen targets before five escape | Tap/click targets; Tab and Enter/Space                                 |
+| Game           | Goal                                                         | Controls                                                                           |
+| -------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| Card flip      | Match six pairs within 18 moves                              | Tap/click; Tab and Enter. No timer                                                 |
+| Signal snake   | Collect ten signals without a collision                      | Arrow keys/WASD with board focused, or direction buttons; Space pauses             |
+| Orbit shooter  | Clear fifteen targets before five escape                     | Tap/click targets; Tab and Enter/Space                                             |
+| Racing Classic | Dodge traffic and pass twenty cars through five speed levels | Left/right arrows or A/D with screen focused; touch steering buttons; Space pauses |
 
-Rounds start on request and pause when the browser loses focus, the game leaves view, or a site dialog opens. Resume and restart are explicit. Switching games starts a fresh round. Results choose a message from your JSON quote lists. Scores stay in memory and are not sent to a server.
+Rounds start on request and pause when the browser loses focus, the game leaves view, or a site dialog opens. Resume and restart are explicit. Switching games starts a fresh round. Results choose a message from your JSON quote lists. Racing Classic remembers its best score on this device; scores are not sent to a server.
 
 Open **Experience settings** to select a palette. **Night Shift** changes mode. Each mode keeps its own palette selection in local storage. The initial mode follows the visitor’s system preference when no choice is saved. `site.defaultPalette` sets the initial palette for both modes.
 

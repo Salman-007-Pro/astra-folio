@@ -19,7 +19,7 @@
 }
 .arcade-menu {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   border-bottom: 1px solid var(--color-border-subtle);
 }
 .arcade-tab {
@@ -382,6 +382,15 @@
   }
 }
 @media (max-width: 640px) {
+  .arcade-menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .arcade-tab:nth-child(2) {
+    border-right: 0;
+  }
+  .arcade-tab:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
   .play-page {
     padding-top: 30px;
   }

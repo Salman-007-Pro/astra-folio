@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { GameSettings } from "@garden/content-schema";
 import {
   BOARD_SIZE,
@@ -17,71 +17,8 @@ import {
 } from "./engines";
 import "./arcade.css";
 
-function usePause(root: RefObject<HTMLDivElement | null>, running: boolean) {
-  const [paused, setPaused] = useState(false);
-  useEffect(() => {
-    if (!running) return;
-    const pause = () => setPaused(true);
-    const hidden = () => {
-      if (document.hidden) pause();
-    };
-    const dialogs = new MutationObserver(() => {
-      if (document.documentElement.classList.contains("dialog-open")) pause();
-    });
-    dialogs.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) pause();
-    });
-    const surface = root.current?.querySelector(".game-surface");
-    if (surface) observer.observe(surface);
-    document.addEventListener("visibilitychange", hidden);
-    window.addEventListener("blur", pause);
-    return () => {
-      observer.disconnect();
-      dialogs.disconnect();
-      document.removeEventListener("visibilitychange", hidden);
-      window.removeEventListener("blur", pause);
-    };
-  }, [root, running]);
-  return [paused, setPaused] as const;
-}
-function Result({
-  status,
-  settings,
-  restart,
-}: {
-  status: RoundStatus;
-  settings: GameSettings;
-  restart: () => void;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const quotes = status === "won" ? settings.winQuotes : settings.lossQuotes;
-  const [quote] = useState(
-    () => quotes[Math.floor(Math.random() * quotes.length)],
-  );
-  useEffect(() => {
-    ref.current?.focus({ preventScroll: true });
-  }, []);
-  return (
-    <div className="round-result" tabIndex={-1} ref={ref} role="status">
-      <span className="result-symbol" aria-hidden="true">
-        {status === "won" ? "✦" : "↻"}
-      </span>
-      <h3>
-        {status === "won"
-          ? "Beautifully played."
-          : "A new round, a new possibility."}
-      </h3>
-      <p>{quote}</p>
-      <button className="button" onClick={restart}>
-        Play again <span aria-hidden="true">↗</span>
-      </button>
-    </div>
-  );
-}
+import { usePause, Result } from "./shared";
+import Racing from "./Racing";
 function Controls({
   status,
   paused,
@@ -500,13 +437,16 @@ function Shooter({ settings }: { settings: GameSettings }) {
 }
 export default function Arcade({ settings }: { settings: GameSettings }) {
   const [active, setActive] = useState("memory");
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
   return (
-    <div className="arcade">
+    <div className="arcade" inert={!hydrated} aria-busy={!hydrated}>
       <div className="arcade-menu" aria-label="Choose a game" role="group">
         {[
           { id: "memory", title: "Card flip", glyph: "⌘" },
           { id: "snake", title: "Snake", glyph: "⌁" },
           { id: "shooter", title: "Shooter", glyph: "⊕" },
+          { id: "racing", title: "Racing Classic", glyph: "↔" },
         ].map((game, index) => (
           <button
             key={game.id}
@@ -524,8 +464,10 @@ export default function Arcade({ settings }: { settings: GameSettings }) {
         <Memory settings={settings} />
       ) : active === "snake" ? (
         <Snake settings={settings} />
-      ) : (
+      ) : active === "shooter" ? (
         <Shooter settings={settings} />
+      ) : (
+        <Racing settings={settings} />
       )}
       <div className="arcade-footnote">
         <span>PLAY A LITTLE. KEEP YOUR CURIOSITY.</span>

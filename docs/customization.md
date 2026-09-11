@@ -54,7 +54,7 @@ See the definitive fields in [`packages/content-schema/src/index.ts`](../package
 
 Edit `site.games.title`, `intro`, `winQuotes`, and `lossQuotes`. Both quote lists need at least one nonempty message. Short, original messages fit mobile layouts best. Results randomly choose a message from the appropriate list.
 
-Rules live in `apps/web/src/games/engines.ts`, React UI in `Arcade.tsx`, and styles in `arcade.css`. JSON controls visibility and editorial text, not executable behavior. Rounds stay in memory and reset when switching games or leaving the page.
+Rules live in `apps/web/src/games/engines.ts` and `racing-engine.ts`; React UI is in `Arcade.tsx` and `Racing.tsx`. JSON controls visibility and editorial text, not executable behavior. Rounds stay in memory and reset when switching games or leaving the page. Racing Classic keeps only a device-local best score under `kinetic-garden-racing-best-v1`. Its LCD screen and controls are styled in `racing.css`.
 
 ## Light and dark colors
 
