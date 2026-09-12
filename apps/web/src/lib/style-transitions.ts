@@ -1,16 +1,28 @@
 export const styleTransitions = [
-  { id: "fade", name: "Smooth Fade", description: "A quiet dissolve" },
-  { id: "fold", name: "Page Fold", description: "Turn a new leaf" },
   {
     id: "pixels",
     name: "Pixel Flip",
     description: "Ten tiles across. A ripple of flips.",
   },
-  { id: "curtain", name: "Curtain", description: "Open the next scene" },
   {
-    id: "circle",
-    name: "Circular Reveal",
-    description: "A new look, radiating out",
+    id: "shutters",
+    name: "Shutter Sweep",
+    description: "Alternating strips sweep across",
+  },
+  {
+    id: "slices",
+    name: "Diagonal Slice",
+    description: "Slanted panels cut to the next scene",
+  },
+  {
+    id: "mosaic",
+    name: "Mosaic Bloom",
+    description: "A mosaic expands from the centre",
+  },
+  {
+    id: "blinds",
+    name: "3D Blinds",
+    description: "Tall louvers turn in sequence",
   },
 ] as const;
 export type StyleTransition = (typeof styleTransitions)[number]["id"];
@@ -22,7 +34,7 @@ let generation = 0;
 
 export function transitionStyle(
   update: () => void,
-  effect: StyleTransition = "fade",
+  effect: StyleTransition = "pixels",
 ) {
   cancelActive();
   const current = ++generation;
@@ -40,7 +52,6 @@ export function transitionStyle(
   }
   const animations: Animation[] = [];
   let overlay: HTMLElement | undefined;
-  let view: ReturnType<Document["startViewTransition"]> | undefined;
   const cleanup = () => {
     animations.forEach((animation) => animation.cancel());
     overlay?.remove();
@@ -55,7 +66,6 @@ export function transitionStyle(
   };
   const cancel = () => {
     apply();
-    view?.skipTransition();
     cleanup();
   };
   const preferencesChanged = () => {
@@ -68,28 +78,10 @@ export function transitionStyle(
   document.addEventListener("visibilitychange", cancel);
   reduced.addEventListener("change", cancel);
 
-  if (effect !== "pixels" && document.startViewTransition) {
-    view = document.startViewTransition(apply);
-    void view.ready.catch(() => {});
-    void view.finished.then(cleanup, cleanup);
-    return;
-  }
-  if (effect !== "pixels") {
-    apply();
-    const animation = document
-      .querySelector("main")
-      ?.animate([{ opacity: 0.5 }, { opacity: 1 }], {
-        duration: 420,
-        easing: "ease-out",
-      });
-    if (animation) {
-      animations.push(animation);
-      void animation.finished.then(cleanup, cleanup);
-    } else cleanup();
-    return;
-  }
   overlay = document.createElement("div");
-  overlay.className = "style-pixel-overlay";
+  overlay.className = "style-effect-overlay";
+  if (effect === "pixels") overlay.classList.add("style-pixel-overlay");
+  overlay.dataset.effect = effect;
   overlay.setAttribute("aria-hidden", "true");
   overlay.setAttribute("popover", "manual");
   // A popover paints above the settings dialog without moving keyboard focus.
@@ -97,10 +89,19 @@ export function transitionStyle(
   if (typeof overlay.showPopover === "function") overlay.showPopover();
   else
     (document.querySelector("dialog[open]") || document.body).append(overlay);
-  const size = innerWidth / 10;
+  const columns = effect === "mosaic" ? 8 : 10;
+  const size = innerWidth / columns;
   const rows = Math.ceil(innerHeight / size);
   overlay.style.setProperty("--tile-size", `${size}px`);
-  const tiles = Array.from({ length: rows * 10 }, (_, index) => {
+  const count =
+    effect === "pixels" || effect === "mosaic"
+      ? rows * columns
+      : effect === "shutters"
+        ? 8
+        : effect === "slices"
+          ? 6
+          : 10;
+  const tiles = Array.from({ length: count }, (_, index) => {
     const tile = document.createElement("span");
     tile.style.setProperty("--tile-tone", `${(index % 10) * 2 + 82}%`);
     overlay?.append(tile);
@@ -108,20 +109,54 @@ export function transitionStyle(
   });
   const animateTiles = (reveal: boolean) =>
     tiles.map((tile, index) => {
-      const wave = ((index % 10) + Math.floor(index / 10)) / (rows + 8);
+      let delay = 0;
+      let hidden: Keyframe;
+      let covered: Keyframe = { transform: "none", opacity: 1 };
+      let outgoing: Keyframe;
+      if (effect === "pixels") {
+        delay = (((index % 10) + Math.floor(index / 10)) / (rows + 8)) * 220;
+        hidden = { transform: "perspective(500px) rotateY(90deg)", opacity: 0 };
+        covered = { transform: "perspective(500px) rotateY(0deg)", opacity: 1 };
+        outgoing = {
+          transform: "perspective(500px) rotateY(-90deg)",
+          opacity: 0,
+        };
+      } else if (effect === "shutters") {
+        delay = index * 35;
+        hidden = { transform: `translateX(${index % 2 ? "-" : ""}105%)` };
+        outgoing = { transform: `translateX(${index % 2 ? "" : "-"}105%)` };
+      } else if (effect === "slices") {
+        delay = index * 55;
+        hidden = { transform: "translateY(120vh) skewX(-16deg)" };
+        covered = { transform: "translateY(0) skewX(-16deg)", opacity: 1 };
+        outgoing = { transform: "translateY(-120vh) skewX(-16deg)" };
+      } else if (effect === "mosaic") {
+        delay =
+          (Math.hypot(
+            (index % columns) - (columns - 1) / 2,
+            Math.floor(index / columns) - (rows - 1) / 2,
+          ) /
+            Math.hypot(columns / 2, rows / 2)) *
+          260;
+        hidden = { transform: "scale(0) rotate(-70deg)", opacity: 0 };
+        outgoing = { transform: "scale(0) rotate(70deg)", opacity: 0 };
+      } else {
+        delay = index * 28;
+        hidden = {
+          transform: "perspective(900px) rotateY(-90deg)",
+          opacity: 0,
+        };
+        covered = { transform: "perspective(900px) rotateY(0deg)", opacity: 1 };
+        outgoing = {
+          transform: "perspective(900px) rotateY(90deg)",
+          opacity: 0,
+        };
+      }
       const animation = tile.animate(
-        reveal
-          ? [
-              { transform: "perspective(500px) rotateY(0deg)", opacity: 1 },
-              { transform: "perspective(500px) rotateY(-90deg)", opacity: 0 },
-            ]
-          : [
-              { transform: "perspective(500px) rotateY(90deg)", opacity: 0 },
-              { transform: "perspective(500px) rotateY(0deg)", opacity: 1 },
-            ],
+        reveal ? [covered, outgoing] : [hidden, covered],
         {
-          duration: 260,
-          delay: wave * 220,
+          duration: effect === "pixels" ? 260 : 330,
+          delay,
           easing: "cubic-bezier(.22,1,.36,1)",
           fill: "both",
         },

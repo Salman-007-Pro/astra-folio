@@ -1,0 +1,1256 @@
+/* Whole-page compositions. The original garden retains its existing layout. */
+html[data-style]:not([data-style="default"]) {
+  --color-bg-canvas: var(--look-canvas);
+  --color-bg-surface: var(--look-surface);
+  --color-text-primary: var(--look-ink);
+  --color-text-muted: var(--look-muted);
+  --color-border-subtle: color-mix(
+    in srgb,
+    var(--look-ink) 22%,
+    var(--look-canvas)
+  );
+  --color-section: var(--look-surface);
+  --color-accent-signal: var(--look-signal);
+  --color-focus: var(--look-signal);
+}
+html[data-style]:not([data-style="default"])[data-palette="ocean"] {
+  --color-accent-signal: color-mix(in srgb, var(--look-signal) 55%, #008aaa);
+}
+html[data-style]:not([data-style="default"])[data-palette="ember"] {
+  --color-accent-signal: color-mix(in srgb, var(--look-signal) 55%, #db674b);
+}
+html[data-style="cyberpunk"] {
+  --look-canvas: #e6f4ef;
+  --look-surface: #f5fff9;
+  --look-ink: #071e26;
+  --look-muted: #36565c;
+  --look-signal: #007560;
+}
+html[data-style="holographic"] {
+  --look-canvas: #eceaff;
+  --look-surface: #faf9ff;
+  --look-ink: #242047;
+  --look-muted: #595173;
+  --look-signal: #643ec5;
+}
+html[data-style="pixel"] {
+  --look-canvas: #d6e6c0;
+  --look-surface: #edf5db;
+  --look-ink: #243b27;
+  --look-muted: #465d36;
+  --look-signal: #315e21;
+}
+html[data-style="parallax"] {
+  --look-canvas: #dde8f2;
+  --look-surface: #f5f8fc;
+  --look-ink: #112b47;
+  --look-muted: #445e77;
+  --look-signal: #156bad;
+}
+html[data-style="glass"] {
+  --look-canvas: #d3e8ef;
+  --look-surface: #f4fbfe;
+  --look-ink: #153542;
+  --look-muted: #426474;
+  --look-signal: #086583;
+}
+html[data-style="neumorphism"] {
+  --look-canvas: #dde3e9;
+  --look-surface: #dde3e9;
+  --look-ink: #283648;
+  --look-muted: #505f71;
+  --look-signal: #365bc0;
+}
+html[data-style="paper"] {
+  --look-canvas: #cabea4;
+  --look-surface: #fff9e9;
+  --look-ink: #352e27;
+  --look-muted: #645548;
+  --look-signal: #a13921;
+}
+html[data-style="editorial"] {
+  --look-canvas: #fffdf8;
+  --look-surface: #f2efe7;
+  --look-ink: #201d1a;
+  --look-muted: #625d55;
+  --look-signal: #a4262c;
+}
+html[data-style="aurora"] {
+  --look-canvas: #e0e9f4;
+  --look-surface: #f7faff;
+  --look-ink: #173451;
+  --look-muted: #4b607c;
+  --look-signal: #225fad;
+}
+html[data-style="cartoon"] {
+  --look-canvas: #fff1a8;
+  --look-surface: #fffdf0;
+  --look-ink: #20213d;
+  --look-muted: #57516a;
+  --look-signal: #a4304c;
+}
+html[data-style="scrollytelling"] {
+  --look-canvas: #f0f2f2;
+  --look-surface: #ffffff;
+  --look-ink: #142b33;
+  --look-muted: #496168;
+  --look-signal: #16666c;
+}
+html[data-style="vintage"] {
+  --look-canvas: #f1dcb1;
+  --look-surface: #faebce;
+  --look-ink: #532d20;
+  --look-muted: #7b5238;
+  --look-signal: #a43620;
+}
+html[data-style="clay"] {
+  --look-canvas: #ead9f0;
+  --look-surface: #f7edf9;
+  --look-ink: #493453;
+  --look-muted: #735e7e;
+  --look-signal: #823bae;
+}
+html[data-style="doodle"] {
+  --look-canvas: #fffdf5;
+  --look-surface: #fcf6dc;
+  --look-ink: #283842;
+  --look-muted: #59656b;
+  --look-signal: #275eaa;
+}
+html[data-theme="night"]:not([data-style="default"]) {
+  --look-canvas: #111a28;
+  --look-surface: #1b293c;
+  --look-ink: #ecf3fc;
+  --look-muted: #b2c2d6;
+  --look-signal: #9ac9ff;
+}
+html[data-theme="night"][data-style="cyberpunk"] {
+  --look-canvas: #070f18;
+  --look-surface: #0b202a;
+  --look-ink: #dcfff3;
+  --look-muted: #91bfb6;
+  --look-signal: #7effa6;
+}
+html[data-theme="night"][data-style="holographic"] {
+  --look-canvas: #18112c;
+  --look-surface: #291c40;
+  --look-ink: #f5eaff;
+  --look-muted: #c7b7e3;
+  --look-signal: #deb1ff;
+}
+html[data-theme="night"][data-style="pixel"] {
+  --look-canvas: #151f16;
+  --look-surface: #243126;
+  --look-ink: #e0f6ae;
+  --look-muted: #afc496;
+  --look-signal: #c3f374;
+}
+html[data-theme="night"][data-style="glass"] {
+  --look-canvas: #082331;
+  --look-surface: #143b4c;
+  --look-ink: #e4faff;
+  --look-muted: #a4c9d6;
+  --look-signal: #80dfff;
+}
+html[data-theme="night"][data-style="neumorphism"] {
+  --look-canvas: #252d38;
+  --look-surface: #252d38;
+}
+html[data-theme="night"][data-style="paper"] {
+  --look-canvas: #211c16;
+  --look-surface: #352d23;
+  --look-ink: #f8ead4;
+  --look-muted: #c7b59a;
+  --look-signal: #ffa17c;
+}
+html[data-theme="night"][data-style="editorial"] {
+  --look-canvas: #191918;
+  --look-surface: #252522;
+  --look-ink: #f5f2e9;
+  --look-muted: #bab7af;
+  --look-signal: #ff918a;
+}
+html[data-theme="night"][data-style="aurora"] {
+  --look-canvas: #081923;
+  --look-surface: #102c3e;
+  --look-signal: #7fe7cb;
+}
+html[data-theme="night"][data-style="cartoon"] {
+  --look-canvas: #25203e;
+  --look-surface: #373052;
+  --look-ink: #fff0bd;
+  --look-muted: #d4bed8;
+  --look-signal: #ffabc5;
+}
+html[data-theme="night"][data-style="vintage"] {
+  --look-canvas: #30241d;
+  --look-surface: #453225;
+  --look-ink: #f6dfad;
+  --look-muted: #d1b88d;
+  --look-signal: #ffb175;
+}
+html[data-theme="night"][data-style="clay"] {
+  --look-canvas: #2a2039;
+  --look-surface: #403052;
+  --look-ink: #f5e6ff;
+  --look-muted: #cbb4d9;
+  --look-signal: #e0b0ff;
+}
+html[data-theme="night"][data-style="doodle"] {
+  --look-canvas: #152c2b;
+  --look-surface: #213c38;
+  --look-ink: #f0f5d7;
+  --look-muted: #b3c5b4;
+  --look-signal: #c9e386;
+}
+.style-atmosphere {
+  display: none;
+}
+html:not([data-style="default"]) .hero {
+  gap: 32px;
+}
+html:not([data-style="default"]) .hero-copy {
+  min-width: 0;
+}
+html:not([data-style="default"]) .hero-scene-slot {
+  display: block;
+  min-width: 0;
+  height: 480px;
+}
+html:not([data-style="default"]) .hero-bottom {
+  grid-column: 1 / -1;
+}
+html:not([data-style="default"])
+  :is(.hero, .page-intro, .section, .page-content) {
+  background-color: transparent;
+}
+html:not([data-style="default"]) .site-footer {
+  background: var(--look-surface);
+  border-top: 2px solid var(--color-border-subtle);
+}
+html:not([data-style="default"]) .system-diagram {
+  background: color-mix(in srgb, var(--look-signal) 12%, var(--look-surface));
+}
+html:not([data-style="default"]) .project-item {
+  min-width: 0;
+}
+html:not([data-style="default"]) .section-header {
+  align-items: start;
+}
+html:not([data-style="default"]) .hero h1 {
+  font-size: clamp(3.5rem, 5.4vw, 6rem);
+}
+@media (min-width: 1024px) {
+  html:not([data-style="default"]) .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+  }
+  html:not([data-style="default"]) .hero-copy {
+    padding-bottom: 20px;
+    max-width: none;
+  }
+}
+
+/* Console: persistent left navigation, gridded workbench, indexed sections. */
+html[data-style="cyberpunk"] body {
+  background-image:
+    linear-gradient(var(--style-tint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--style-tint) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+html[data-style="cyberpunk"]
+  :is(.hero-copy, .page-intro, .section-header, .collaboration-panel) {
+  border: 1px solid var(--style-edge);
+  padding: 28px;
+  background: var(--look-canvas);
+}
+html[data-style="cyberpunk"] .hero-copy {
+  border-left: 6px solid var(--look-signal);
+}
+html[data-style="cyberpunk"] .hero-scene-slot {
+  background: radial-gradient(ellipse, var(--style-tint), transparent 70%);
+  border-block: 1px solid var(--look-signal);
+}
+html[data-style="cyberpunk"] .section {
+  border-top: 1px solid var(--look-signal);
+}
+html[data-style="cyberpunk"] .project-item {
+  padding: 14px;
+  border: 1px solid var(--style-edge);
+  background: var(--look-canvas);
+}
+html[data-style="cyberpunk"] .proof-strip {
+  background: var(--look-signal);
+  color: var(--look-canvas);
+}
+html[data-style="cyberpunk"] .proof-strip :is(span, i) {
+  color: inherit;
+}
+@media (min-width: 1200px) {
+  html[data-style="cyberpunk"] body {
+    padding-left: 220px;
+  }
+  html[data-style="cyberpunk"] .site-header {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 220px;
+    height: 100dvh;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: start;
+    padding: 40px 22px;
+    background: var(--look-canvas);
+    border-right: 1px solid var(--look-signal);
+  }
+  html[data-style="cyberpunk"] .desktop-nav {
+    flex-direction: column;
+    margin-top: 60px;
+    gap: 0;
+  }
+  html[data-style="cyberpunk"] .desktop-nav a {
+    border-bottom: 1px solid var(--color-border-subtle);
+    padding: 14px 0;
+    font-family: "DM Mono", monospace;
+  }
+  html[data-style="cyberpunk"] .header-actions {
+    flex-direction: column;
+    margin-top: auto;
+    gap: 24px;
+  }
+  html[data-style="cyberpunk"] .hero {
+    padding-inline: 32px;
+  }
+  html[data-style="cyberpunk"] .hero h1 {
+    font-size: clamp(3rem, 4.5vw, 5.5rem);
+  }
+}
+
+/* Foil gallery: central masthead and an asymmetric exhibition grid. */
+html[data-style="holographic"] body {
+  background-image: linear-gradient(
+    125deg,
+    #7af5e022,
+    #d373ff33 40%,
+    #f6b1cc33 65%,
+    #8faeff33
+  );
+}
+html[data-style="holographic"] .site-header {
+  margin: 20px 3% 0;
+  height: 84px;
+  border: 1px solid var(--style-edge);
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--look-surface) 70%, transparent);
+}
+html[data-style="holographic"] .hero-copy {
+  text-align: center;
+}
+html[data-style="holographic"] .hero-copy :is(.eyebrow, .hero-ctas) {
+  justify-content: center;
+}
+html[data-style="holographic"] .hero-description {
+  margin-inline: auto;
+  max-width: 560px;
+}
+html[data-style="holographic"] .project-item {
+  padding: 18px;
+  border-radius: 24px;
+  background: linear-gradient(
+    135deg,
+    #a9f1ec55,
+    var(--look-surface) 40%,
+    #e9b2ff44
+  );
+  border: 1px solid var(--style-edge);
+}
+html[data-style="holographic"] .page-intro {
+  text-align: center;
+  padding-block: 100px;
+}
+html[data-style="holographic"] .page-intro :is(h1, p, .eyebrow) {
+  margin-inline: auto;
+  justify-content: center;
+}
+@media (min-width: 1024px) {
+  html[data-style="holographic"] .hero {
+    grid-template-columns: 1fr;
+  }
+  html[data-style="holographic"] .hero-copy {
+    max-width: 980px;
+    margin-inline: auto;
+  }
+  html[data-style="holographic"] .hero-scene-slot {
+    width: 85%;
+    height: 400px;
+    margin-inline: auto;
+  }
+  html[data-style="holographic"] .work-list {
+    grid-template-columns: 1.3fr 1fr;
+    gap: 64px 28px;
+  }
+  html[data-style="holographic"] .project-item:nth-child(even) {
+    margin-top: 100px;
+  }
+}
+
+/* Arcade: inset screen, cartridge grid and thick frame around the page. */
+html[data-style="pixel"] body {
+  margin: 16px;
+  border: 6px double var(--look-ink);
+  box-shadow: 8px 8px 0 var(--look-ink);
+}
+html[data-style="pixel"] .site-header {
+  border-bottom: 6px double var(--look-ink);
+  background: var(--look-ink);
+  color: var(--look-surface);
+}
+html[data-style="pixel"] .hero {
+  border: 8px solid var(--look-surface);
+  box-shadow: inset 0 0 0 3px var(--look-ink);
+}
+html[data-style="pixel"] .hero-copy {
+  padding: 24px;
+}
+html[data-style="pixel"] .hero-scene-slot {
+  border: 4px double var(--look-ink);
+  background: repeating-linear-gradient(0deg, #0001 0 1px, transparent 1px 4px);
+}
+html[data-style="pixel"] .section-header {
+  display: block;
+}
+html[data-style="pixel"] .section-header h2 {
+  max-width: 950px;
+}
+html[data-style="pixel"] .section-header p {
+  margin-top: 24px;
+}
+html[data-style="pixel"] .project-item {
+  padding: 18px;
+  border: 3px solid var(--look-ink);
+  background: var(--look-surface);
+  box-shadow: 6px 6px var(--look-ink);
+}
+html[data-style="pixel"] .project-heading {
+  border-bottom: 2px solid var(--look-ink);
+  padding-bottom: 15px;
+}
+html[data-style="pixel"] .proof-strip {
+  border-block: 6px double var(--look-ink);
+}
+
+/* Spatial scroll: three independent geometric planes behind tall chapters. */
+html:is([data-style="parallax"], [data-style="glass"], [data-style="aurora"])
+.style-atmosphere {
+  display: block;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+html:is([data-style="parallax"], [data-style="glass"], [data-style="aurora"])
+  body {
+  isolation: isolate;
+}
+.style-atmosphere span {
+  position: absolute;
+  display: block;
+}
+html[data-style="parallax"] .style-atmosphere span:nth-child(1) {
+  inset: -20%;
+  background: repeating-linear-gradient(
+    115deg,
+    transparent 0 180px,
+    var(--style-edge) 181px 182px,
+    transparent 183px 330px
+  );
+  background-position: 0 calc(var(--style-depth, 0px) * -0.3);
+}
+html[data-style="parallax"] .style-atmosphere span:nth-child(2) {
+  width: 75vw;
+  height: 75vw;
+  right: -25vw;
+  top: 10vh;
+  border: clamp(40px, 8vw, 140px) solid var(--style-tint);
+  border-radius: 50%;
+  transform: translateY(
+    clamp(-50vh, calc(var(--style-depth, 0px) * -0.35), 0px)
+  );
+}
+html[data-style="parallax"] .style-atmosphere span:nth-child(3) {
+  width: 32vw;
+  height: 32vw;
+  left: -12vw;
+  top: 70vh;
+  border: 2px solid var(--look-signal);
+  transform: translateY(clamp(-40vh, calc(var(--style-depth, 0px) * -0.2), 0px))
+    rotate(30deg);
+}
+html[data-style="parallax"] .hero {
+  min-height: 105svh;
+}
+html[data-style="parallax"] .hero-copy {
+  padding: 40px;
+  background: color-mix(in srgb, var(--look-surface) 92%, transparent);
+  border-radius: 4px;
+}
+html[data-style="parallax"] .section {
+  padding-block: 150px;
+}
+html[data-style="parallax"] .project-item {
+  padding: 20px;
+  background: var(--look-surface);
+  box-shadow: 0 40px 80px #102b4726;
+}
+html[data-style="parallax"] .section-header {
+  max-width: 1100px;
+}
+html[data-style="parallax"] .project-art {
+  transform: translateY(var(--card-depth, 0px)) scale(1.04);
+}
+html[data-style="parallax"] .project-item > a {
+  display: block;
+  overflow: hidden;
+}
+@media (min-width: 1024px) {
+  html[data-style="parallax"] .hero-copy {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  html[data-style="parallax"] .hero-scene-slot {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  html[data-style="parallax"] .work-list {
+    gap: 140px 6%;
+    align-items: start;
+  }
+  html[data-style="parallax"] .project-item:nth-child(even) {
+    margin-top: 180px;
+  }
+}
+
+/* Glass desktop: floating dock and translucent, separated window surfaces. */
+html[data-style="glass"] .style-atmosphere {
+  background:
+    radial-gradient(
+      at var(--glass-x) var(--glass-y),
+      #55d6d988,
+      transparent 60%
+    ),
+    radial-gradient(at 90% 80%, #818aed99, transparent 65%);
+}
+html[data-style="glass"] .site-header {
+  margin: 18px 5%;
+  height: 80px;
+  border-radius: 100px;
+  background: color-mix(in srgb, var(--look-surface) 70%, transparent);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    inset 0 2px 2px #fff9,
+    0 10px 40px #1235;
+}
+html[data-style="glass"] :is(.hero, .page-intro, .section, .page-content) {
+  margin: 28px 4%;
+  padding: 48px 4%;
+  border-radius: 36px;
+  border: 1px solid var(--style-edge);
+  background: color-mix(in srgb, var(--look-surface) 70%, transparent);
+  backdrop-filter: blur(20px);
+  box-shadow:
+    inset 0 1px #fffa,
+    0 12px 36px #1232;
+}
+html[data-style="glass"] .hero-copy {
+  padding: 32px 0;
+}
+html[data-style="glass"] .hero-scene-slot {
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--look-surface) 50%, transparent);
+  box-shadow: inset 0 2px 10px #fff8;
+}
+html[data-style="glass"] .project-item {
+  padding: 20px;
+  border-radius: 26px;
+  background: color-mix(in srgb, var(--look-surface) 65%, transparent);
+}
+
+/* Sculpted workstation: recessed canvas, raised control rail and inset wells. */
+html[data-style="neumorphism"] {
+  --raised:
+    12px 12px 24px color-mix(in srgb, var(--look-ink) 16%, var(--look-canvas)),
+    -12px -12px 24px color-mix(in srgb, white 65%, var(--look-canvas));
+}
+html[data-style="neumorphism"][data-theme="night"] {
+  --raised: 12px 12px 24px #141b23, -12px -12px 24px #364352;
+}
+html[data-style="neumorphism"] .site-header {
+  margin: 24px 4%;
+  border: 0;
+  border-radius: 28px;
+  box-shadow: var(--raised);
+}
+html[data-style="neumorphism"]
+  :is(.hero-copy, .project-item, .collaboration-panel, .about-sidebar) {
+  padding: 32px;
+  border-radius: 32px;
+  background: var(--look-canvas);
+  box-shadow: var(--raised);
+}
+html[data-style="neumorphism"] .hero-scene-slot {
+  border-radius: 50%;
+  box-shadow:
+    inset 12px 12px 25px #172c4826,
+    inset -10px -10px 22px #ffffff35;
+}
+html[data-style="neumorphism"] .section-header {
+  border: 0;
+  padding-bottom: 32px;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 12px 16px -16px var(--look-ink);
+}
+html[data-style="neumorphism"] .work-list {
+  gap: 54px;
+}
+html[data-style="neumorphism"] .project-art {
+  border-radius: 24px;
+}
+
+/* Scrapbook: a paper stack on a desk, taped portrait and pasted work samples. */
+html[data-style="paper"] main {
+  margin: 36px auto;
+  max-width: 1320px;
+  background: var(--look-surface);
+  box-shadow:
+    10px 12px #0002,
+    -7px 5px color-mix(in srgb, var(--look-surface) 85%, var(--look-ink));
+}
+html[data-style="paper"] .site-header {
+  border-bottom: 2px dashed var(--look-ink);
+}
+html[data-style="paper"] .hero-copy {
+  border-bottom: 3px double var(--look-ink);
+  padding: 30px 12px;
+}
+html[data-style="paper"] .project-item {
+  padding: 18px 18px 28px;
+  background: var(--look-surface);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: 4px 5px 0 #0002;
+}
+html[data-style="paper"] .project-item:nth-child(even) {
+  rotate: 1deg;
+}
+html[data-style="paper"] .project-item:nth-child(odd) {
+  rotate: -1deg;
+}
+html[data-style="paper"] .portrait {
+  position: relative;
+  rotate: -2deg;
+  padding: 16px;
+  background: var(--look-surface);
+  box-shadow: 4px 7px 0 #0002;
+}
+html[data-style="paper"] .portrait::before {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 30px;
+  top: -10px;
+  left: 30%;
+  background: #dcb365aa;
+  z-index: 1;
+  rotate: 5deg;
+}
+html[data-style="paper"] .section {
+  background-image: repeating-linear-gradient(
+    transparent 0 39px,
+    var(--style-tint) 39px 40px
+  );
+}
+
+/* Magazine: oversized masthead, long rules, alternating image/text rows. */
+html[data-style="editorial"] .site-header {
+  margin-inline: 5%;
+  padding-inline: 0;
+  border-bottom: 4px double var(--look-ink);
+}
+html[data-style="editorial"] .hero-copy {
+  border-bottom: 1px solid var(--look-ink);
+}
+html[data-style="editorial"] .hero h1 {
+  font-size: clamp(4rem, 8vw, 8rem);
+  line-height: 0.98;
+}
+html[data-style="editorial"] .page-intro h1 {
+  max-width: 1100px;
+  font-size: clamp(3rem, 7vw, 7rem);
+}
+html[data-style="editorial"] .hero-description {
+  max-width: 620px;
+}
+html[data-style="editorial"] .work-list {
+  grid-template-columns: 1fr;
+}
+html[data-style="editorial"] .project-item {
+  padding-block: 36px;
+  border-top: 2px solid var(--look-ink);
+}
+html[data-style="editorial"] .project-number {
+  font-size: 36px;
+  font-family: Georgia, serif;
+}
+html[data-style="editorial"] .portrait-frame img {
+  filter: grayscale(1);
+}
+@media (min-width: 1024px) {
+  html[data-style="editorial"] .hero {
+    grid-template-columns: 1.5fr 1fr;
+  }
+  html[data-style="editorial"] .project-item > a {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 0 5%;
+    align-items: center;
+  }
+  html[data-style="editorial"] .project-art {
+    grid-row: 1 / 3;
+    height: 400px;
+  }
+  html[data-style="editorial"] .project-item:nth-child(even) .project-art {
+    grid-column: 2;
+  }
+  html[data-style="editorial"] .project-heading {
+    align-self: end;
+  }
+  html[data-style="editorial"] .project-meta {
+    align-self: start;
+    margin-top: 30px;
+  }
+}
+
+/* Aurora: panoramic light fields and narrow floating content islands. */
+html[data-style="aurora"] .style-atmosphere {
+  background:
+    radial-gradient(ellipse at 15% 20%, #13c8a244, transparent 55%),
+    radial-gradient(ellipse at 80% 50%, #6b83ec66, transparent 60%),
+    radial-gradient(ellipse at 20% 90%, #985fdb44, transparent 60%);
+}
+html[data-style="aurora"] .hero-copy {
+  text-align: center;
+  max-width: 900px;
+  margin: auto;
+}
+html[data-style="aurora"] .hero-copy :is(.eyebrow, .hero-ctas) {
+  justify-content: center;
+}
+html[data-style="aurora"] .hero-description {
+  margin-inline: auto;
+  max-width: 560px;
+}
+html[data-style="aurora"] .section {
+  margin: 60px 6%;
+  padding: 70px 5%;
+  border: 1px solid var(--style-edge);
+  border-radius: 48px;
+  background: color-mix(in srgb, var(--look-surface) 80%, transparent);
+}
+html[data-style="aurora"] .page-intro {
+  padding-block: 120px;
+}
+html[data-style="aurora"] .project-art {
+  border-radius: 50px 50px 6px 6px;
+}
+@media (min-width: 1024px) {
+  html[data-style="aurora"] .hero {
+    grid-template-columns: 1fr;
+  }
+  html[data-style="aurora"] .hero-scene-slot {
+    height: 380px;
+    width: 90%;
+    margin: auto;
+  }
+  html[data-style="aurora"] .section-header {
+    display: block;
+    text-align: center;
+  }
+  html[data-style="aurora"] .section-header :is(p, .eyebrow) {
+    margin: 24px auto;
+    justify-content: center;
+  }
+}
+
+/* Comic: oversized speech panels, ink borders, punchy alternating chapters. */
+html[data-style="cartoon"] .site-header {
+  border-bottom: 4px solid var(--look-ink);
+  background: var(--look-surface);
+}
+html[data-style="cartoon"] .hero-copy {
+  padding: 36px;
+  border: 4px solid var(--look-ink);
+  border-radius: 48px 48px 48px 4px;
+  background: var(--look-surface);
+  box-shadow: 9px 9px var(--look-ink);
+}
+html[data-style="cartoon"] .hero-scene-slot {
+  border: 4px solid var(--look-ink);
+  border-radius: 50% 50% 15% 40%;
+  background: color-mix(in srgb, var(--look-signal) 18%, var(--look-surface));
+}
+html[data-style="cartoon"] .section {
+  border-top: 4px solid var(--look-ink);
+}
+html[data-style="cartoon"] .section:nth-of-type(even) {
+  background: color-mix(in srgb, var(--look-signal) 12%, var(--look-surface));
+}
+html[data-style="cartoon"] .project-item {
+  padding: 20px;
+  border: 3px solid var(--look-ink);
+  border-radius: 20px;
+  background: var(--look-surface);
+  box-shadow: 7px 7px var(--look-ink);
+}
+html[data-style="cartoon"] .proof-strip {
+  border-block: 4px solid var(--look-ink);
+  background: var(--look-signal);
+  color: var(--look-surface);
+}
+html[data-style="cartoon"] .proof-strip :is(span, i) {
+  color: inherit;
+}
+
+/* Reading journey: sticky chapter title beside a single flowing column. */
+html[data-style="scrollytelling"] .hero {
+  min-height: 110svh;
+}
+html[data-style="scrollytelling"] .hero-copy {
+  border-left: 4px solid var(--look-signal);
+  padding: 24px 40px;
+}
+html[data-style="scrollytelling"] .work-list {
+  grid-template-columns: 1fr;
+  gap: 90px;
+}
+html[data-style="scrollytelling"] .section-number {
+  font-size: 38px;
+  line-height: 1;
+}
+html[data-style="scrollytelling"] .section {
+  padding-block: 130px;
+}
+@media (min-width: 1200px) {
+  html[data-style="scrollytelling"] .section:has(> .section-header) {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+    gap: 60px;
+    align-items: start;
+  }
+  html[data-style="scrollytelling"] .section > .section-header {
+    display: block;
+    position: sticky;
+    top: 50px;
+    grid-row: span 2;
+  }
+  html[data-style="scrollytelling"] .section-header h2 {
+    font-size: clamp(2.5rem, 4vw, 4rem);
+  }
+  html[data-style="scrollytelling"] .section-header p {
+    margin: 26px 0;
+  }
+}
+
+/* Vintage poster: centered title, striped stock and double-rule framing. */
+html[data-style="vintage"] body {
+  border: 12px solid var(--look-ink);
+}
+html[data-style="vintage"] .site-header {
+  border-bottom: 6px double var(--look-ink);
+}
+html[data-style="vintage"] .hero {
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 9%,
+    #ab532a0a 9% 10%
+  );
+}
+html[data-style="vintage"] .hero-copy {
+  text-align: center;
+  max-width: 980px;
+  margin: auto;
+  padding: 35px;
+  border-block: 6px double var(--look-ink);
+}
+html[data-style="vintage"] .hero-copy :is(.eyebrow, .hero-ctas) {
+  justify-content: center;
+}
+html[data-style="vintage"] .hero-description {
+  margin-inline: auto;
+}
+html[data-style="vintage"] .project-item {
+  border: 5px double var(--look-ink);
+  padding: 20px;
+  background: var(--look-surface);
+}
+html[data-style="vintage"] .portrait-frame img {
+  filter: sepia(0.6) saturate(0.65);
+}
+html[data-style="vintage"] .section {
+  border-top: 6px double var(--look-ink);
+}
+@media (min-width: 1024px) {
+  html[data-style="vintage"] .hero {
+    grid-template-columns: 1fr;
+  }
+  html[data-style="vintage"] .hero-scene-slot {
+    height: 380px;
+    width: 85%;
+    margin: auto;
+  }
+}
+
+/* Clay: a collection of inflated islands on a saturated lilac canvas. */
+html[data-style="clay"] .site-header {
+  margin: 24px 5%;
+  height: 90px;
+  border-radius: 40px;
+  background: var(--look-surface);
+  box-shadow: var(--style-shadow);
+}
+html[data-style="clay"] .hero-copy {
+  padding: 40px;
+  border-radius: 50px;
+  background: var(--look-surface);
+  box-shadow: var(--style-shadow);
+}
+html[data-style="clay"] .hero-scene-slot {
+  border-radius: 38% 55% 35% 45%;
+  background: color-mix(in srgb, var(--look-signal) 15%, var(--look-surface));
+  box-shadow: var(--style-shadow);
+}
+html[data-style="clay"] .project-item {
+  padding: 28px;
+  border-radius: 38px;
+  background: var(--look-surface);
+  box-shadow: var(--style-shadow);
+}
+html[data-style="clay"] .section {
+  margin: 45px 4%;
+  padding: 65px 4%;
+  border: 0;
+  border-radius: 50px;
+  background: color-mix(in srgb, var(--look-surface) 60%, var(--look-canvas));
+}
+html[data-style="clay"] .work-list {
+  gap: 44px;
+}
+
+/* Notebook: ruled pages, a margin rail and loosely mounted entries. */
+html[data-style="doodle"] body {
+  background-image: repeating-linear-gradient(
+    transparent 0 39px,
+    var(--style-tint) 39px 40px
+  );
+}
+html[data-style="doodle"] main {
+  border-left: 2px solid color-mix(in srgb, var(--look-signal) 50%, transparent);
+  margin-left: 5%;
+}
+html[data-style="doodle"] .site-header {
+  border-bottom: 2px dashed var(--look-ink);
+}
+html[data-style="doodle"] .hero-copy {
+  padding: 20px;
+}
+html[data-style="doodle"] .hero-scene-slot {
+  border: 2px dashed var(--look-signal);
+  border-radius: 46% 40% 43% 38%;
+}
+html[data-style="doodle"] .project-item {
+  padding: 24px;
+  border: 2px solid var(--look-ink);
+  border-radius: 4% 3% 5% 2%;
+  background: var(--look-surface);
+}
+html[data-style="doodle"] .section-header {
+  display: block;
+}
+html[data-style="doodle"] .section-header p {
+  margin-top: 24px;
+}
+html[data-style="doodle"] .project-heading {
+  text-decoration: underline wavy var(--look-signal);
+  text-underline-offset: 8px;
+}
+@media (min-width: 1024px) {
+  html[data-style="doodle"] .hero-copy {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  html[data-style="doodle"] .hero-scene-slot {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+/* Smaller screens retain the visual worlds while keeping a clear reading order. */
+@media (max-width: 1023px) {
+  html:not([data-style="default"]) .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 36px 6% 0;
+    gap: 30px;
+  }
+  html:not([data-style="default"]) .hero-copy {
+    width: 100%;
+    max-width: none;
+    padding: 26px 20px;
+  }
+  html:not([data-style="default"]) .hero h1 {
+    font-size: clamp(2.25rem, 8.7vw, 4.5rem);
+  }
+  html:not([data-style="default"]) .hero-scene-slot {
+    height: 390px;
+    width: 100%;
+    margin: 0;
+  }
+  html:not([data-style="default"]) .hero-bottom {
+    margin-top: 0;
+  }
+  html:not([data-style="default"]) .section {
+    padding-block: 70px;
+  }
+  html:not([data-style="default"]) .page-intro {
+    padding: 55px 6%;
+  }
+  html:is([data-style="paper"], [data-style="pixel"], [data-style="vintage"])
+    body {
+    margin: 0;
+    border-width: 4px;
+    box-shadow: none;
+  }
+  html[data-style="paper"] main {
+    margin: 15px;
+  }
+  html:is(
+      [data-style="glass"],
+      [data-style="clay"],
+      [data-style="holographic"],
+      [data-style="neumorphism"]
+    )
+    .site-header {
+    padding-inline: 20px;
+    margin-inline: 16px;
+    border-radius: 20px;
+  }
+  html:is([data-style="glass"], [data-style="clay"], [data-style="aurora"])
+    :is(.hero, .page-intro, .section, .page-content) {
+    margin-inline: 12px;
+    border-radius: 24px;
+  }
+  html:not([data-style="default"]) .work-list {
+    gap: 38px;
+  }
+  html:not([data-style="default"]) .project-item {
+    padding: 12px;
+  }
+  html[data-style="editorial"] .project-item {
+    padding: 24px 0;
+  }
+  html[data-style="parallax"] .style-atmosphere span:nth-child(2) {
+    width: 130vw;
+    height: 130vw;
+    right: -75vw;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-style="parallax"] :is(.style-atmosphere span, .project-art) {
+    transform: none;
+  }
+}
+html[data-style="parallax"][data-motion="off"]
+  :is(.style-atmosphere span, .project-art) {
+  transform: none;
+}
+@media print {
+  html[data-style] body,
+  html[data-style] main {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+  }
+  .style-atmosphere {
+    display: none !important;
+  }
+}
+
+/* Carry each composition through biography, writing, career and contact routes. */
+html:not([data-style="default"]) .contact-section .eyebrow {
+  color: var(--look-signal);
+}
+html:not([data-style="default"]) .contact-orb {
+  background: var(--look-ink);
+  color: var(--look-canvas);
+}
+html:is([data-style="cyberpunk"], [data-style="pixel"]) .contact-orb {
+  border-radius: 0;
+  border: 4px double var(--look-signal);
+}
+html:is(
+    [data-style="cartoon"],
+    [data-style="clay"],
+    [data-style="glass"],
+    [data-style="neumorphism"],
+    [data-style="holographic"]
+  )
+  .writing-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 24px;
+}
+html:is(
+    [data-style="cartoon"],
+    [data-style="clay"],
+    [data-style="glass"],
+    [data-style="neumorphism"],
+    [data-style="holographic"]
+  )
+  .writing-item {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 24px;
+  padding: 28px;
+  border: 1px solid var(--style-edge);
+  border-radius: var(--style-radius);
+  background: var(--look-surface);
+  box-shadow: var(--style-shadow);
+}
+html:is(
+    [data-style="cartoon"],
+    [data-style="clay"],
+    [data-style="glass"],
+    [data-style="neumorphism"],
+    [data-style="holographic"]
+  )
+  .writing-item
+  h3 {
+  margin-top: 16px;
+}
+html:is([data-style="cyberpunk"], [data-style="pixel"])
+  .experience-list
+  details {
+  margin-block: 18px;
+  padding: 20px;
+  border: 1px solid var(--look-signal);
+  background: var(--look-surface);
+}
+html:is([data-style="paper"], [data-style="doodle"]) .writing-item {
+  padding: 30px 16px;
+  margin-block: 22px;
+  border: 1px dashed var(--look-ink);
+  background: var(--look-surface);
+}
+html[data-style="cartoon"] .portrait-frame {
+  border: 4px solid var(--look-ink);
+  border-radius: 24px;
+  box-shadow: 8px 8px var(--look-ink);
+}
+html:is([data-style="glass"], [data-style="clay"], [data-style="neumorphism"])
+  .portrait-frame {
+  border-radius: 40px;
+  padding: 18px;
+  box-shadow: var(--style-shadow);
+}
+html:is([data-style="glass"], [data-style="clay"], [data-style="neumorphism"])
+  .portrait-frame
+  img {
+  border-radius: 28px;
+}
+html:is([data-style="pixel"], [data-style="cyberpunk"]) .portrait-frame {
+  border: 4px double var(--look-signal);
+  padding: 16px;
+  border-radius: 0;
+}
+html[data-style="holographic"] .portrait-frame {
+  padding: 18px;
+  border-radius: 200px 200px 24px 24px;
+  background: linear-gradient(130deg, #99ecdc, #d0a4f4, #97dcef);
+}
+html[data-style="holographic"] .portrait-frame img {
+  border-radius: 190px 190px 16px 16px;
+}
+html[data-style="parallax"] .portrait {
+  box-shadow: 24px 24px 0 var(--style-tint);
+}
+@media (min-width: 1024px) {
+  html:is(
+      [data-style="parallax"],
+      [data-style="doodle"],
+      [data-style="vintage"]
+    )
+    .about-intro {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  }
+  html:is(
+      [data-style="parallax"],
+      [data-style="doodle"],
+      [data-style="vintage"]
+    )
+    .about-intro
+    > div {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  html:is(
+      [data-style="parallax"],
+      [data-style="doodle"],
+      [data-style="vintage"]
+    )
+    .about-intro
+    > .portrait {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+  html:is([data-style="holographic"], [data-style="aurora"]) .about-story {
+    grid-template-columns: 1fr;
+    max-width: 1000px;
+    margin: auto;
+  }
+  html:is([data-style="holographic"], [data-style="aurora"]) .about-sidebar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    padding: 32px;
+    border: 1px solid var(--style-edge);
+  }
+  html:is([data-style="editorial"], [data-style="paper"]) .about-story {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.5fr);
+  }
+  html:is([data-style="editorial"], [data-style="paper"]) .about-story .prose {
+    border-left: 1px solid var(--look-ink);
+    padding-left: 50px;
+  }
+  html:is([data-style="cartoon"], [data-style="pixel"]) .contact-intro-grid {
+    grid-template-columns: 1fr;
+  }
+  html:is([data-style="cartoon"], [data-style="pixel"]) .collaboration-panel {
+    max-width: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  html:is([data-style="glass"], [data-style="aurora"], [data-style="clay"])
+    .contact-headline {
+    justify-content: center;
+    text-align: center;
+  }
+  html:is([data-style="glass"], [data-style="aurora"], [data-style="clay"])
+    .contact-invitation {
+    text-align: center;
+    margin-inline: auto;
+  }
+}

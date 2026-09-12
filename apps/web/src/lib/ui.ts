@@ -176,6 +176,7 @@ document
     input.addEventListener("change", () => {
       if (!input.checked || !isVisualStyle(input.value)) return;
       preferences = { ...preferences, style: input.value };
+      if (settings?.open) closeDialog(settings, false);
       transitionStyle(
         () => writePreferences(preferences),
         preferences.transition,

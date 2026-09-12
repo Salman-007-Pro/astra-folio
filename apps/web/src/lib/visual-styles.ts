@@ -81,6 +81,9 @@ export function initStyleMotion() {
   let cleanup = () => {};
   const reset = () => {
     cleanup();
+    document
+      .querySelectorAll<HTMLElement>(".project-art")
+      .forEach((el) => el.style.removeProperty("--card-depth"));
     cancelAnimationFrame(frame);
     frame = 0;
     for (const key of [
@@ -148,10 +151,22 @@ export function initStyleMotion() {
       const paint = () => {
         frame = 0;
         if (!root.classList.contains("dialog-open")) {
-          root.style.setProperty(
-            "--style-depth",
-            `${Math.min(window.scrollY * 0.065, 320)}px`,
-          );
+          root.style.setProperty("--style-depth", `${window.scrollY * 0.7}px`);
+          document
+            .querySelectorAll<HTMLElement>(".project-art")
+            .forEach((el) => {
+              const rect = el.parentElement!.getBoundingClientRect();
+              if (rect.bottom > -100 && rect.top < innerHeight + 100) {
+                const depth = Math.max(
+                  -24,
+                  Math.min(
+                    24,
+                    (innerHeight / 2 - rect.top - rect.height / 2) * 0.08,
+                  ),
+                );
+                el.style.setProperty("--card-depth", `${depth}px`);
+              }
+            });
         }
       };
       const scroll = () => {

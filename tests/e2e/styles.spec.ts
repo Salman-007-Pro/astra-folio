@@ -39,7 +39,7 @@ test("all fifteen styles switch in both themes and persist across routes", async
   await page
     .getByRole("button", { name: "Experience settings", exact: true })
     .click();
-  const dialog = page.getByRole("dialog", { name: "Your kind of garden." });
+  const dialog = page.locator("#experience-settings");
   await expect(dialog.locator("[data-visual-style]")).toHaveCount(15);
   for (const night of [false, true]) {
     await page.locator("#pref-night").setChecked(night);
@@ -56,6 +56,10 @@ test("all fifteen styles switch in both themes and persist across routes", async
         () => document.documentElement.scrollWidth > innerWidth,
       );
       expect(overflow, `${style.id} overflow`).toBe(false);
+      if (!(await dialog.isVisible()))
+        await page
+          .getByRole("button", { name: "Experience settings", exact: true })
+          .click();
     }
   }
   await dialog.getByRole("button", { name: "Explore this style" }).click();
@@ -108,7 +112,6 @@ test("changing typography inside settings repositions the mobile scene", async (
       .click();
     await page.locator(`[data-visual-style][value="${style}"]`).check();
     await expect(page.locator("html")).toHaveAttribute("data-style", style);
-    await page.getByRole("button", { name: "Explore this style" }).click();
     await expect
       .poll(() =>
         page.evaluate(() => {
@@ -142,7 +145,6 @@ test("scrollytelling follows reading progress and removes motion when disabled",
     "data-style",
     "scrollytelling",
   );
-  await page.getByRole("button", { name: "Explore this style" }).click();
   await page.locator("#experience").scrollIntoViewIfNeeded();
   await expect
     .poll(() =>
@@ -185,7 +187,6 @@ test("parallax cleans up on style change and reduced motion disables effects", a
   await page.locator("#pref-motion").check();
   await page.locator('[data-visual-style][value="parallax"]').check();
   await expect(page.locator("html")).toHaveAttribute("data-style", "parallax");
-  await page.getByRole("button", { name: "Explore this style" }).click();
   await page.evaluate(() => window.scrollTo({ top: 900, behavior: "instant" }));
   await expect
     .poll(() =>
@@ -221,6 +222,9 @@ test("parallax cleans up on style change and reduced motion disables effects", a
     .toBe("");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(page.locator("html")).toHaveAttribute("data-motion", "off");
+  await page
+    .getByRole("button", { name: "Experience settings", exact: true })
+    .click();
   await page.locator('[data-visual-style][value="holographic"]').check();
   await expect(page.locator("html")).toHaveAttribute(
     "data-style",

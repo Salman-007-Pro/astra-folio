@@ -12,6 +12,7 @@ import "../styles/themes.css";
 import "../styles/visual-styles.css";
 import { styleTransitions } from "../lib/style-transitions";
 import "../styles/style-transitions.css";
+import "../styles/style-worlds.css";
 import { visualStyles } from "../lib/visual-styles";
 import Icon from "../components/Icon.astro";
 import { getContent } from "../lib/content";
@@ -214,7 +215,12 @@ const isCurrentPage = (href: string) =>
         >
       </div>
     </dialog>
-    <main id="main"><slot /></main>
+    <main id="main">
+      <div class="style-atmosphere" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <slot />
+    </main>
     <footer class="site-footer">
       <a class="wordmark" href="/">{site.brandName}.</a>
       <p>{site.footer}</p>
@@ -262,7 +268,7 @@ const isCurrentPage = (href: string) =>
         <div class="transition-options">
           {styleTransitions.map((effect) => (
             <label class="transition-choice">
-              <input type="radio" name="style-transition" value={effect.id} data-style-transition checked={effect.id === "fade"} />
+              <input type="radio" name="style-transition" value={effect.id} data-style-transition checked={effect.id === "pixels"} />
               <span class="transition-swatch" data-effect={effect.id} aria-hidden="true"><i></i><i></i><i></i><i></i></span>
               <strong>{effect.name}</strong>
               <span>{effect.description}</span>
@@ -277,8 +283,8 @@ const isCurrentPage = (href: string) =>
       <fieldset class="style-picker">
         <legend>Visual style</legend>
         <p>
-          Choose a look, then explore. Light and dark palettes work with every
-          style.
+          Choose a look to transform the whole page. This panel closes so you
+          can explore it.
         </p>
         <div class="style-options">
           {visualStyles.map((style, index) => (

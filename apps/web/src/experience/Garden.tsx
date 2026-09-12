@@ -37,7 +37,7 @@ export default function Garden({
   const [quality, setQuality] = useState<Quality>("MEDIUM");
   const [preferences, setPreferences] = useState<Preferences>({
     style: "default",
-    transition: "fade",
+    transition: "pixels",
     motion: false,
     sound: false,
     night: false,
@@ -101,7 +101,15 @@ export default function Garden({
         !!mount &&
         innerWidth > 760 &&
         mount.getBoundingClientRect().top < innerHeight * 0.72;
-      const destination = innerWidth <= 760 ? heroMount : work ? mount : null;
+      const styled = document.documentElement.dataset.style !== "default";
+      const destination =
+        innerWidth <= 760
+          ? heroMount
+          : work
+            ? mount
+            : styled
+              ? heroMount
+              : null;
       stage.current.dataset.chapter = work ? "WORK" : "HERO";
       if (destination) {
         const rect = destination.getBoundingClientRect();
@@ -138,6 +146,7 @@ export default function Garden({
     addEventListener("resize", scroll);
     addEventListener("garden:machine", select);
     addEventListener("garden:layout", scroll);
+    addEventListener("garden:preferences", scroll);
     const resizeObserver = new ResizeObserver(scroll);
     for (const element of [
       mount,
@@ -153,6 +162,7 @@ export default function Garden({
       removeEventListener("resize", scroll);
       removeEventListener("garden:machine", select);
       removeEventListener("garden:layout", scroll);
+      removeEventListener("garden:preferences", scroll);
       resizeObserver.disconnect();
     };
   }, []);

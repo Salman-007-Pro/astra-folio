@@ -19,7 +19,7 @@ export function readPreferences(): Preferences {
   const palette = document.documentElement.dataset.defaultPalette;
   const defaults: Preferences = {
     style: "default",
-    transition: "fade",
+    transition: "pixels",
     motion: !matchMedia("(prefers-reduced-motion: reduce)").matches,
     sound: false,
     night: matchMedia("(prefers-color-scheme: dark)").matches,
@@ -33,7 +33,7 @@ export function readPreferences(): Preferences {
       ...defaults,
       transition: isStyleTransition(saved.transition)
         ? saved.transition
-        : "fade",
+        : "pixels",
       style: isVisualStyle(saved.style) ? saved.style : "default",
       ...Object.fromEntries(
         Object.entries(saved).filter(
