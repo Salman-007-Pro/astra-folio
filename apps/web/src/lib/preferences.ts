@@ -1,6 +1,8 @@
+import { isStyleTransition, type StyleTransition } from "./style-transitions";
 import { isVisualStyle, type VisualStyle } from "./visual-styles";
 export type Preferences = {
   style: VisualStyle;
+  transition: StyleTransition;
   motion: boolean;
   sound: boolean;
   night: boolean;
@@ -17,6 +19,7 @@ export function readPreferences(): Preferences {
   const palette = document.documentElement.dataset.defaultPalette;
   const defaults: Preferences = {
     style: "default",
+    transition: "fade",
     motion: !matchMedia("(prefers-reduced-motion: reduce)").matches,
     sound: false,
     night: matchMedia("(prefers-color-scheme: dark)").matches,
@@ -28,6 +31,9 @@ export function readPreferences(): Preferences {
     const saved = JSON.parse(localStorage.getItem(preferenceKey) || "{}");
     return {
       ...defaults,
+      transition: isStyleTransition(saved.transition)
+        ? saved.transition
+        : "fade",
       style: isVisualStyle(saved.style) ? saved.style : "default",
       ...Object.fromEntries(
         Object.entries(saved).filter(

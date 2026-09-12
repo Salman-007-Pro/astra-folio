@@ -1,9 +1,6 @@
+import { isStyleTransition, transitionStyle } from "./style-transitions";
 import { readPreferences, writePreferences, isPalette } from "./preferences";
-import {
-  initStyleMotion,
-  isVisualStyle,
-  transitionStyle,
-} from "./visual-styles";
+import { initStyleMotion, isVisualStyle } from "./visual-styles";
 let preferences = readPreferences();
 writePreferences(preferences);
 initStyleMotion();
@@ -179,7 +176,10 @@ document
     input.addEventListener("change", () => {
       if (!input.checked || !isVisualStyle(input.value)) return;
       preferences = { ...preferences, style: input.value };
-      transitionStyle(() => writePreferences(preferences));
+      transitionStyle(
+        () => writePreferences(preferences),
+        preferences.transition,
+      );
     });
   });
 let audioContext: AudioContext | undefined;
@@ -257,3 +257,14 @@ document.addEventListener("keydown", (e) => {
     settings?.open ? closeDialog(settings) : showDialog(settings);
   }
 });
+
+document
+  .querySelectorAll<HTMLInputElement>("[data-style-transition]")
+  .forEach((input) => {
+    input.checked = preferences.transition === input.value;
+    input.addEventListener("change", () => {
+      if (!input.checked || !isStyleTransition(input.value)) return;
+      preferences = { ...preferences, transition: input.value };
+      writePreferences(preferences);
+    });
+  });

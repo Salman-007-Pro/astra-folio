@@ -37,6 +37,7 @@ export default function Garden({
   const [quality, setQuality] = useState<Quality>("MEDIUM");
   const [preferences, setPreferences] = useState<Preferences>({
     style: "default",
+    transition: "fade",
     motion: false,
     sound: false,
     night: false,

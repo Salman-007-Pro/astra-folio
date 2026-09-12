@@ -72,37 +72,6 @@ export type VisualStyle = (typeof visualStyles)[number]["id"];
 export const isVisualStyle = (value: unknown): value is VisualStyle =>
   visualStyles.some((style) => style.id === value);
 
-let transition: ReturnType<Document["startViewTransition"]> | undefined;
-export function transitionStyle(update: () => void) {
-  transition?.skipTransition();
-  const root = document.documentElement;
-  if (
-    root.dataset.motion === "off" ||
-    matchMedia("(prefers-reduced-motion: reduce)").matches
-  ) {
-    update();
-    return;
-  }
-  if (document.startViewTransition) {
-    const next = document.startViewTransition(update);
-    transition = next;
-    void next.ready.catch(() => {});
-    void next.finished
-      .finally(() => {
-        if (transition === next) transition = undefined;
-      })
-      .catch(() => {});
-  } else {
-    update();
-    document
-      .querySelector("main")
-      ?.animate([{ opacity: 0.7 }, { opacity: 1 }], {
-        duration: 420,
-        easing: "ease-out",
-      });
-  }
-}
-
 // Only decorative layers move; content and fixed navigation stay in place.
 export function initStyleMotion() {
   const root = document.documentElement;

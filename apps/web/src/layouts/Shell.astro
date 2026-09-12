@@ -10,6 +10,8 @@ import "../styles/responsive.css";
 import "../styles/contact.css";
 import "../styles/themes.css";
 import "../styles/visual-styles.css";
+import { styleTransitions } from "../lib/style-transitions";
+import "../styles/style-transitions.css";
 import { visualStyles } from "../lib/visual-styles";
 import Icon from "../components/Icon.astro";
 import { getContent } from "../lib/content";
@@ -252,9 +254,26 @@ const isCurrentPage = (href: string) =>
       </div>
       <h2 id="settings-title">Your kind of garden.</h2>
       <p>
-        {visualStyles.length}
-        ways to make it yours. Your choice stays with you.
+        {`${visualStyles.length} ways to make it yours. Your choice stays with you.`}
       </p>
+      <fieldset class="transition-picker">
+        <legend>Make an entrance</legend>
+        <p>Choose how your next style arrives.</p>
+        <div class="transition-options">
+          {styleTransitions.map((effect) => (
+            <label class="transition-choice">
+              <input type="radio" name="style-transition" value={effect.id} data-style-transition checked={effect.id === "fade"} />
+              <span class="transition-swatch" data-effect={effect.id} aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              <strong>{effect.name}</strong>
+              <span>{effect.description}</span>
+            </label>
+          ))}
+        </div>
+        <p class="style-motion-note">
+          Applied when you choose a style. Instant with Motion off or reduced
+          motion.
+        </p>
+      </fieldset>
       <fieldset class="style-picker">
         <legend>Visual style</legend>
         <p>
