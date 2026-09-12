@@ -104,3 +104,11 @@ Site Settings → **Website copy, games & appearance** contains the same object 
 ### Style-specific opening layouts
 
 `apps/web/src/components/StyleShowcase.astro` renders alternate hero content from the same profile, projects and portrait data. `apps/web/src/styles/style-compositions.css` selects the console (Cyberpunk/Pixel), project gallery (Holographic), portrait cover (Editorial/Paper/Vintage/Doodle), or dashboard (Neumorphism/Glass). The remaining styles keep the interactive spatial scene with distinct compositions. On mobile, Pixel leads with the LCD panel; Vintage and Doodle lead with the portrait. Hidden alternatives remain out of keyboard navigation. The Three.js hero is hidden while an alternate opening is active and restored when switching back; the desktop work-section scene remains available.
+
+### Footer, cursors, scrollbars and sound
+
+`apps/web/src/styles/style-chrome.css` gives each style a matching footer treatment and scrollbar. Footer links use a responsive grid, with the year aligned to the right. `apps/web/src/lib/style-chrome.ts` measures the footer during scrolling, resizing and style changes; the Styles button keeps an 18px gap above it and otherwise rests 32px above the viewport bottom. Mobile safe areas are included.
+
+Desktop pointers use small native SVG cursors that change shape with the style and contrast with light/dark mode. Hovering controls uses a filled variant. Text inputs retain the text cursor; touch devices and forced-colors mode use native behavior. Scrollbar styling follows browser/platform support and never replaces native scrolling.
+
+Sound remains off by default. Enable **Sound** in Styles to hear theme-specific click tones and a short three-note cue when changing styles. `apps/web/src/lib/style-audio.ts` defines each style's waveform and notes. One AudioContext is reused; muting, hiding the page or triggering another cue cancels pending notes. These generated effects need no audio downloads.

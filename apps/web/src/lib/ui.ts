@@ -1,9 +1,12 @@
+import { initStyleChrome } from "./style-chrome";
+import { playStyleSound } from "./style-audio";
 import { isStyleTransition, transitionStyle } from "./style-transitions";
 import { readPreferences, writePreferences, isPalette } from "./preferences";
 import { initStyleMotion, isVisualStyle } from "./visual-styles";
 let preferences = readPreferences();
 writePreferences(preferences);
 initStyleMotion();
+initStyleChrome();
 const settings = document.querySelector<HTMLDialogElement>(
   "#experience-settings",
 );
@@ -154,7 +157,8 @@ document.querySelectorAll<HTMLDialogElement>("dialog").forEach((dialog) => {
   input.addEventListener("change", () => {
     preferences = { ...preferences, [key]: input.checked };
     writePreferences(preferences);
-    if (key === "sound" && input.checked) ping();
+    if (key === "sound" && input.checked)
+      playStyleSound(preferences.style, "change");
   });
 });
 document
@@ -176,6 +180,7 @@ document
     input.addEventListener("change", () => {
       if (!input.checked || !isVisualStyle(input.value)) return;
       preferences = { ...preferences, style: input.value };
+      if (preferences.sound) playStyleSound(preferences.style, "change");
       if (settings?.open) closeDialog(settings, false);
       transitionStyle(
         () => writePreferences(preferences),
@@ -183,33 +188,9 @@ document
       );
     });
   });
-let audioContext: AudioContext | undefined;
-function ping() {
-  try {
-    audioContext ||= new AudioContext();
-    void audioContext.resume();
-    const oscillator = audioContext.createOscillator(),
-      gain = audioContext.createGain();
-    oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(520, audioContext.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(
-      780,
-      audioContext.currentTime + 0.08,
-    );
-    gain.gain.setValueAtTime(0.035, audioContext.currentTime);
-    gain.gain.exponentialRampToValueAtTime(
-      0.001,
-      audioContext.currentTime + 0.12,
-    );
-    oscillator.connect(gain);
-    gain.connect(audioContext.destination);
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + 0.13);
-  } catch {}
-}
 document.addEventListener("click", (e) => {
   if (preferences.sound && (e.target as HTMLElement).closest("a,button"))
-    ping();
+    playStyleSound(preferences.style);
 });
 const mediaQuery = matchMedia("(prefers-reduced-motion: reduce)");
 mediaQuery.addEventListener("change", (e) => {

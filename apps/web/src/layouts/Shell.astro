@@ -14,6 +14,7 @@ import { styleTransitions } from "../lib/style-transitions";
 import "../styles/style-transitions.css";
 import "../styles/style-worlds.css";
 import "../styles/style-compositions.css";
+import "../styles/style-chrome.css";
 import { visualStyles } from "../lib/visual-styles";
 import Icon from "../components/Icon.astro";
 import { getContent } from "../lib/content";
@@ -222,10 +223,10 @@ const isCurrentPage = (href: string) =>
       </div>
       <slot />
     </main>
-    <footer class="site-footer">
+    <footer class="site-footer" aria-label="Site footer">
       <a class="wordmark" href="/">{site.brandName}.</a>
-      <p>{site.footer}</p>
-      <div>
+      <p class="footer-note">{site.footer}</p>
+      <div class="footer-links">
         <a href={profile.github} target="_blank" rel="noreferrer">GitHub ↗</a
         ><a href={profile.linkedin} target="_blank" rel="noreferrer"
           >LinkedIn ↗</a
