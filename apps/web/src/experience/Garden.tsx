@@ -36,6 +36,7 @@ export default function Garden({
   const [ready, setReady] = useState(false);
   const [quality, setQuality] = useState<Quality>("MEDIUM");
   const [preferences, setPreferences] = useState<Preferences>({
+    style: "default",
     motion: false,
     sound: false,
     night: false,
@@ -135,6 +136,7 @@ export default function Garden({
     addEventListener("scroll", scroll, { passive: true });
     addEventListener("resize", scroll);
     addEventListener("garden:machine", select);
+    addEventListener("garden:layout", scroll);
     const resizeObserver = new ResizeObserver(scroll);
     for (const element of [
       mount,
@@ -149,6 +151,7 @@ export default function Garden({
       removeEventListener("scroll", scroll);
       removeEventListener("resize", scroll);
       removeEventListener("garden:machine", select);
+      removeEventListener("garden:layout", scroll);
       resizeObserver.disconnect();
     };
   }, []);

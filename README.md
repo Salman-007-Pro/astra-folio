@@ -12,6 +12,7 @@ The site delivers readable static HTML first. The 3D world and games load as enh
 - Mobile navigation drawer with keyboard focus handling and scroll restoration
 - **Card flip, Signal snake, Orbit shooter, and Racing Classic** on the homepage and `/play`, with encouraging win/loss messages
 - **Garden, Ocean, and Ember** palettes, each with light and dark colors; light and dark selections are remembered independently
+- **Ten visual styles** with previews, smooth switching, and a saved device preference: Original, Cyberpunk, Holographic, Pixel / Game, Parallax, Liquid Glass, Neumorphism, Paper / Scrapbook, Editorial, and Aurora
 - Reduced motion, optional sound, blueprint mode, and adaptive 3D quality
 - Reusable **[`content/portfolio.json`](content/portfolio.json)** for identity, copy, work, contact details, CV, and game quotes
 - Optional **Payload 3 + PostgreSQL** for drafts, publishing, media, and validated public content
@@ -55,7 +56,7 @@ Shared Zod contracts validate JSON during builds. Keep the structure and replace
 
 Rounds start on request and pause when the browser loses focus, the game leaves view, or a site dialog opens. Resume and restart are explicit. Switching games starts a fresh round. Results choose a message from your JSON quote lists. Racing Classic remembers its best score on this device; scores are not sent to a server.
 
-Open **Experience settings** to select a palette. **Night Shift** changes mode. Each mode keeps its own palette selection in local storage. The initial mode follows the visitor’s system preference when no choice is saved. `site.defaultPalette` sets the initial palette for both modes.
+Open **Styles** to choose one of ten visual treatments or select a palette. **Night Shift** changes mode. Each mode keeps its own palette selection in local storage. The initial mode follows the visitor’s system preference when no choice is saved. `site.defaultPalette` sets the initial palette for both modes. Original is the default visual style. Style selection persists across routes and reloads, independently of the palettes. Switching uses a crossfade, with a fallback for browsers without View Transitions. Motion off and reduced-motion preferences disable decorative animation; Liquid Glass then stays frosted and Parallax stays still.
 
 ## Payload configuration
 

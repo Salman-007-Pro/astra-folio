@@ -9,6 +9,8 @@ import "../styles/accessibility.css";
 import "../styles/responsive.css";
 import "../styles/contact.css";
 import "../styles/themes.css";
+import "../styles/visual-styles.css";
+import { visualStyles } from "../lib/visual-styles";
 import Icon from "../components/Icon.astro";
 import { getContent } from "../lib/content";
 import { contactLinks } from "../lib/contact";
@@ -47,6 +49,8 @@ const isCurrentPage = (href: string) =>
 <html
   lang="en"
   data-motion="on"
+  data-style="default"
+  data-style-options={visualStyles.map((style) => style.id).join(",")}
   data-default-palette={site.defaultPalette}
   data-palette={site.defaultPalette}
 >
@@ -78,6 +82,12 @@ const isCurrentPage = (href: string) =>
           typeof p.night === "boolean"
             ? p.night
             : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.style =
+          document.documentElement.dataset.styleOptions
+            .split(",")
+            .includes(p.style)
+            ? p.style
+            : "default";
         document.documentElement.dataset.theme = night ? "night" : "day";
         const palette = night ? p.darkPalette : p.lightPalette;
         document.documentElement.dataset.palette = [
@@ -210,7 +220,8 @@ const isCurrentPage = (href: string) =>
         <a href={profile.github} target="_blank" rel="noreferrer">GitHub ↗</a
         ><a href={profile.linkedin} target="_blank" rel="noreferrer"
           >LinkedIn ↗</a
-        ><a href="/rss.xml">RSS</a><span>© {new Date().getFullYear()}</span>
+        ><a href="/rss.xml">RSS</a
+        ><span class="footer-year">© {new Date().getFullYear()}</span>
       </div>
     </footer>
     <button
@@ -222,6 +233,7 @@ const isCurrentPage = (href: string) =>
       title="Experience settings"
     >
       <Icon name="settings" />
+      <span>Styles</span>
     </button>
     <dialog
       id="experience-settings"
@@ -239,7 +251,31 @@ const isCurrentPage = (href: string) =>
         </button>
       </div>
       <h2 id="settings-title">Your kind of garden.</h2>
-      <p>A little quieter. A little darker. Up to you.</p>
+      <p>Ten ways to make it yours. Your choice stays with you.</p>
+      <fieldset class="style-picker">
+        <legend>Visual style</legend>
+        <p>
+          Choose a look, then explore. Light and dark palettes work with every
+          style.
+        </p>
+        <div class="style-options">
+          {visualStyles.map((style, index) => (
+            <label class="style-choice" data-style-preview={style.id}>
+              <input type="radio" name="visual-style" value={style.id} data-visual-style checked={style.id === "default"} />
+              <span class="style-mini" aria-hidden="true"><span>{String(index + 1).padStart(2, "0")}</span><i></i><b>Aa</b><em></em></span>
+              <strong>{style.name}</strong>
+              <span class="style-description">{style.description}</span>
+            </label>
+          ))}
+        </div>
+        <p class="style-motion-note">
+          Liquid Glass becomes frosted glass with motion off. Parallax adds
+          depth as you scroll.
+        </p>
+        <button class="button style-explore" data-dialog-close>
+          Explore this style <Icon name="arrow" size={16} />
+        </button>
+      </fieldset>
       <label class="toggle-row"
         >Motion <input type="checkbox" id="pref-motion" role="switch"></label
       ><label class="toggle-row"

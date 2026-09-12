@@ -48,6 +48,12 @@ This is an excerpt, not a replacement for the whole file. An HTTPS PDF URL also 
 
 See the definitive fields in [`packages/content-schema/src/index.ts`](../packages/content-schema/src/index.ts). Keep required fields present and run `pnpm check`, `pnpm test`, and `pnpm build` after substantial edits.
 
+## Visual styles
+
+The **Styles** button opens ten visual treatments: Original (the default), Cyberpunk, Holographic, Pixel / Game, Parallax, Liquid Glass, Neumorphism, Paper / Scrapbook, Editorial, and Aurora. Each works with the existing light and dark palettes. The selected style is saved on the visitor's device and restored before first paint on every route.
+
+Edit names and descriptions in `apps/web/src/lib/visual-styles.ts` and treatments in `apps/web/src/styles/visual-styles.css`. Style changes use a crossfade where the browser supports View Transitions, with a fade fallback. Reduced motion or the Motion switch disables animated switching and decorative movement. Liquid Glass uses CSS frosted surfaces, optical edge highlights, and moving light rather than physical refraction; Parallax moves decorative backgrounds only. Neither needs an additional graphics library.
+
 ## Games
 
 `site.games.enabled` controls the homepage arcade and Play navigation link. When disabled, `/play` still shows an unavailable message and link to work.

@@ -1,0 +1,681 @@
+/* Visual treatments compose with every light/dark color palette. */
+:root {
+  --style-radius: 12px;
+  --style-shadow: none;
+  --style-depth: 0px;
+  --glass-x: 50%;
+  --glass-y: 30%;
+  --style-tint: color-mix(in srgb, var(--color-accent-signal) 12%, transparent);
+  --style-edge: color-mix(
+    in srgb,
+    var(--color-accent-signal) 40%,
+    var(--color-border-subtle)
+  );
+}
+.settings-trigger {
+  width: auto;
+  padding: 0 15px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.settings-dialog {
+  width: min(780px, calc(100% - 32px));
+  max-width: min(780px, calc(100% - 32px));
+  scrollbar-gutter: stable;
+}
+.settings-dialog .dialog-heading {
+  position: sticky;
+  top: -32px;
+  z-index: 3;
+  padding-block: 10px;
+  background: var(--color-bg-surface);
+}
+.style-picker {
+  border: 0;
+  padding: 0;
+  margin: 24px 0 28px;
+  min-width: 0;
+}
+.style-picker legend {
+  font-size: 18px;
+  font-weight: 600;
+}
+.style-picker > p {
+  font-size: 14px;
+  margin: 8px 0 16px;
+}
+.style-options {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+.style-choice {
+  position: relative;
+  padding: 8px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  background: var(--color-bg-canvas);
+}
+.style-choice input {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-accent-signal);
+}
+.style-choice strong {
+  font-size: 14px;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+.style-description {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+.style-choice:has(input:checked) {
+  border-color: var(--color-accent-signal);
+  box-shadow: 0 0 0 1px var(--color-accent-signal);
+}
+.style-choice:has(input:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+.style-mini {
+  height: 76px;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 5px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-accent-signal);
+}
+.style-mini > span {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  font:
+    11px "DM Mono",
+    monospace;
+}
+.style-mini b {
+  position: absolute;
+  top: 22px;
+  left: 10px;
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 500;
+}
+.style-mini i {
+  position: absolute;
+  bottom: 12px;
+  left: 10px;
+  width: 35%;
+  border-top: 2px solid currentColor;
+}
+.style-mini em {
+  position: absolute;
+  width: 28px;
+  height: 25px;
+  right: 10px;
+  bottom: 10px;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  background: var(--style-tint);
+}
+[data-style-preview="cyberpunk"] .style-mini {
+  border-radius: 0;
+  background: #101725;
+  color: #81fbe1;
+  box-shadow: inset 3px 0 #81fbe1;
+}
+[data-style-preview="cyberpunk"] .style-mini b {
+  font-family: monospace;
+  text-shadow: 2px 0 #f458b3;
+}
+[data-style-preview="holographic"] .style-mini {
+  background: linear-gradient(125deg, #d6faff, #dfd3fa, #ffdbeb, #d6faff);
+  color: #43376b;
+}
+[data-style-preview="pixel"] .style-mini {
+  border-radius: 0;
+  border: 2px solid currentColor;
+  box-shadow: inset 3px 3px var(--style-tint);
+}
+[data-style-preview="pixel"] .style-mini b {
+  font-family: monospace;
+  font-weight: 900;
+  text-shadow: 2px 2px var(--style-tint);
+}
+[data-style-preview="pixel"] .style-mini em {
+  border-radius: 0;
+  box-shadow: 3px 3px currentColor;
+}
+[data-style-preview="parallax"] .style-mini {
+  background: repeating-linear-gradient(
+    145deg,
+    transparent 0 15px,
+    var(--style-tint) 15px 40px
+  );
+}
+[data-style-preview="parallax"] .style-mini em {
+  transform: rotate(-12deg);
+  box-shadow:
+    6px 6px var(--style-tint),
+    12px 12px var(--style-tint);
+}
+[data-style-preview="glass"] .style-mini {
+  background:
+    radial-gradient(at 90% 80%, #a9dce8, transparent),
+    linear-gradient(130deg, #eef0ff, #c7c6ee);
+  color: #33436c;
+}
+[data-style-preview="glass"] .style-mini em {
+  border-color: white;
+  background: #ffffff66;
+  box-shadow:
+    inset 1px 1px 4px white,
+    2px 3px 6px #33436c30;
+  border-radius: 12px;
+}
+[data-style-preview="neumorphism"] .style-mini {
+  background: var(--color-bg-canvas);
+  border-color: transparent;
+  box-shadow: inset 3px 3px 7px var(--style-tint);
+}
+[data-style-preview="neumorphism"] .style-mini em {
+  border: 0;
+  border-radius: 10px;
+  box-shadow:
+    4px 4px 8px #0002,
+    -3px -3px 8px #fff6;
+  background: var(--color-bg-canvas);
+}
+[data-style-preview="paper"] .style-mini {
+  background: #f5edda;
+  color: #523c2d;
+  border: 1px dashed #ad9175;
+}
+[data-style-preview="paper"] .style-mini b {
+  font-family: Georgia, serif;
+  font-style: italic;
+  transform: rotate(-7deg);
+}
+[data-style-preview="paper"] .style-mini em {
+  border-radius: 0;
+  transform: rotate(8deg);
+  background: #fffaf0;
+  box-shadow: 2px 3px 0 #523c2d25;
+}
+[data-style-preview="editorial"] .style-mini {
+  border-radius: 0;
+  border-top: 3px solid currentColor;
+}
+[data-style-preview="editorial"] .style-mini b {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 32px;
+}
+[data-style-preview="aurora"] .style-mini {
+  background:
+    radial-gradient(ellipse at 20% 90%, #74e7e4, transparent 70%),
+    radial-gradient(at 80% 0%, #ccaffa, #e7f0ff);
+  color: #324363;
+}
+.style-explore {
+  width: 100%;
+  justify-content: center;
+}
+html[data-theme="night"] .button:not(.secondary):hover {
+  color: var(--color-bg-canvas);
+}
+.footer-year {
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .site-footer > div {
+    display: grid;
+    grid-template-columns: auto auto auto minmax(0, 1fr);
+    gap: clamp(10px, 3vw, 20px);
+    align-items: center;
+  }
+  .footer-year {
+    justify-self: end;
+    text-align: right;
+  }
+}
+@media (max-width: 620px) {
+  .style-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .style-mini {
+    height: 64px;
+  }
+  .style-description {
+    font-size: 14px;
+  }
+  .settings-dialog .dialog-heading {
+    top: -24px;
+  }
+}
+
+/* Shared surfaces, with treatment-specific shape and material below. */
+html[data-style]:not([data-style="default"])
+:is(.project-art, .skill-evidence, .about-sidebar, .arcade, .contact-channel) {
+  border-radius: var(--style-radius);
+  box-shadow: var(--style-shadow);
+}
+html[data-style]:not([data-style="default"])
+  :is(.button, .contact-button, .tag, .skill-chips button) {
+  border-radius: var(--style-radius);
+}
+html[data-style]:not([data-style="default"]) main :is(h1, h2, h3) {
+  overflow-wrap: anywhere;
+}
+html[data-style]:not([data-style="default"]) :is(.hero, .page-intro) {
+  position: relative;
+  isolation: isolate;
+}
+html:where([data-style]:not([data-style="default"]))
+  :is(.hero, .page-intro)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--style-hero, none);
+}
+
+/* 02 / Cyberpunk: technical type, edge lighting, grid and cut corners. */
+html[data-style="cyberpunk"] {
+  --style-radius: 2px;
+  --style-shadow: 3px 3px 0 var(--style-tint), 0 0 24px var(--style-tint);
+  --style-hero:
+    linear-gradient(90deg, var(--style-tint) 1px, transparent 1px),
+    linear-gradient(var(--style-tint) 1px, transparent 1px);
+}
+html[data-style="cyberpunk"] :is(.hero, .page-intro)::before {
+  background-size: 52px 52px;
+  mask-image: linear-gradient(90deg, transparent, #000);
+}
+html[data-style="cyberpunk"] main :is(h1, h2, h3, .eyebrow) {
+  font-family: "DM Mono", monospace;
+  letter-spacing: -0.035em;
+}
+html[data-style="cyberpunk"] main :is(h1, h2) {
+  text-shadow: 2px 2px var(--style-tint);
+}
+html:is([data-style="cyberpunk"], [data-style="pixel"]) .hero h1 em {
+  font-family: "DM Mono", monospace;
+  font-style: normal;
+}
+html[data-style="cyberpunk"] :is(.project-art, .skill-evidence, .arcade) {
+  border: 1px solid var(--style-edge);
+  border-left: 4px solid var(--color-accent-signal);
+}
+html[data-style="cyberpunk"] .button {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% 100%,
+    10px 100%,
+    0 calc(100% - 10px)
+  );
+}
+html[data-style="cyberpunk"] .section-header {
+  border-top: 2px solid var(--color-accent-signal);
+  padding-top: 24px;
+}
+
+/* 03 / Holographic: foil highlights, translucent color and prismatic rims. */
+html[data-style="holographic"] {
+  --style-radius: 20px;
+  --style-shadow: 0 12px 36px var(--style-tint), inset 0 1px #ffffff70;
+  --style-hero: linear-gradient(
+    115deg,
+    transparent 10%,
+    var(--style-tint) 35%,
+    color-mix(in srgb, var(--color-accent-energy) 14%, transparent) 55%,
+    transparent 80%
+  );
+}
+html[data-style="holographic"] :is(.hero, .page-intro)::before {
+  background-size: 220% 100%;
+}
+html[data-style="holographic"] :is(.project-art, .skill-evidence, .arcade) {
+  border: 2px solid var(--style-edge);
+}
+html[data-style="holographic"] main :is(h1 em, h2 em) {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent-energy);
+  text-underline-offset: 10px;
+  text-decoration-thickness: 2px;
+}
+html[data-style="holographic"][data-palette]
+  :is(.experience-section, .about-section, .contact-section) {
+  background: linear-gradient(
+    130deg,
+    var(--color-section),
+    color-mix(in srgb, var(--color-accent-energy) 10%, var(--color-bg-canvas)),
+    var(--color-section)
+  );
+}
+
+/* 04 / Pixel: crisp borders, offset shadows and cartridge-like panels. */
+html[data-style="pixel"] {
+  --style-radius: 0px;
+  --style-shadow: 5px 5px 0 var(--color-border-subtle);
+  --style-hero: radial-gradient(var(--style-edge) 1px, transparent 1px);
+}
+html[data-style="pixel"] :is(.hero, .page-intro)::before {
+  background-size: 12px 12px;
+  mask-image: linear-gradient(90deg, transparent 20%, #000);
+}
+html[data-style="pixel"] main :is(h1, h2, h3, .eyebrow, .button, .tag) {
+  font-family: "DM Mono", monospace;
+  letter-spacing: -0.035em;
+}
+html[data-style="pixel"] :is(.project-art, .arcade, .skill-evidence) {
+  border: 2px solid var(--color-text-primary);
+}
+html[data-style="pixel"] .button {
+  box-shadow: 4px 4px 0 var(--color-text-primary);
+}
+html[data-style="pixel"] .button:active {
+  box-shadow: 1px 1px 0 var(--color-text-primary);
+  translate: 3px 3px;
+}
+html[data-style="pixel"] .station-dot {
+  border-radius: 0;
+}
+html[data-style="pixel"] .section-header {
+  border-bottom: 2px dashed var(--color-border-subtle);
+  padding-bottom: 24px;
+}
+
+/* 05 / Parallax: bounded scroll depth on decoration, never on readable text. */
+html[data-style="parallax"] {
+  --style-radius: 24px;
+  --style-shadow: 0 18px 40px var(--style-tint);
+  --style-hero: repeating-linear-gradient(
+    150deg,
+    transparent 0 100px,
+    var(--style-tint) 100px 150px,
+    transparent 150px 240px
+  );
+}
+html[data-style="parallax"] :is(.hero, .page-intro)::before {
+  background-position: 0 var(--style-depth);
+  background-size: 100% 140%;
+}
+html[data-style="parallax"][data-palette]
+  :is(.experience-section, .about-section, .contact-section) {
+  background-image: radial-gradient(
+    ellipse at 85% 10%,
+    var(--style-tint),
+    transparent 60%
+  );
+  background-position: 0 calc(var(--style-depth) * -0.45);
+}
+html[data-style="parallax"] .project-art {
+  border: 1px solid var(--style-edge);
+}
+html[data-style="parallax"] .section-header h2 {
+  border-left: 3px solid var(--color-accent-signal);
+  padding-left: 20px;
+}
+
+/* 06 / Liquid Glass: frosted fallback, moving light and inset optical rims. */
+html[data-style="glass"] {
+  --style-radius: 28px;
+  --style-shadow:
+    inset 0 1px 2px #ffffff80, inset 0 -1px 2px var(--style-edge),
+    0 12px 32px var(--style-tint);
+  --style-hero:
+    radial-gradient(
+      ellipse at var(--glass-x) var(--glass-y),
+      var(--style-tint),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse at 90% 90%,
+      color-mix(in srgb, var(--color-accent-energy) 12%, transparent),
+      transparent 70%
+    );
+}
+html[data-style="glass"] :is(.skill-evidence, .about-sidebar, .arcade) {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--color-bg-surface) 88%, transparent),
+    color-mix(in srgb, var(--color-bg-surface) 72%, transparent)
+  );
+  border: 1px solid var(--style-edge);
+  backdrop-filter: blur(18px) saturate(1.35);
+}
+html[data-style="glass"] :is(.hero, .page-intro)::before {
+  background-size: 140% 140%;
+}
+html[data-style="glass"] .site-header {
+  background: color-mix(in srgb, var(--color-bg-surface) 88%, transparent);
+  backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: inset 0 -1px #ffffff55;
+}
+html[data-style="glass"][data-palette]
+  :is(.experience-section, .about-section, .contact-section) {
+  background:
+    radial-gradient(
+      ellipse at var(--glass-x) var(--glass-y),
+      var(--style-tint),
+      transparent 75%
+    ),
+    color-mix(in srgb, var(--color-bg-surface) 90%, var(--color-section));
+}
+html[data-style="glass"] .button {
+  box-shadow:
+    inset 0 1px 2px #ffffff60,
+    inset 0 -2px 3px #0002,
+    0 6px 16px var(--style-tint);
+}
+
+/* 07 / Neumorphism: raised and pressed forms with visible control boundaries. */
+html[data-style="neumorphism"] {
+  --style-radius: 22px;
+  --style-shadow:
+    9px 9px 22px color-mix(in srgb, var(--color-text-primary) 10%, transparent),
+    -7px -7px 20px color-mix(in srgb, var(--color-bg-surface) 85%, transparent);
+}
+html[data-style="neumorphism"] :is(.skill-evidence, .arcade, .about-sidebar) {
+  background: var(--color-bg-canvas);
+  border: 1px solid var(--color-border-subtle);
+}
+html[data-style="neumorphism"]
+  :is(.button.secondary, .skill-chips button, .settings-trigger) {
+  background: var(--color-bg-canvas);
+  box-shadow: var(--style-shadow);
+  border: 1px solid var(--color-border-subtle);
+}
+html[data-style="neumorphism"] .skill-chips button[aria-pressed="true"] {
+  box-shadow:
+    inset 3px 3px 8px #0002,
+    inset -3px -3px 8px #ffffff20;
+}
+html[data-style="neumorphism"] .hero h1 {
+  text-shadow: 1px 2px var(--color-bg-surface);
+}
+html[data-style="neumorphism"] .proof-strip {
+  box-shadow: inset 0 3px 12px var(--style-tint);
+  border-radius: 20px;
+}
+
+/* 08 / Paper: ruled stock, ink, imperfect mounts and scrapbook framing. */
+html[data-style="paper"] {
+  --style-radius: 2px;
+  --style-shadow: 3px 5px 0 var(--color-border-subtle);
+  --style-hero: repeating-linear-gradient(
+    transparent 0 35px,
+    var(--style-tint) 35px 36px
+  );
+}
+html[data-style="paper"] main :is(h1, h2, h3) {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: -0.035em;
+}
+html[data-style="paper"] .project-art {
+  padding: 10px;
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-surface);
+}
+html[data-style="paper"] .project-item:nth-child(odd) .project-art {
+  rotate: -0.6deg;
+}
+html[data-style="paper"] .project-item:nth-child(even) .project-art {
+  rotate: 0.6deg;
+}
+html[data-style="paper"] .section-header {
+  border-top: 1px dashed var(--color-text-muted);
+  padding-top: 26px;
+}
+html[data-style="paper"] .tag {
+  border-style: dashed;
+}
+html[data-style="paper"] main h2 em {
+  text-decoration: underline wavy var(--color-accent-energy);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 8px;
+}
+
+/* 09 / Editorial: serif display type, strong rules and generous rhythm. */
+html[data-style="editorial"] {
+  --style-radius: 0px;
+}
+html[data-style="editorial"] main :is(h1, h2, h3) {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: -0.045em;
+}
+html[data-style="editorial"] .section-header {
+  border-top: 3px solid var(--color-text-primary);
+  padding-top: 30px;
+}
+html[data-style="editorial"] .eyebrow {
+  letter-spacing: 0.16em;
+}
+html[data-style="editorial"] .project-art {
+  border-bottom: 4px solid var(--color-accent-signal);
+}
+html[data-style="editorial"] .proof-strip {
+  border-block: 1px solid var(--color-text-primary);
+}
+html[data-style="editorial"] .hero h1 em {
+  font-weight: 400;
+}
+
+/* 10 / Aurora: atmospheric light fields and softly outlined panels. */
+html[data-style="aurora"] {
+  --style-radius: 32px;
+  --style-shadow: 0 12px 48px var(--style-tint);
+  --style-hero:
+    radial-gradient(
+      ellipse at 80% 15%,
+      color-mix(in srgb, var(--color-accent-energy) 18%, transparent),
+      transparent 65%
+    ),
+    radial-gradient(ellipse at 10% 85%, var(--style-tint), transparent 65%);
+}
+html[data-style="aurora"] :is(.hero, .page-intro)::before {
+  background-size: 140% 140%;
+}
+html[data-style="aurora"] :is(.arcade, .skill-evidence, .project-art) {
+  border: 1px solid var(--style-edge);
+}
+html[data-style="aurora"][data-palette]
+  :is(.experience-section, .about-section, .contact-section) {
+  background:
+    radial-gradient(ellipse at 90% 0%, var(--style-tint), transparent 70%),
+    var(--color-section);
+}
+html[data-style="aurora"] .button {
+  border-radius: 100px;
+}
+
+@keyframes style-light {
+  from {
+    background-position: 0% 40%;
+  }
+  to {
+    background-position: 100% 65%;
+  }
+}
+@keyframes style-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes style-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="off"]):is(
+      [data-style="holographic"],
+      [data-style="glass"],
+      [data-style="aurora"]
+    )
+    :is(.hero, .page-intro)::before {
+    animation: style-light 14s ease-in-out infinite alternate;
+  }
+  ::view-transition-old(root) {
+    animation: style-out 220ms ease both;
+  }
+  ::view-transition-new(root) {
+    animation: style-in 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+html[data-motion="off"]::view-transition-old(root),
+html[data-motion="off"]::view-transition-new(root) {
+  animation: none;
+}
+@media (forced-colors: active) {
+  .style-mini {
+    forced-color-adjust: auto;
+  }
+  html[data-style] :is(.hero, .page-intro)::before {
+    display: none;
+  }
+  html[data-style] .button {
+    clip-path: none;
+  }
+}
+@media print {
+  html[data-style] :is(.hero, .page-intro)::before {
+    display: none;
+  }
+  html[data-style]
+    :is(
+      .project-art,
+      .skill-evidence,
+      .about-sidebar,
+      .arcade,
+      .contact-channel
+    ) {
+    box-shadow: none;
+    rotate: none;
+    backdrop-filter: none;
+  }
+}

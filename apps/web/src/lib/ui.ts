@@ -1,6 +1,12 @@
 import { readPreferences, writePreferences, isPalette } from "./preferences";
+import {
+  initStyleMotion,
+  isVisualStyle,
+  transitionStyle,
+} from "./visual-styles";
 let preferences = readPreferences();
 writePreferences(preferences);
+initStyleMotion();
 const settings = document.querySelector<HTMLDialogElement>(
   "#experience-settings",
 );
@@ -37,6 +43,7 @@ function syncDialogs(scrollPosition = window.scrollY) {
   } else if (!open && restorePageScroll) {
     restorePageScroll();
     restorePageScroll = undefined;
+    window.dispatchEvent(new Event("garden:layout"));
   }
 }
 
@@ -90,8 +97,10 @@ matchMedia("(min-width: 1024px)").addEventListener("change", (event) => {
 });
 document.querySelectorAll<HTMLDialogElement>("dialog").forEach((dialog) => {
   dialog
-    .querySelector("[data-dialog-close]")
-    ?.addEventListener("click", () => closeDialog(dialog));
+    .querySelectorAll("[data-dialog-close]")
+    .forEach((button) =>
+      button.addEventListener("click", () => closeDialog(dialog)),
+    );
   dialog.addEventListener("close", () => syncDialogs());
   dialog.addEventListener("cancel", (event) => {
     event.preventDefault();
@@ -161,6 +170,16 @@ document
       if (!input.checked || !isPalette(input.value)) return;
       preferences = { ...preferences, [key]: input.value };
       writePreferences(preferences);
+    });
+  });
+document
+  .querySelectorAll<HTMLInputElement>("[data-visual-style]")
+  .forEach((input) => {
+    input.checked = preferences.style === input.value;
+    input.addEventListener("change", () => {
+      if (!input.checked || !isVisualStyle(input.value)) return;
+      preferences = { ...preferences, style: input.value };
+      transitionStyle(() => writePreferences(preferences));
     });
   });
 let audioContext: AudioContext | undefined;
