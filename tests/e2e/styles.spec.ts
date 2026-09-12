@@ -1,6 +1,36 @@
 import { test, expect } from "@playwright/test";
 import { visualStyles } from "../../apps/web/src/lib/visual-styles";
 
+test("style cards keep labels inside their borders at narrow and intermediate widths", async ({
+  page,
+}) => {
+  await page.goto("/about");
+  await page
+    .getByRole("button", { name: "Experience settings", exact: true })
+    .click();
+  for (const width of [320, 390, 571, 620, 621, 700, 780, 1440]) {
+    await page.setViewportSize({ width, height: 844 });
+    const overflow = await page.locator(".style-options").evaluate((grid) => {
+      const dialog = grid.closest("dialog")!;
+      const overflowingLabels = [
+        ...grid.querySelectorAll("strong, .style-description"),
+      ]
+        .filter((label) => label.scrollWidth > label.clientWidth + 1)
+        .map((label) => label.textContent);
+      return {
+        labels: overflowingLabels,
+        grid: grid.scrollWidth > grid.clientWidth + 1,
+        dialog: dialog.scrollWidth > dialog.clientWidth + 1,
+      };
+    });
+    expect(overflow, `Style picker at ${width}px`).toEqual({
+      labels: [],
+      grid: false,
+      dialog: false,
+    });
+  }
+});
+
 test("all ten styles switch in both themes and persist across routes", async ({
   page,
 }) => {
