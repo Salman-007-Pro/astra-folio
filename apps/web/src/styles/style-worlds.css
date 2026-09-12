@@ -619,6 +619,8 @@ html[data-style="neumorphism"] .project-art {
 
 /* Scrapbook: a paper stack on a desk, taped portrait and pasted work samples. */
 html[data-style="paper"] main {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   margin: 36px auto;
   max-width: 1320px;
   background: var(--look-surface);
@@ -664,10 +666,18 @@ html[data-style="paper"] .portrait::before {
   rotate: 5deg;
 }
 html[data-style="paper"] .section {
+  container-type: inline-size;
   background-image: repeating-linear-gradient(
     transparent 0 39px,
     var(--style-tint) 39px 40px
   );
+}
+html[data-style="paper"] main .section-header h2 {
+  font-size: clamp(2rem, 10cqi, 4.8rem);
+  line-height: 1.12;
+  overflow-wrap: normal;
+  word-break: normal;
+  text-wrap: balance;
 }
 
 /* Magazine: oversized masthead, long rules, alternating image/text rows. */
