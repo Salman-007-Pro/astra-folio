@@ -109,23 +109,6 @@ button {
 .wordmark-dot {
   color: var(--color-accent-signal);
 }
-.brand-mark {
-  height: 34px;
-  width: 31px;
-  display: inline-flex;
-  position: relative;
-  font-size: 38px;
-  font-weight: 800;
-  line-height: 0.7;
-  letter-spacing: -5px;
-}
-.brand-mark span {
-  position: absolute;
-  font-size: 25px;
-  right: -6px;
-  top: -2px;
-  color: var(--color-accent-signal);
-}
 .desktop-nav {
   display: flex;
   gap: 31px;

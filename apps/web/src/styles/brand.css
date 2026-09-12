@@ -1,0 +1,86 @@
+.wordmark {
+  gap: 11px;
+}
+.brand-symbol {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  color: inherit;
+}
+.brand-symbol svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.brand-frame {
+  fill: color-mix(in srgb, currentColor 4%, transparent);
+  stroke: currentColor;
+  stroke-opacity: 0.2;
+  stroke-width: 1;
+}
+.brand-ribbon {
+  stroke: currentColor;
+  stroke-width: 5.5;
+  stroke-linecap: square;
+  stroke-linejoin: bevel;
+}
+.brand-signal {
+  fill: var(--color-accent-signal);
+  stroke: var(--color-bg-canvas);
+  stroke-width: 2;
+}
+.brand-initial {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 10px;
+  font-size: 26px;
+  font-weight: 750;
+}
+.brand-name {
+  white-space: nowrap;
+  letter-spacing: -0.045em;
+}
+.drawer-header .wordmark {
+  gap: 10px;
+  font-size: 20px;
+}
+.site-footer .brand-symbol {
+  width: 36px;
+  height: 36px;
+  flex-basis: 36px;
+}
+.site-footer .wordmark {
+  gap: 10px;
+}
+html:is(
+    [data-style="cyberpunk"],
+    [data-style="pixel"],
+    [data-style="editorial"]
+  )
+  .brand-frame {
+  rx: 1px;
+}
+html:is([data-style="glass"], [data-style="clay"], [data-style="neumorphism"])
+  .brand-frame {
+  fill: color-mix(in srgb, currentColor 8%, transparent);
+}
+html[data-style="doodle"] .brand-frame {
+  stroke-dasharray: 3 2;
+}
+@media (max-width: 380px) {
+  .wordmark {
+    gap: 9px;
+  }
+  .brand-symbol {
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+  }
+  .drawer-header .wordmark {
+    font-size: 18px;
+    gap: 8px;
+  }
+}

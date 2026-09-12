@@ -16,6 +16,8 @@ import "../styles/style-worlds.css";
 import "../styles/style-compositions.css";
 import "../styles/style-chrome.css";
 import { visualStyles } from "../lib/visual-styles";
+import Brand from "../components/Brand.astro";
+import "../styles/brand.css";
 import Icon from "../components/Icon.astro";
 import { getContent } from "../lib/content";
 import { contactLinks } from "../lib/contact";
@@ -131,10 +133,7 @@ const isCurrentPage = (href: string) =>
   <body class:list={[{ immersive }]}>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-      <a class="wordmark" href="/" aria-label={`${profile.name}, home`}
-        ><span class="brand-mark">{site.brandMark}<span>↗</span></span
-        ><span>{site.brandName}<span class="wordmark-dot">.</span></span></a
-      >
+      <Brand name={site.brandName} label={profile.name} mark={site.brandMark} />
       <nav aria-label="Main navigation" class="desktop-nav">
         {links.map((link) => (
             <a
@@ -169,9 +168,11 @@ const isCurrentPage = (href: string) =>
       aria-labelledby="mobile-menu-title"
     >
       <div class="drawer-header">
-        <a class="wordmark" href="/" aria-label={`${profile.name}, home`}
-          >{site.brandName}<span class="wordmark-dot">.</span></a
-        >
+        <Brand
+          name={site.brandName}
+          label={profile.name}
+          mark={site.brandMark}
+        />
         <button
           class="icon-button"
           data-dialog-close
@@ -224,7 +225,7 @@ const isCurrentPage = (href: string) =>
       <slot />
     </main>
     <footer class="site-footer" aria-label="Site footer">
-      <a class="wordmark" href="/">{site.brandName}.</a>
+      <Brand name={site.brandName} label={profile.name} mark={site.brandMark} />
       <p class="footer-note">{site.footer}</p>
       <div class="footer-links">
         <a href={profile.github} target="_blank" rel="noreferrer">GitHub ↗</a

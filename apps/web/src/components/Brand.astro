@@ -1,0 +1,24 @@
+---
+const {
+  name,
+  label,
+  mark = "S",
+} = Astro.props as {
+  name: string;
+  label: string;
+  mark?: string;
+};
+---
+
+<a class="wordmark" href="/" aria-label={`${label}, home`}>
+  <span class="brand-symbol" aria-hidden="true">
+    {mark.toUpperCase() === "S" ? (
+      <svg viewBox="0 0 48 48" fill="none" focusable="false">
+        <rect class="brand-frame" x="1" y="1" width="46" height="46" rx="13" />
+        <path class="brand-ribbon" d="M33 12H21L12 21V23H28L36 31L29 38H14" />
+        <path class="brand-signal" d="M35 6H42V13H35Z" />
+      </svg>
+    ) : <span class="brand-initial">{mark}</span>}
+  </span>
+  <span class="brand-name">{name}<span class="wordmark-dot">.</span></span>
+</a>
