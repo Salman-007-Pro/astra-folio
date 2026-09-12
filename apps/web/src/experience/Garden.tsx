@@ -101,6 +101,11 @@ export default function Garden({
         !!mount &&
         innerWidth > 760 &&
         mount.getBoundingClientRect().top < innerHeight * 0.72;
+      const showcasePanel = document.querySelector(".hero-showcase");
+      const showcase =
+        showcasePanel && getComputedStyle(showcasePanel).display !== "none";
+      stage.current.hidden = Boolean(showcase && !work);
+      if (stage.current.hidden) return;
       const styled = document.documentElement.dataset.style !== "default";
       const destination =
         innerWidth <= 760

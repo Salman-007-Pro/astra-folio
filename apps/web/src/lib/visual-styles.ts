@@ -3,17 +3,17 @@ export const visualStyles = [
   {
     id: "cyberpunk",
     name: "Cyberpunk",
-    description: "Neon edges. Sharp lines.",
+    description: "A project console and navigation rail",
   },
   {
     id: "holographic",
     name: "Holographic",
-    description: "Iridescent light and foil",
+    description: "A full-width project exhibition",
   },
   {
     id: "pixel",
     name: "Pixel / Game",
-    description: "Arcade panels and pixels",
+    description: "An LCD screen and cartridge panels",
   },
   {
     id: "parallax",
@@ -23,12 +23,12 @@ export const visualStyles = [
   {
     id: "glass",
     name: "Liquid Glass",
-    description: "Fluid light. Frosted surfaces.",
+    description: "A floating desktop and glass windows",
   },
   {
     id: "neumorphism",
     name: "Neumorphism",
-    description: "Soft, sculpted surfaces",
+    description: "A sculpted engineering dashboard",
   },
   {
     id: "paper",
@@ -38,7 +38,7 @@ export const visualStyles = [
   {
     id: "editorial",
     name: "Editorial",
-    description: "A confident magazine layout",
+    description: "A portrait cover and magazine spreads",
   },
   { id: "aurora", name: "Aurora", description: "Luminous gradients and calm" },
   {
@@ -54,7 +54,7 @@ export const visualStyles = [
   {
     id: "vintage",
     name: "Retro / Vintage",
-    description: "Classic print and warm nostalgia",
+    description: "A portrait-led vintage poster",
   },
   {
     id: "clay",
@@ -64,7 +64,7 @@ export const visualStyles = [
   {
     id: "doodle",
     name: "Hand-drawn / Doodle",
-    description: "Loose lines and handwritten accents",
+    description: "A personal notebook with photo mounts",
   },
 ] as const;
 

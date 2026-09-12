@@ -1,0 +1,68 @@
+---
+import type { Project, Profile } from "@garden/content-schema";
+import Portrait from "./Portrait.astro";
+import SystemDiagram from "./SystemDiagram.astro";
+const { projects, profile, portrait } = Astro.props as {
+  projects: Project[];
+  profile: Profile;
+  portrait: { file: string; caption: string };
+};
+const featured = projects.filter((project) => project.featured).slice(0, 3);
+---
+
+<div class="hero-showcase">
+  <div class="showcase-console">
+    <div class="console-bar">
+      <span>salman / engineering</span><span>~/selected-work</span>
+    </div>
+    <p class="console-command">$ whoami</p>
+    <strong class="console-name">{profile.fullName}</strong>
+    <p>{profile.role} · {profile.experienceLabel}</p>
+    <p class="console-command">$ ls projects</p>
+    <div class="console-projects">
+      {featured.map((project, i) => <a href={`/work/${project.slug}`}><span>0{i + 1}</span><strong>{project.shortTitle}</strong><span>↗</span></a>)}
+    </div>
+    <p class="console-command">$ cat focus.txt</p>
+    <p>{profile.currentFocus}</p>
+    <a class="console-contact" href="/contact"
+      >{profile.collaboration.availability}
+      ↗</a
+    >
+  </div>
+  <div class="showcase-gallery">
+    {featured.map((project, i) => <a class="gallery-sheet" href={`/work/${project.slug}`}>
+      <span class="gallery-label">0{i + 1} / {project.category}</span>
+      <div class="gallery-diagram"><SystemDiagram project={project} compact /></div>
+      <h3>{project.shortTitle}</h3><p>{project.outcome}</p>
+    </a>)}
+  </div>
+  <div class="showcase-profile">
+    <Portrait
+      name={profile.name}
+      file={portrait.file}
+      caption={portrait.caption}
+    />
+    <div class="profile-caption">
+      <span>{profile.role}</span><strong>{profile.experienceLabel}</strong
+      ><a href="/about">Meet the engineer ↗</a>
+    </div>
+  </div>
+  <div class="showcase-dashboard">
+    <div class="dashboard-heading">
+      <span>Engineering overview</span><a href="/cv">View CV ↗</a>
+    </div>
+    <div class="dashboard-facts">
+      <div>
+        <strong>{profile.experienceLabel}</strong><span>Across the stack</span>
+      </div>
+      <div><strong>{projects.length}</strong><span>Selected systems</span></div>
+    </div>
+    <div class="dashboard-projects">
+      {featured.map(project => <a href={`/work/${project.slug}`}><span>{project.category}</span><strong>{project.shortTitle}</strong><span>↗</span></a>)}
+    </div>
+    <a class="dashboard-availability" href="/contact"
+      >{profile.collaboration.availability}
+      ↗</a
+    >
+  </div>
+</div>

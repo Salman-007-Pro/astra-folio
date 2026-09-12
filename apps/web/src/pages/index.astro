@@ -1,6 +1,7 @@
 ---
 import Shell from "../layouts/Shell.astro";
 import Icon from "../components/Icon.astro";
+import StyleShowcase from "../components/StyleShowcase.astro";
 import Garden from "../experience/Garden";
 import ProjectGrid from "../components/ProjectGrid.astro";
 import Experience from "../components/Experience.astro";
@@ -43,6 +44,11 @@ const { profile, projects, experience, posts, site } = await getContent();
         >
       </div>
     </div>
+    <StyleShowcase
+      projects={projects}
+      profile={profile}
+      portrait={site.portrait}
+    />
     <div class="hero-scene-slot" data-hero-world-mount aria-hidden="true"></div>
     <div class="hero-bottom">
       <div class="location">

@@ -100,3 +100,7 @@ Page titles, profile metadata, bylines, RSS, and branding text use shared conten
 Follow the [Payload setup guide](payload-setup.md). The seed imports JSON into an empty development CMS. Once `CMS_URL` is set, CMS content becomes the source; local JSON edits do not automatically update CMS records.
 
 Site Settings → **Website copy, games & appearance** contains the same object as `site` in the JSON. Profile, Projects, Experience, Blog Posts, and Resume Settings use separate editors. Publish changes and rebuild the frontend.
+
+### Style-specific opening layouts
+
+`apps/web/src/components/StyleShowcase.astro` renders alternate hero content from the same profile, projects and portrait data. `apps/web/src/styles/style-compositions.css` selects the console (Cyberpunk/Pixel), project gallery (Holographic), portrait cover (Editorial/Paper/Vintage/Doodle), or dashboard (Neumorphism/Glass). The remaining styles keep the interactive spatial scene with distinct compositions. On mobile, Pixel leads with the LCD panel; Vintage and Doodle lead with the portrait. Hidden alternatives remain out of keyboard navigation. The Three.js hero is hidden while an alternate opening is active and restored when switching back; the desktop work-section scene remains available.

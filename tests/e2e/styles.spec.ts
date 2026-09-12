@@ -115,9 +115,10 @@ test("changing typography inside settings repositions the mobile scene", async (
     await expect
       .poll(() =>
         page.evaluate(() => {
-          const scene = document
-            .querySelector(".world-stage")!
-            .getBoundingClientRect();
+          const world = document.querySelector<HTMLElement>(".world-stage")!;
+          const scene = (
+            world.hidden ? document.querySelector(".hero-showcase")! : world
+          ).getBoundingClientRect();
           const copy = document
             .querySelector(".hero-copy")!
             .getBoundingClientRect();
@@ -125,7 +126,8 @@ test("changing typography inside settings repositions the mobile scene", async (
             .querySelector(".hero-bottom")!
             .getBoundingClientRect();
           return (
-            scene.top >= copy.bottom + 20 && scene.bottom <= footer.top + 1
+            (scene.top >= copy.bottom + 20 || scene.bottom <= copy.top - 20) &&
+            scene.bottom <= footer.top + 1
           );
         }),
       )
