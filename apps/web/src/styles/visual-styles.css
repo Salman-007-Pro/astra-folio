@@ -612,6 +612,262 @@ html[data-style="aurora"] .button {
   border-radius: 100px;
 }
 
+/* 11 / Cartoon: outlined interface panels and bold, offset ink shadows. */
+html[data-style="cartoon"] {
+  --style-radius: 20px;
+  --style-shadow: 6px 6px 0 var(--color-text-primary);
+  --style-hero: radial-gradient(
+    circle at 80% 35%,
+    var(--style-tint) 0 25%,
+    transparent 25.2%
+  );
+}
+html[data-style="cartoon"] main :is(h1, h2, h3) {
+  font-weight: 800;
+  letter-spacing: -0.045em;
+}
+html[data-style="cartoon"] .hero h1 em {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 800;
+}
+html[data-style="cartoon"]
+  :is(.project-art, .skill-evidence, .arcade, .contact-channel) {
+  border: 3px solid var(--color-text-primary);
+}
+html[data-style="cartoon"] .button {
+  border: 2px solid var(--color-text-primary);
+  box-shadow: 4px 4px 0 var(--color-accent-signal);
+}
+html[data-style="cartoon"] .section-header .eyebrow {
+  display: inline-flex;
+  padding: 10px 16px;
+  border: 2px solid currentColor;
+  border-radius: 12px 12px 12px 0;
+  background: var(--color-bg-surface);
+}
+html[data-style="cartoon"] .project-item h3 {
+  font-weight: 800;
+}
+[data-style-preview="cartoon"] .style-mini {
+  border: 2px solid currentColor;
+  border-radius: 12px;
+  box-shadow: inset -3px -3px var(--style-tint);
+}
+[data-style-preview="cartoon"] .style-mini b {
+  font-weight: 900;
+}
+[data-style-preview="cartoon"] .style-mini em {
+  border: 2px solid currentColor;
+  box-shadow: 3px 3px currentColor;
+  border-radius: 8px;
+}
+
+/* 12 / Scrollytelling: chapter-led hierarchy and a reading progress rail. */
+html[data-style="scrollytelling"] {
+  --style-radius: 16px;
+  --style-shadow: 0 14px 36px var(--style-tint);
+  --style-hero: linear-gradient(135deg, transparent 45%, var(--style-tint));
+}
+html[data-style="scrollytelling"] .section-header {
+  border-left: 3px solid var(--color-accent-signal);
+  padding-left: clamp(16px, 3vw, 40px);
+}
+html[data-style="scrollytelling"] main :is(h1, h2) {
+  letter-spacing: -0.04em;
+}
+html[data-style="scrollytelling"] .section-number {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+html[data-style="scrollytelling"] .case-body h2 {
+  border-top: 2px solid var(--color-accent-signal);
+  padding-top: 18px;
+}
+[data-style-preview="scrollytelling"] .style-mini {
+  border-left: 4px solid currentColor;
+}
+[data-style-preview="scrollytelling"] .style-mini em {
+  border-radius: 0;
+  border-width: 0 0 2px;
+  background: transparent;
+  box-shadow:
+    0 -7px var(--style-tint),
+    0 -14px var(--style-tint);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html[data-style="scrollytelling"]:not([data-motion="off"])::after {
+    content: "";
+    position: fixed;
+    z-index: 40;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--color-accent-signal);
+    transform: scaleX(var(--story-progress, 0));
+    transform-origin: left;
+    pointer-events: none;
+  }
+}
+
+/* 13 / Vintage: print-era serif display, double rules and offset color. */
+html[data-style="vintage"] {
+  --style-radius: 6px;
+  --style-shadow: 4px 4px 0 var(--style-tint);
+  --style-hero: repeating-linear-gradient(
+    0deg,
+    transparent 0 5px,
+    color-mix(in srgb, var(--color-accent-energy) 5%, transparent) 5px 6px
+  );
+}
+html[data-style="vintage"] main :is(h1, h2, h3) {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+html[data-style="vintage"] .hero h1 {
+  text-shadow:
+    2px 3px var(--color-bg-canvas),
+    4px 5px var(--style-tint);
+}
+html[data-style="vintage"] .section-header {
+  border-block: 3px double var(--color-text-muted);
+  padding-block: 24px;
+}
+html[data-style="vintage"] .project-art {
+  border: 5px double var(--color-border-subtle);
+}
+html[data-style="vintage"] .eyebrow {
+  letter-spacing: 0.13em;
+}
+html[data-style="vintage"][data-palette]
+  :is(.experience-section, .about-section, .contact-section) {
+  background: color-mix(
+    in srgb,
+    var(--color-accent-energy) 7%,
+    var(--color-section)
+  );
+}
+[data-style-preview="vintage"] .style-mini {
+  background: #efe2c3;
+  color: #6d3525;
+  border: 3px double currentColor;
+}
+[data-style-preview="vintage"] .style-mini b {
+  font-family: Georgia, serif;
+  font-weight: 800;
+  text-shadow: 2px 2px #d9b174;
+}
+[data-style-preview="vintage"] .style-mini em {
+  border: 3px double currentColor;
+  border-radius: 2px;
+}
+
+/* 14 / Clay: inflated controls, deep roundness and soft inset volume. */
+html[data-style="clay"] {
+  --style-radius: 36px;
+  --style-shadow:
+    inset 6px 6px 14px #ffffff55, inset -7px -7px 16px var(--style-tint), 10px 14px 26px var(
+      --style-tint
+    );
+  --style-hero: radial-gradient(
+    ellipse at 80% 55%,
+    var(--style-tint),
+    transparent 65%
+  );
+}
+html[data-style="clay"] main :is(h1, h2, h3) {
+  font-weight: 750;
+  letter-spacing: -0.04em;
+}
+html[data-style="clay"] :is(.skill-evidence, .arcade, .about-sidebar) {
+  background: color-mix(
+    in srgb,
+    var(--color-accent-signal) 6%,
+    var(--color-bg-surface)
+  );
+  border: 1px solid var(--color-border-subtle);
+}
+html[data-style="clay"] :is(.button, .skill-chips button) {
+  box-shadow:
+    inset 3px 4px 8px #ffffff40,
+    inset -3px -5px 10px #0002,
+    0 7px 14px var(--style-tint);
+  border-radius: 24px;
+}
+html[data-style="clay"] .project-art {
+  border: 6px solid
+    color-mix(in srgb, var(--color-accent-signal) 12%, var(--color-bg-surface));
+}
+[data-style-preview="clay"] .style-mini {
+  border-radius: 18px;
+  background: color-mix(
+    in srgb,
+    var(--color-accent-signal) 10%,
+    var(--color-bg-surface)
+  );
+  box-shadow:
+    inset 4px 4px 8px #ffffff70,
+    inset -5px -5px 10px var(--style-tint);
+}
+[data-style-preview="clay"] .style-mini em {
+  border: 0;
+  border-radius: 10px;
+  box-shadow:
+    inset 2px 2px 4px #fff9,
+    inset -3px -3px 5px #0002,
+    3px 4px 6px #0002;
+}
+
+/* 15 / Doodle: irregular outlines and handwritten display accents. */
+html[data-style="doodle"] {
+  --style-radius: 14px 28px 12px 24px;
+  --style-shadow: 2px 4px 0 var(--style-tint);
+  --style-hero: radial-gradient(var(--style-tint) 1px, transparent 1px);
+}
+html[data-style="doodle"] :is(.hero, .page-intro)::before {
+  background-size: 18px 18px;
+}
+html[data-style="doodle"] main :is(h1, h2, h3) {
+  font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+html[data-style="doodle"] .hero h1 em {
+  font-family: inherit;
+  font-style: normal;
+}
+html[data-style="doodle"] :is(.project-art, .skill-evidence, .arcade) {
+  border: 2px solid var(--color-text-muted);
+}
+html[data-style="doodle"] .section-header {
+  border-bottom: 2px dashed var(--color-accent-signal);
+  padding-bottom: 24px;
+}
+html[data-style="doodle"] main :is(h1 em, h2 em) {
+  text-decoration: underline wavy;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 8px;
+}
+html[data-style="doodle"] .button {
+  border-radius: 45% 10% 42% 8% / 8% 38% 10% 42%;
+  border-width: 2px;
+}
+[data-style-preview="doodle"] .style-mini {
+  border: 2px dashed currentColor;
+  border-radius: 8px 16px 7px 14px;
+}
+[data-style-preview="doodle"] .style-mini b {
+  font-family: "Segoe Print", cursive;
+  rotate: -5deg;
+}
+[data-style-preview="doodle"] .style-mini em {
+  border-radius: 9px 4px 12px 5px;
+  rotate: 8deg;
+  border-style: dashed;
+}
+
 @keyframes style-light {
   from {
     background-position: 0% 40%;
@@ -665,6 +921,9 @@ html[data-motion="off"]::view-transition-new(root) {
   }
 }
 @media print {
+  html[data-style="scrollytelling"]::after {
+    display: none;
+  }
   html[data-style] :is(.hero, .page-intro)::before {
     display: none;
   }

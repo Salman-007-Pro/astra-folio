@@ -31,15 +31,16 @@ test("style cards keep labels inside their borders at narrow and intermediate wi
   }
 });
 
-test("all ten styles switch in both themes and persist across routes", async ({
+test("all fifteen styles switch in both themes and persist across routes", async ({
   page,
 }) => {
+  test.setTimeout(90000);
   await page.goto("/");
   await page
     .getByRole("button", { name: "Experience settings", exact: true })
     .click();
   const dialog = page.getByRole("dialog", { name: "Your kind of garden." });
-  await expect(dialog.locator("[data-visual-style]")).toHaveCount(10);
+  await expect(dialog.locator("[data-visual-style]")).toHaveCount(15);
   for (const night of [false, true]) {
     await page.locator("#pref-night").setChecked(night);
     for (const style of visualStyles) {
@@ -60,13 +61,13 @@ test("all ten styles switch in both themes and persist across routes", async ({
   await dialog.getByRole("button", { name: "Explore this style" }).click();
   await expect(dialog).not.toBeVisible();
   await page.goto("/about");
-  await expect(page.locator("html")).toHaveAttribute("data-style", "aurora");
+  await expect(page.locator("html")).toHaveAttribute("data-style", "doodle");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "night");
   await page
     .getByRole("button", { name: "Experience settings", exact: true })
     .click();
   await expect(
-    page.locator('[data-visual-style][value="aurora"]'),
+    page.locator('[data-visual-style][value="doodle"]'),
   ).toBeChecked();
   await page.locator('[data-visual-style][value="default"]').check();
   await expect(page.locator("html")).toHaveAttribute("data-style", "default");
@@ -101,7 +102,7 @@ test("changing typography inside settings repositions the mobile scene", async (
   await page.setViewportSize({ width: 320, height: 844 });
   await page.goto("/");
   await expect(page.locator(".world-stage")).toBeVisible();
-  for (const style of ["pixel", "paper", "default"]) {
+  for (const style of ["cartoon", "vintage", "clay", "doodle", "default"]) {
     await page
       .getByRole("button", { name: "Experience settings", exact: true })
       .click();
@@ -127,6 +128,51 @@ test("changing typography inside settings repositions the mobile scene", async (
       )
       .toBe(true);
   }
+});
+
+test("scrollytelling follows reading progress and removes motion when disabled", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "Experience settings", exact: true })
+    .click();
+  await page.locator('[data-visual-style][value="scrollytelling"]').check();
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-style",
+    "scrollytelling",
+  );
+  await page.getByRole("button", { name: "Explore this style" }).click();
+  await page.locator("#experience").scrollIntoViewIfNeeded();
+  await expect
+    .poll(() =>
+      page
+        .locator("html")
+        .evaluate((root) =>
+          parseFloat(
+            (root as HTMLElement).style.getPropertyValue("--story-progress"),
+          ),
+        ),
+    )
+    .toBeGreaterThan(0);
+  await expect(page.locator("#experience h2")).toBeVisible();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator("html")).toHaveAttribute("data-motion", "off");
+  await expect
+    .poll(() =>
+      page
+        .locator("html")
+        .evaluate((root) =>
+          (root as HTMLElement).style.getPropertyValue("--story-progress"),
+        ),
+    )
+    .toBe("");
+  await expect(page.locator("#experience h2")).toBeVisible();
+  expect(
+    await page
+      .locator("#experience .section-header")
+      .evaluate((header) => header.getAnimations().length),
+  ).toBe(0);
 });
 
 test("parallax cleans up on style change and reduced motion disables effects", async ({

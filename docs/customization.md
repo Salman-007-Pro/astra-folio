@@ -50,9 +50,11 @@ See the definitive fields in [`packages/content-schema/src/index.ts`](../package
 
 ## Visual styles
 
-The **Styles** button opens ten visual treatments: Original (the default), Cyberpunk, Holographic, Pixel / Game, Parallax, Liquid Glass, Neumorphism, Paper / Scrapbook, Editorial, and Aurora. Each works with the existing light and dark palettes. The selected style is saved on the visitor's device and restored before first paint on every route.
+The **Styles** button opens fifteen visual treatments: Original (the default), Cyberpunk, Holographic, Pixel / Game, Parallax, Liquid Glass, Neumorphism, Paper / Scrapbook, Editorial, Aurora, Cartoon / Illustrative, Scrollytelling, Retro / Vintage, Claymorphism, and Hand-drawn / Doodle. Each works with the existing light and dark palettes. The selected style is saved on the visitor's device and restored before first paint on every route.
 
 Edit names and descriptions in `apps/web/src/lib/visual-styles.ts` and treatments in `apps/web/src/styles/visual-styles.css`. Style changes use a crossfade where the browser supports View Transitions, with a fade fallback. Reduced motion or the Motion switch disables animated switching and decorative movement. Liquid Glass uses CSS frosted surfaces, optical edge highlights, and moving light rather than physical refraction; Parallax moves decorative backgrounds only. Neither needs an additional graphics library.
+
+Scrollytelling adds a page-reading progress line and chapter reveals using Intersection Observer. Text is never hidden while waiting for JavaScript. Switching styles, disabling motion, or hiding the browser cancels active reveals and releases their listeners. Cartoon, Vintage, Clay, and Doodle reuse the existing content and illustrations with distinct typography, borders, and surface treatments; Doodle uses system handwriting fonts with a cursive fallback.
 
 ## Games
 
