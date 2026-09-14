@@ -3,4 +3,5 @@ export default withPayload({
   output: "standalone",
   poweredByHeader: false,
   transpilePackages: ["@garden/content-schema"],
+  agentRules: false,
 });

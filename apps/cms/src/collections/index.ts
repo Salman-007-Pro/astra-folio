@@ -19,11 +19,16 @@ const list = (name: string): Field => ({
   fields: [text("value")],
   required: true,
 });
-const select = (name: string, options: string[]): Field => ({
+const select = (
+  name: string,
+  options: string[],
+  extra: { label?: string; enumName?: string } = {},
+): Field => ({
   name,
   type: "select",
   options,
   required: true,
+  ...extra,
 });
 const base = (
   slug: string,
@@ -82,7 +87,7 @@ export const Projects: CollectionConfig = {
   ...base("projects"),
   admin: {
     useAsTitle: "shortTitle",
-    defaultColumns: ["shortTitle", "category", "status", "_status"],
+    defaultColumns: ["shortTitle", "category", "lifecycle", "_status"],
   },
   fields: [
     text("title"),
@@ -103,7 +108,10 @@ export const Projects: CollectionConfig = {
     text("period"),
     text("role"),
     text("company"),
-    select("status", ["Production", "Proof of concept", "In progress"]),
+    select("lifecycle", ["Production", "Proof of concept", "In progress"], {
+      label: "Status",
+      enumName: "project_lifecycle",
+    }),
     select("preset", ["connector", "discovery", "engine", "mobile", "garden"]),
     list("stack"),
     area("problem"),
@@ -218,7 +226,10 @@ export const Experiments: CollectionConfig = {
   admin: { useAsTitle: "title" },
   fields: [
     text("title"),
-    select("status", ["Lab", "Prototype", "In progress"]),
+    select("lifecycle", ["Lab", "Prototype", "In progress"], {
+      label: "Status",
+      enumName: "experiment_lifecycle",
+    }),
     area("description"),
     list("stack"),
     text("demoLink", false),

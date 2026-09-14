@@ -1,9 +1,10 @@
 import type { Endpoint, PayloadRequest } from "payload";
 import { portfolioSchema, resumeSchema } from "@garden/content-schema";
-const values = (value: any) =>
-  Array.isArray(value)
-    ? value.map((v) => (typeof v === "string" ? v : v.value))
-    : [];
+import {
+  toPublicExperience,
+  toPublicPost,
+  toPublicProject,
+} from "./public-content";
 const publicOptions = (req: PayloadRequest) => ({
   req,
   overrideAccess: false,
@@ -78,22 +79,9 @@ export const endpoints: Endpoint[] = [
       ]);
       const content = portfolioSchema.parse({
         profile,
-        projects: projects.docs.map((p: any) => ({
-          ...p,
-          stack: values(p.stack),
-          constraints: values(p.constraints),
-          architecture: values(p.architecture),
-        })),
-        experience: experience.docs.map((e: any) => ({
-          ...e,
-          evidence: values(e.evidence),
-          stack: values(e.stack),
-        })),
-        posts: posts.docs.map((p: any) => ({
-          ...p,
-          tags: values(p.tags),
-          relatedProjects: values(p.relatedProjects),
-        })),
+        projects: projects.docs.map(toPublicProject),
+        experience: experience.docs.map(toPublicExperience),
+        posts: posts.docs.map(toPublicPost),
         resume: currentResume,
         site: siteSettings.websiteContent,
       });

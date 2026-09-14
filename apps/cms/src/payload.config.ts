@@ -16,6 +16,7 @@ import {
 } from "./collections";
 import { Profile, SiteSettings, ResumeSettings } from "./globals";
 import { endpoints } from "./endpoints";
+import { migrations } from "./migrations";
 const directory = path.dirname(fileURLToPath(import.meta.url));
 if (!process.env.PAYLOAD_SECRET || process.env.PAYLOAD_SECRET.length < 32)
   throw new Error(
@@ -48,6 +49,7 @@ export default buildConfig({
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL },
     push: process.env.NODE_ENV !== "production",
+    prodMigrations: migrations,
   }),
   sharp,
   cors: [process.env.PUBLIC_SITE_URL || "http://127.0.0.1:4321"],

@@ -29,11 +29,13 @@ await payload.updateGlobal({
     _status: "published",
   },
 });
-for (const [order, p] of seed.projects.entries())
+for (const [order, p] of seed.projects.entries()) {
+  const { status, ...project } = p;
   await payload.create({
     collection: "projects",
     data: {
-      ...p,
+      ...project,
+      lifecycle: status,
       stack: list(p.stack),
       constraints: list(p.constraints),
       architecture: list(p.architecture),
@@ -41,6 +43,7 @@ for (const [order, p] of seed.projects.entries())
       _status: "published",
     },
   });
+}
 for (const [order, e] of seed.experience.entries())
   await payload.create({
     collection: "experience",

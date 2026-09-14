@@ -2,20 +2,14 @@
 import Shell from "../../layouts/Shell.astro";
 import { getContent, formatDate } from "../../lib/content";
 import { renderTrustedMdx } from "../../lib/mdx";
-export async function getStaticPaths() {
-  const { posts, projects } = await getContent();
-  return posts.map((post, i) => ({
-    params: { slug: post.slug },
-    props: {
-      post,
-      related: projects.filter((p) => post.relatedProjects.includes(p.slug)),
-      next: posts[(i + 1) % posts.length],
-    },
-  }));
-}
-const { post, related, next } = Astro.props;
+const { slug } = Astro.params;
+const { posts, projects, profile } = await getContent();
+const i = posts.findIndex((item) => item.slug === slug);
+const post = posts[i];
+if (!post) return Astro.rewrite("/404");
+const related = projects.filter((p) => post.relatedProjects.includes(p.slug));
+const next = posts[(i + 1) % posts.length] ?? post;
 const { html, headings } = await renderTrustedMdx(post.mdx);
-const { profile } = await getContent();
 ---
 
 <Shell

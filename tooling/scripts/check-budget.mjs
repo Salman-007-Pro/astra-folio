@@ -1,7 +1,7 @@
 import { readdir, stat, readFile } from "node:fs/promises";
 import { gzipSync } from "node:zlib";
 import path from "node:path";
-const directory = path.resolve("apps/web/dist");
+const directory = path.resolve("apps/web/dist/client");
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
   return (
@@ -31,10 +31,10 @@ for (const file of files) {
   if (/\.(glb|gltf|ktx2|hdr|exr)$/.test(file)) media += bytes;
 }
 const reading = await readFile(
-  path.join(directory, "reading/index.html"),
+  path.resolve("apps/web/src/pages/reading.astro"),
   "utf8",
 );
-if (/World\.[^"']+\.js/.test(reading))
+if (/from ["'].*World|from ["'].*Garden/.test(reading))
   throw new Error("Reading mode unexpectedly imports the WebGL world.");
 console.log(
   JSON.stringify(

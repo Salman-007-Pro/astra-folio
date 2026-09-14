@@ -3,15 +3,12 @@ import Shell from "../../layouts/Shell.astro";
 import SystemDiagram from "../../components/SystemDiagram.astro";
 import Icon from "../../components/Icon.astro";
 import { getContent } from "../../lib/content";
-export async function getStaticPaths() {
-  const { projects } = await getContent();
-  return projects.map((project, i) => ({
-    params: { slug: project.slug },
-    props: { project, next: projects[(i + 1) % projects.length] },
-  }));
-}
-const { project, next } = Astro.props;
-const { profile } = await getContent();
+const { slug } = Astro.params;
+const { projects, profile } = await getContent();
+const index = projects.findIndex((item) => item.slug === slug);
+const project = projects[index];
+if (!project) return Astro.rewrite("/404");
+const next = projects[(index + 1) % projects.length] ?? project;
 ---
 
 <Shell
