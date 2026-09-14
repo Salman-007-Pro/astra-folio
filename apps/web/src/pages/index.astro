@@ -5,7 +5,8 @@ import StyleShowcase from "../components/StyleShowcase.astro";
 import Garden from "../experience/Garden";
 import ProjectGrid from "../components/ProjectGrid.astro";
 import Experience from "../components/Experience.astro";
-import Skills from "../components/Skills.astro";
+import EngineeringLab from "../lab/EngineeringLab";
+import Motivation from "../components/Motivation.astro";
 import WritingList from "../components/WritingList.astro";
 import ContactBlock from "../components/ContactBlock.astro";
 import WorkBiome from "../components/WorkBiome.astro";
@@ -118,14 +119,23 @@ const { profile, projects, experience, posts, site } = await getContent();
           <span class="section-number">03 /</span>
           A CONNECTED TOOLKIT
         </div>
-        <h2>The right tools.<br>The whole picture.</h2>
+        <h2>{site.techLab.title}</h2>
       </div>
       <p>
-        Technologies matter most when they solve something. Follow a connection
-        to see them in context.
+        {site.techLab.intro}
       </p>
     </div>
-    <Skills projects={projects} />
+    <EngineeringLab
+      client:visible
+      settings={site.techLab}
+      projects={projects}
+    />
+    <noscript
+      ><p>
+        Explore the technology list and architecture summaries in
+        <a href="/reading#reading-skills">recruiter view</a>.
+      </p></noscript
+    >
   </section>
   <section class="section writing-section" id="writing" data-chapter="WRITING">
     <div class="section-header">
@@ -163,6 +173,7 @@ const { profile, projects, experience, posts, site } = await getContent();
       </div>
     </div>
   </section>
+  <Motivation settings={site.motivation} />
   {site.games.enabled && <section class="section arcade-section" id="play" aria-label="The garden arcade">
     <div class="section-header"><div><div class="eyebrow">THE PLAYGROUND</div><h2>{site.games.title}</h2></div><p>{site.games.intro}</p><a href="/play" class="text-link">Open arcade <Icon name="diagonal" size={16} /></a></div>
     <Arcade client:visible settings={site.games} />

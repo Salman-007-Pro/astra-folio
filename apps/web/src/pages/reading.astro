@@ -22,7 +22,7 @@ const { profile, projects, experience, posts, site } = await getContent();
       <div class="reading-proof">
         <span>{profile.experienceLabel} of product engineering</span
         ><span>{profile.collaboration.availability}</span
-        ><span>{profile.collaboration.currencies} compensation</span
+        ><span>Preferred compensation: {profile.collaboration.currencies}</span
         ><span>{site.languages.join(" & ")}</span>
       </div>
       <div class="hero-ctas">
@@ -73,7 +73,7 @@ const { profile, projects, experience, posts, site } = await getContent();
     </section>
     <section class="reading-section" id="reading-skills">
       <h2>Skills with evidence</h2>
-      <Skills projects={projects} />
+      <Skills projects={projects} settings={site.techLab} />
     </section>
     <section class="reading-section" id="reading-writing">
       <h2>Writing</h2>

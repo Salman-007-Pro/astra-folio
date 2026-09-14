@@ -575,13 +575,20 @@ function Scene({
       onFailure();
     };
     canvas.addEventListener("webglcontextlost", loss);
-    const visibility = () => {
-      setActive(!document.hidden);
+    let visible = true,
+      labActive = false;
+    const visibility = () =>
+      setActive(visible && !document.hidden && !labActive);
+    const lab = (event: Event) => {
+      labActive = (event as CustomEvent<boolean>).detail;
+      visibility();
     };
+    window.addEventListener("garden:lab-active", lab);
     document.addEventListener("visibilitychange", visibility);
     const observer = new IntersectionObserver(
       (entries) => {
-        setActive(entries[0].isIntersecting && !document.hidden);
+        visible = entries[0].isIntersecting;
+        visibility();
       },
       { rootMargin: "120px" },
     );
@@ -589,6 +596,7 @@ function Scene({
     return () => {
       canvas.removeEventListener("webglcontextlost", loss);
       document.removeEventListener("visibilitychange", visibility);
+      window.removeEventListener("garden:lab-active", lab);
       observer.disconnect();
     };
   }, [gl, onFailure]);

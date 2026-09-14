@@ -20,19 +20,19 @@ const { profile } = await getContent();
           where I can help.
         </p>
       </div>
-      <aside class="collaboration-panel" aria-label="Remote work availability">
+      <aside class="collaboration-panel" aria-label="Work availability">
         <div class="collaboration-panel-top">
           <Icon name="globe" size={26} /><span>OPEN TO OPPORTUNITIES</span>
         </div>
-        <h2>Remote.<br><em>Worldwide.</em></h2>
-        <p>I work with teams in any country.</p>
+        <h2>Great work.<br><em>Across borders.</em></h2>
+        <p>{profile.collaboration.summary}</p>
         <dl>
           <div>
             <dt>Working model</dt>
-            <dd>Fully remote</dd>
+            <dd>{profile.collaboration.availability}</dd>
           </div>
           <div>
-            <dt>Compensation</dt>
+            <dt>Preferred compensation</dt>
             <dd>{profile.collaboration.currencies}</dd>
           </div>
         </dl>
@@ -53,7 +53,7 @@ const { profile } = await getContent();
     <div>
       <span class="eyebrow">LOCAL CONNECTIONS</span>
       <h3>{profile.collaboration.locations}</h3>
-      <p>Working remotely, across borders.</p>
+      <p>Remote worldwide, on-site, or relocation for the right opportunity.</p>
     </div>
     <a href={profile.linkedin} target="_blank" rel="noreferrer"
       ><span class="eyebrow">THE PROFESSIONAL SIDE</span>

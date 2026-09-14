@@ -29,16 +29,24 @@ export const Profile: GlobalConfig = {
     text("currentFocus"),
     {
       name: "collaboration",
-      label: "Remote availability & contact",
+      label: "Work availability & contact",
       type: "group",
-      fields: Object.entries(collaborationDefaults).map(
-        ([name, defaultValue]) => ({
-          name,
-          type: "text" as const,
-          required: true,
-          defaultValue,
-        }),
-      ),
+      fields: [
+        ...Object.entries(collaborationDefaults)
+          .filter(([name]) => name !== "whatsappContacts")
+          .map(([name, defaultValue]) => ({
+            name,
+            type: "text" as const,
+            required: true,
+            defaultValue: defaultValue as string,
+          })),
+        {
+          name: "whatsappContacts",
+          type: "array",
+          fields: [text("label"), text("number")],
+          defaultValue: collaborationDefaults.whatsappContacts,
+        },
+      ],
     },
     { name: "longNarrative", type: "textarea" },
     { name: "avatar", type: "upload", relationTo: "media" },

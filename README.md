@@ -45,6 +45,22 @@ Edit [`content/portfolio.json`](content/portfolio.json), replace the portrait an
 
 Shared Zod contracts validate JSON during builds. Keep the structure and replace values with your own verified information. Follow the **[customization guide](docs/customization.md)** for assets, themes, content relationships, and domains.
 
+## Engineering Lab, quotes and work availability
+
+The homepage keeps the `#skills` link and offers **Tech Stack** and **System Design** views. The recruiter page renders the same inventory as HTML without loading the Lab canvas. The demonstrations are local illustrations; they do not execute sample code, deploy infrastructure, connect a wallet, or change CMS records.
+
+- `profile.collaboration.availability` is the short work-model label; `summary` is the full professional introduction. `currencies` is displayed as a preference.
+- `profile.collaboration.whatsappContacts` contains `{ "label": "Saudi Arabia — primary", "number": "+966 56 379 1037" }` entries. The first entry drives quick WhatsApp links. Every entry appears in the contact card. `callNumber` remains independent. Older snapshots without the array still use their existing `whatsappNumber`.
+- `site.techLab.technologies` contains `id`, `name`, `category`, `description`, `preset`, `code`, and `projects` (actual case-study slugs). IDs must be unique. Empty project lists are appropriate for skills without a published case study; don't invent evidence.
+- `site.techLab.scenarios` contains `id`, `title`, `preset`, `explanation`, `why`, and `tradeoff`. The initial six scenarios cover routing, queries, caching, jobs, permissions, and delivery/observability.
+- Existing demo presets are defined by `demoPresetSchema` in the shared content schema. Reuse a preset when adding a related tool. A new behavior needs a typed implementation in `apps/web/src/lab/model.ts`, its controls in `EngineeringLab.tsx`, and a matching schema preset.
+- Spatial scenes are mapped in `apps/web/src/lab/scene-presets.ts`: browser layers, component trees, database stacks, phones, server racks, chains and other illustrations respond to demo state. Add geometry in `SceneObjects.tsx` and an equivalent SVG in `LabDiagram.tsx`; keep renderer imports inside the lazy-loaded `LabScene.tsx` boundary. The Three.js preset offers four geometries, three material finishes and manual rotation. Motion-off keeps these controls working without continuous animation.
+- `site.motivation` controls `enabled`, `title`, `intro`, `intervalSeconds` (20 by default), and `quotes` containing `text`, `author`, and `sourceUrl`. Retain accurate author/source attribution. Quotes rotate only while visible and pause during interaction; motion-off starts in manual mode.
+
+Payload exposes the same Lab and motivation objects inside **Site Settings → Website content**, and labelled WhatsApp contacts under **Profile → Work availability & contact**. Older snapshots receive defaults for missing Lab/quote sections. Explicitly saving new content is required to change older, already populated availability copy. No new environment variables are needed.
+
+For local review, use `pnpm dev`; `pnpm check`, `pnpm test`, `pnpm test:e2e`, `pnpm build` and `pnpm budget` validate the changes. Building does not deploy. Publish only when intentionally requested.
+
 ## Games and appearance
 
 | Game           | Goal                                                         | Controls                                                                           |

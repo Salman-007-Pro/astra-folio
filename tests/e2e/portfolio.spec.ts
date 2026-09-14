@@ -10,12 +10,15 @@ test("worldwide hiring details use the correct WhatsApp and calling channels", a
     const contacts = page.getByRole("group", {
       name: "Ways to contact Salman",
     });
-    const whatsapp = contacts.getByRole("link", { name: /WhatsApp/ });
+    const whatsapp = contacts.getByRole("link", { name: /Saudi Arabia/ });
+    await expect(
+      contacts.getByRole("link", { name: /Pakistan/ }),
+    ).toHaveAttribute("href", /wa\.me\/923321318363/);
     const destination = new URL((await whatsapp.getAttribute("href"))!);
     expect(destination.origin).toBe("https://wa.me");
     expect(destination.pathname).toBe("/966563791037");
     expect(destination.searchParams.get("text")).toContain(
-      "remote full-stack opportunity",
+      "full-stack engineering opportunity",
     );
     await expect(whatsapp).toHaveAttribute("target", "_blank");
     await expect(contacts.getByRole("link", { name: /Phone/ })).toHaveAttribute(
@@ -31,12 +34,10 @@ test("worldwide hiring details use the correct WhatsApp and calling channels", a
     await expect(page.locator('a[href^="tel:+966"]')).toHaveCount(0);
   }
   await page.goto("/contact");
-  await expect(page.getByLabel("Remote work availability")).toContainText(
-    "Worldwide.",
+  await expect(page.getByLabel("Work availability")).toContainText(
+    "Open to relocation",
   );
-  await expect(page.getByLabel("Remote work availability")).toContainText(
-    "USD / EUR",
-  );
+  await expect(page.getByLabel("Work availability")).toContainText("USD / EUR");
   await page.getByRole("button", { name: "Copy email address" }).click();
   await expect(page.getByRole("status")).toContainText(/copied/i);
   if (isMobile) {

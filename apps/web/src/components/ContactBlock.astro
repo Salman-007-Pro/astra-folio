@@ -20,13 +20,13 @@ const { profile } = Astro.props as { profile: Profile };
     >
   </div>
   <p class="contact-invitation">
-    Remote full-stack engineering for teams anywhere in the world.
+    {profile.collaboration.summary}
   </p>
   <ContactChannels profile={profile} />
   <div class="contact-footer">
     <p>
       {profile.collaboration.availability}<span
-        >Open to opportunities paid in {profile.collaboration.currencies}.</span
+        >Preferred compensation: {profile.collaboration.currencies}.</span
       >
     </p>
     <div class="contact-socials">

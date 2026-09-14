@@ -1,0 +1,19 @@
+---
+import type { MotivationSettings } from "@garden/content-schema";
+const { settings } = Astro.props as { settings: MotivationSettings };
+---
+
+{settings.enabled && <section class="section motivation-section" id="motivation" data-motivation data-interval={settings.intervalSeconds}>
+ <div class="motivation-heading"><div><span class="eyebrow">A MOMENT TO REFLECT</span><h2>{settings.title}</h2></div><p>{settings.intro}</p></div>
+ <div class="motivation-quotes">{settings.quotes.map((quote,i)=><figure class:list={["motivation-quote",{"is-current":i===0}]} aria-hidden={i!==0}><blockquote>“{quote.text}”</blockquote><figcaption><span>{quote.author}</span><a href={quote.sourceUrl} target="_blank" rel="noopener noreferrer" tabindex={i===0?0:-1}>Source ↗</a></figcaption></figure>)}</div>
+ <div class="motivation-progress" aria-hidden="true"><span data-quote-progress></span></div>
+ <div class="motivation-controls"><span data-quote-counter>01 / {String(settings.quotes.length).padStart(2,"0")}</span><div><button data-quote-prev aria-label="Previous quote">←</button><button data-quote-play aria-label="Pause quote rotation">Pause</button><button data-quote-next aria-label="Next quote">→</button></div><span>Every {settings.intervalSeconds} seconds</span></div>
+ <p class="sr-only" data-quote-status role="status"></p>
+ <noscript><p>The first quotation is shown. Enable JavaScript to explore the rotation.</p></noscript>
+</section>}
+<script>
+  import { initMotivation } from "../lib/motivation";
+  document
+    .querySelectorAll<HTMLElement>("[data-motivation]")
+    .forEach(initMotivation);
+</script>

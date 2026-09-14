@@ -35,10 +35,8 @@ const { profile, site } = await getContent();
     <article class="prose">
       {site.about.sections.map((section) => <Fragment><h2>{section.title}</h2>{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</Fragment>)}
       <p>
-        {profile.collaboration.availability}. Open to opportunities with
-        compensation in {profile.collaboration.currencies}. Share the role, the
-        challenge, and your team’s working hours, and let’s see where I can
-        help.
+        {profile.collaboration.summary}
+        Preferred compensation: {profile.collaboration.currencies}.
       </p>
       <a href="/cv" class="text-link">The complete professional story →</a>
     </article>

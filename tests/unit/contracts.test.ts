@@ -66,7 +66,10 @@ describe("published content contract", () => {
         ...seed,
         profile: { ...seed.profile, collaboration },
       });
-      expect(data.profile.collaboration).toEqual(seed.profile.collaboration);
+      expect(data.profile.collaboration).toEqual({
+        ...seed.profile.collaboration,
+        whatsappContacts: [],
+      });
     }
   });
 });

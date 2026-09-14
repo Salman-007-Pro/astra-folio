@@ -1,0 +1,582 @@
+.lab-fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.engineering-lab {
+  --lab-surface: var(--look-surface, var(--color-bg-surface));
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--style-radius, 16px);
+  background: var(--lab-surface);
+  overflow: clip;
+}
+.lab-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: 12px;
+  gap: 8px;
+}
+.lab-tabs button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: var(--style-radius, 8px);
+}
+.lab-tabs span {
+  font:
+    11px "DM Mono",
+    monospace;
+  opacity: 0.8;
+}
+.engineering-lab button {
+  min-height: 44px;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-subtle);
+  background: transparent;
+  cursor: pointer;
+}
+.engineering-lab button[aria-pressed="true"],
+.engineering-lab .lab-run {
+  background: var(--color-text-primary);
+  color: var(--lab-surface);
+  border-color: var(--color-text-primary);
+}
+.engineering-lab :is(button, select, input):focus-visible {
+  outline: 2px solid var(--color-accent-signal);
+  outline-offset: 3px;
+}
+.lab-layout {
+  display: grid;
+  grid-template-columns: minmax(200px, 0.75fr) minmax(0, 2fr);
+}
+.lab-selector {
+  padding: 24px;
+  border-right: 1px solid var(--color-border-subtle);
+  max-height: 1050px;
+  overflow-y: auto;
+}
+.lab-category {
+  margin-bottom: 22px;
+}
+.lab-category h3 {
+  font:
+    11px / 1.5 "DM Mono",
+    monospace !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em !important;
+  color: var(--color-text-muted);
+  margin: 0 0 10px;
+}
+.lab-category > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.lab-category button {
+  padding: 8px 10px;
+  font-size: 12px;
+  border-radius: var(--style-radius, 6px);
+  overflow-wrap: anywhere;
+}
+.lab-workbench {
+  min-width: 0;
+  padding: clamp(18px, 3vw, 38px);
+}
+.lab-heading {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.lab-heading .eyebrow {
+  font-size: 10px;
+}
+.lab-simulation {
+  font:
+    10px "DM Mono",
+    monospace;
+  color: var(--color-text-muted);
+}
+.lab-workbench .lab-title {
+  font-size: clamp(26px, 3vw, 42px);
+  margin: 20px 0 12px;
+}
+.lab-workbench > p {
+  font-size: 15px;
+  line-height: 1.7;
+}
+.lab-stage {
+  position: relative;
+  margin: 24px 0;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--style-radius, 12px);
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    color-mix(in srgb, var(--color-accent-signal) 12%, transparent),
+    transparent 80%
+  );
+  padding: 12px 20px 18px;
+}
+.lab-spatial {
+  height: 280px;
+  color: var(--color-accent-signal);
+  pointer-events: none;
+}
+.lab-scene-title {
+  margin: 10px 0 0;
+  font:
+    10px "DM Mono",
+    monospace;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+}
+.lab-scene-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+.lab-scene-toolbar .lab-scene-title {
+  margin: 0;
+}
+.engineering-lab .lab-motion {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  font:
+    10px "DM Mono",
+    monospace;
+  border-radius: var(--style-radius, 6px);
+}
+.lab-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+}
+[data-running="true"] .lab-live-dot {
+  background: var(--color-accent-signal);
+  animation: lab-live 1.8s ease-out infinite;
+}
+[data-running="true"] .lab-spatial > svg {
+  animation: lab-diagram-float 4s ease-in-out infinite;
+}
+@keyframes lab-live {
+  0% {
+    box-shadow: 0 0 0 0
+      color-mix(in srgb, var(--color-accent-signal) 45%, transparent);
+  }
+  80%,
+  100% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+@keyframes lab-diagram-float {
+  0%,
+  100% {
+    transform: translateY(3px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+.lab-spatial svg {
+  width: 100%;
+  height: 100%;
+}
+.lab-orbit {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: 70px;
+}
+.lab-flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 12px;
+  min-height: 85px;
+}
+.lab-node {
+  position: relative;
+  border-top: 2px solid var(--color-accent-signal);
+  padding: 12px 8px;
+  background: var(--lab-surface);
+  min-width: 0;
+}
+.lab-node span {
+  display: block;
+  font:
+    10px "DM Mono",
+    monospace;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+.lab-node strong {
+  font-size: 12px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.lab-node i {
+  position: absolute;
+  right: -12px;
+  top: 35%;
+  color: var(--color-accent-signal);
+  z-index: 1;
+}
+[data-running="true"] .lab-node {
+  animation: lab-arrive 0.5s both;
+}
+@keyframes lab-arrive {
+  from {
+    opacity: 0.25;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.lab-stage-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  font:
+    9px "DM Mono",
+    monospace;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+.lab-css-preview > div {
+  display: grid;
+  place-items: center;
+  padding: 18px 4px;
+  border: 1px solid var(--color-accent-signal);
+  border-radius: var(--style-radius, 8px);
+  background: var(--lab-surface);
+  font-size: 12px;
+  min-width: 0;
+}
+.lab-phone {
+  width: min(220px, 100%);
+  border: 3px solid var(--color-text-primary);
+  border-radius: 24px;
+  margin: 0 auto;
+  padding: 18px;
+  display: grid;
+  gap: 20px;
+}
+.lab-phone > span {
+  font-size: 10px;
+}
+.lab-phone button {
+  font-size: 12px;
+}
+.lab-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  margin: 16px 0;
+}
+.lab-controls label {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 44px;
+}
+.lab-controls select {
+  color: var(--color-text-primary);
+  background: var(--lab-surface);
+  padding: 10px;
+  border: 1px solid var(--color-border-subtle);
+  max-width: 100%;
+}
+.lab-controls input {
+  accent-color: var(--color-accent-signal);
+}
+.lab-controls input[type="range"] {
+  width: 100px;
+}
+.lab-controls button,
+.lab-actions button {
+  padding: 10px 16px;
+  font-size: 13px;
+  border-radius: var(--style-radius, 6px);
+}
+.lab-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.lab-run span {
+  margin-left: 14px;
+}
+.lab-result {
+  padding: 16px;
+  border-left: 3px solid var(--color-accent-signal);
+  background: color-mix(in srgb, var(--color-accent-signal) 7%, transparent);
+  min-height: 80px;
+}
+.lab-result[data-error="true"] {
+  border-left-style: dashed;
+}
+.lab-code {
+  margin-top: 16px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--style-radius, 6px);
+  overflow: hidden;
+}
+.lab-code summary {
+  padding: 14px 16px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.lab-code pre {
+  margin: 0;
+  padding: 18px;
+  overflow-x: auto;
+  font:
+    12px / 1.8 "DM Mono",
+    monospace;
+  color: var(--color-text-primary);
+  background: color-mix(in srgb, var(--color-text-primary) 4%, transparent);
+}
+.lab-evidence {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+.lab-evidence a {
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.lab-workbench .lab-note {
+  font-size: 11px;
+  margin-top: 24px;
+}
+.lab-scenario {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  margin-bottom: 8px;
+  text-align: left;
+  font-size: 13px;
+}
+.lab-scenario span {
+  font:
+    10px "DM Mono",
+    monospace;
+  opacity: 0.8;
+}
+.lab-system-intro {
+  font-size: 15px;
+  margin-bottom: 22px;
+}
+.lab-explanation {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+.lab-explanation h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.lab-explanation p {
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 8px 0 0;
+}
+.motivation-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+}
+.motivation-heading h2 {
+  font-size: clamp(28px, 4vw, 48px);
+  margin-top: 18px;
+}
+.motivation-heading > p {
+  max-width: 250px;
+  font-size: 14px;
+}
+.motivation-quotes {
+  display: grid;
+  margin: 40px 0 28px;
+}
+.motivation-quote {
+  grid-area: 1 / 1;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 350ms;
+}
+.motivation-quote.is-current {
+  opacity: 1;
+  visibility: visible;
+}
+.motivation-quote blockquote {
+  font:
+    400 clamp(26px, 3.7vw, 48px) / 1.3 Georgia,
+    serif;
+  letter-spacing: -0.025em;
+  max-width: 950px;
+  margin: 0 0 28px;
+  text-wrap: balance;
+}
+.motivation-quote figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 13px;
+}
+.motivation-quote figcaption > a {
+  white-space: nowrap;
+}
+.motivation-progress {
+  height: 2px;
+  background: var(--color-border-subtle);
+}
+.motivation-progress span {
+  display: block;
+  height: 100%;
+  background: var(--color-accent-signal);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.motivation-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  font:
+    11px "DM Mono",
+    monospace;
+}
+.motivation-controls > div {
+  display: flex;
+  gap: 8px;
+}
+.motivation-controls button {
+  border: 1px solid var(--color-border-subtle);
+  background: transparent;
+  color: var(--color-text-primary);
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+[data-motivation][data-motion="false"] .motivation-quote {
+  transition: none;
+}
+.whatsapp-contacts {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+.whatsapp-contacts a {
+  display: grid;
+  gap: 6px;
+  padding: 12px 0;
+  color: inherit;
+  border-top: 1px solid currentColor;
+}
+.whatsapp-contacts a > span {
+  font-size: 11px;
+}
+.whatsapp-contacts strong {
+  font-size: clamp(15px, 1.7vw, 22px);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 900px) {
+  .lab-layout {
+    grid-template-columns: 1fr;
+  }
+  .lab-selector {
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    max-height: 280px;
+    padding: 20px;
+  }
+  .lab-category {
+    margin-bottom: 16px;
+  }
+  .lab-tabs button {
+    padding: 12px;
+    gap: 10px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 480px) {
+  .lab-workbench {
+    padding: 16px;
+  }
+  .lab-stage {
+    padding-inline: 12px;
+  }
+  .lab-spatial {
+    height: 220px;
+  }
+  .lab-flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lab-heading {
+    gap: 6px;
+  }
+  .lab-tabs {
+    padding: 8px;
+  }
+  .lab-tabs button {
+    flex: 1;
+    justify-content: space-between;
+  }
+  .motivation-heading {
+    display: block;
+  }
+  .motivation-controls > span:last-child {
+    display: none;
+  }
+  .motivation-quote figcaption {
+    font-size: 12px;
+  }
+  .lab-css-preview > div {
+    font-size: 10px;
+  }
+}
+html:is([data-style="paper"], [data-style="doodle"]) .engineering-lab {
+  border-style: dashed;
+  box-shadow: 5px 6px 0 var(--color-border-subtle);
+}
+html:is([data-style="glass"], [data-style="holographic"]) .engineering-lab {
+  backdrop-filter: blur(16px);
+  background: color-mix(in srgb, var(--lab-surface) 90%, transparent);
+}
+html:is([data-style="cartoon"], [data-style="pixel"]) .engineering-lab {
+  border: 2px solid var(--color-text-primary);
+  box-shadow: 6px 6px 0 var(--color-border-subtle);
+}
+html:is([data-style="clay"], [data-style="neumorphism"]) .engineering-lab {
+  box-shadow:
+    inset 2px 2px 8px #ffffff25,
+    8px 10px 24px #00000015;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-node {
+    animation: none !important;
+  }
+  .motivation-quote {
+    transition: none;
+  }
+}

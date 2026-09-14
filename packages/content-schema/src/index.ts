@@ -61,6 +61,11 @@ const collaborationSchema = z.object({
   currencies: defaultText(collaborationDefaults.currencies),
   callNumber: defaultText(collaborationDefaults.callNumber),
   whatsappNumber: defaultText(collaborationDefaults.whatsappNumber),
+  summary: defaultText(collaborationDefaults.summary),
+  whatsappContacts: z
+    .array(z.object({ label: z.string(), number: z.string() }))
+    .nullish()
+    .transform((value) => value ?? []),
 });
 export const profileSchema = z.object({
   name: z.string(),
@@ -88,6 +93,80 @@ export const gameSettingsSchema = z.object({
   winQuotes: z.array(z.string().min(1)).min(1),
   lossQuotes: z.array(z.string().min(1)).min(1),
 });
+export const demoPresetSchema = z.enum([
+  "layout",
+  "state",
+  "contract",
+  "route",
+  "island",
+  "store",
+  "mobile",
+  "event",
+  "middleware",
+  "request",
+  "query",
+  "document",
+  "cache",
+  "bundle",
+  "pipeline",
+  "container",
+  "routing",
+  "test",
+  "browser",
+  "mesh",
+  "publish",
+  "wallet",
+  "jobs",
+  "auth",
+]);
+export const techLabSchema = z.object({
+  title: z.string(),
+  intro: z.string(),
+  systemTitle: z.string(),
+  technologies: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        category: z.string(),
+        preset: demoPresetSchema,
+        description: z.string(),
+        code: z.string(),
+        projects: z.array(z.string()),
+      }),
+    )
+    .min(1),
+  scenarios: z
+    .array(
+      z.object({
+        id: z.string(),
+        preset: demoPresetSchema,
+        title: z.string(),
+        explanation: z.string(),
+        why: z.string(),
+        tradeoff: z.string(),
+      }),
+    )
+    .min(1),
+});
+export const motivationSchema = z.object({
+  enabled: z.boolean(),
+  title: z.string(),
+  intro: z.string(),
+  intervalSeconds: z.number().min(5).max(120),
+  quotes: z
+    .array(
+      z.object({
+        text: z.string().min(1),
+        author: z.string(),
+        sourceUrl: safeUrl,
+      }),
+    )
+    .min(1),
+});
+export type TechLabSettings = z.infer<typeof techLabSchema>;
+export type MotivationSettings = z.infer<typeof motivationSchema>;
+export type DemoPreset = z.infer<typeof demoPresetSchema>;
 export const siteSchema = z.object({
   title: z.string(),
   url: safeUrl,
@@ -116,6 +195,8 @@ export const siteSchema = z.object({
   education: z.string(),
   languages: z.array(z.string()),
   games: gameSettingsSchema,
+  techLab: techLabSchema.default(staticContent.site.techLab as TechLabSettings),
+  motivation: motivationSchema.default(staticContent.site.motivation),
 });
 export const portfolioSchema = z.object({
   profile: profileSchema,

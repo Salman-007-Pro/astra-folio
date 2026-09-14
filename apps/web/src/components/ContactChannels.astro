@@ -11,21 +11,15 @@ const links = contactLinks(profile);
   role="group"
   aria-label={`Ways to contact ${profile.name.split(" ")[0]}`}
 >
-  <a
-    class="contact-channel channel-primary"
-    href={links.whatsapp}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
+  <div class="contact-channel channel-primary">
     <span class="channel-heading"
       ><Icon name="message" size={22} /><strong>WhatsApp</strong
       ><span class="channel-tag">MESSAGE ME</span></span
     >
-    <span class="channel-address">{profile.collaboration.whatsappNumber}</span>
-    <span class="channel-action"
-      >Start a conversation <Icon name="diagonal" size={18} /></span
-    >
-  </a>
+    <div class="whatsapp-contacts">
+      {links.whatsappContacts.map(contact => <a href={contact.href} target="_blank" rel="noopener noreferrer"><span>{contact.label}</span><strong>{contact.number}</strong><span>Message on WhatsApp ↗</span></a>)}
+    </div>
+  </div>
   <a class="contact-channel" href={links.call}>
     <span class="channel-heading"
       ><Icon name="phone" size={22} /><strong>Phone</strong></span
