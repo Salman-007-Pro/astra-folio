@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "pnpm --filter @garden/web dev",
     "build": "pnpm --filter @garden/web build && node tooling/scripts/stage-site.mjs",
+    "deploy:prepare": "pnpm build && pnpm budget",
     "check": "pnpm --filter @garden/web check && pnpm --filter @garden/cms check",
     "test": "vitest run",
     "test:e2e": "playwright test",

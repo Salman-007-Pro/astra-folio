@@ -47,6 +47,12 @@ Shared Zod contracts validate JSON during builds. Keep the structure and replace
 
 ## Engineering Lab, quotes and work availability
 
+### Prepare a deployment
+
+Run `pnpm deploy:prepare` from the repository root to build the production site and check the bundle budget. The static output is in `dist/`.
+
+This command prepares the files; it does **not** publish them. Publishing to this project's existing Sites URL requires the authenticated Sites workflow in Codex. Ask Codex to deploy after preparation. No Sites credentials belong in `package.json` or environment files. For your own domain and hosting provider, upload the generated `dist/` output using that provider's deployment workflow.
+
 The homepage keeps the `#skills` link and offers **Tech Stack** and **System Design** views. The recruiter page renders the same inventory as HTML without loading the Lab canvas. The demonstrations are local illustrations; they do not execute sample code, deploy infrastructure, connect a wallet, or change CMS records.
 
 - `profile.collaboration.availability` is the short work-model label; `summary` is the full professional introduction. `currencies` is displayed as a preference.
