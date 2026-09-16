@@ -1,3 +1,9 @@
+function fromPrefixedUri() {
+  for (const [key, value] of Object.entries(process.env)) {
+    if (value && /(?:^|_)POSTGRES_URI$/i.test(key)) return value;
+  }
+}
+
 function fromParts() {
   const host = process.env.PGHOST || process.env.POSTGRES_HOST;
   const password = process.env.POSTGRES_PASSWORD || process.env.PGPASSWORD;
@@ -21,6 +27,7 @@ export function databaseUrl() {
     process.env.DATABASE_URL ||
     process.env.POSTGRES_URI ||
     process.env.POSTGRES_URL ||
+    fromPrefixedUri() ||
     fromParts();
   if (!url)
     throw new Error(
