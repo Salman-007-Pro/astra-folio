@@ -10,6 +10,7 @@ FROM base AS build
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY apps ./apps
 COPY packages ./packages
+COPY content ./content
 COPY tooling ./tooling
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PAYLOAD_SECRET=build-only-placeholder-secret-32chars
