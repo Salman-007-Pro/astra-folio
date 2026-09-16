@@ -27,6 +27,8 @@ export function databaseUrl() {
       "DATABASE_URL is missing. On Northflank, link the Postgres addon to this service and map its URI to DATABASE_URL. Do not use 127.0.0.1.",
     );
   if (
+    process.env.SKIP_LOCALHOST_DB_CHECK !== "1" &&
+    process.env.NEXT_PHASE !== "phase-production-build" &&
     process.env.NODE_ENV === "production" &&
     /(?:127\.0\.0\.1|localhost)/i.test(url)
   )

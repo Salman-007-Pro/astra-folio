@@ -15,6 +15,7 @@ COPY tooling ./tooling
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PAYLOAD_SECRET=build-only-placeholder-secret-32chars
 ENV DATABASE_URL=postgresql://build:build@127.0.0.1:5432/build
+ENV SKIP_LOCALHOST_DB_CHECK=1
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter @garden/cms build
 
