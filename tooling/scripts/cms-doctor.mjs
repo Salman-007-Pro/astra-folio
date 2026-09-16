@@ -5,8 +5,10 @@ const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../..",
 );
-const envFile = path.join(root, "apps/cms/.env");
-if (existsSync(envFile)) process.loadEnvFile(envFile);
+for (const name of [".env.local", ".env"]) {
+  const envFile = path.join(root, "apps/cms", name);
+  if (existsSync(envFile)) process.loadEnvFile(envFile);
+}
 const errors = [];
 const required = [
   "DATABASE_URL",

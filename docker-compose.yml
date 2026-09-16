@@ -8,11 +8,11 @@ services:
     ports:
       - "127.0.0.1:5434:5432"
     volumes:
-      - garden-postgres:/var/lib/postgresql/data
+      - garden-postgres18:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U garden"]
       interval: 5s
       timeout: 5s
       retries: 10
 volumes:
-  garden-postgres:
+  garden-postgres18:
