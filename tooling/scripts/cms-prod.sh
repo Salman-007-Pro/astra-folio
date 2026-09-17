@@ -32,8 +32,7 @@ if [ -f "$standalone/apps/cms/server.js" ]; then
     rm -rf "$standalone/apps/cms/public"
     cp -a apps/cms/public "$standalone/apps/cms/public"
   fi
-  cd "$standalone"
-  exec node apps/cms/server.js
+  exec pnpm cms:start
 fi
 
 if [ -f "$standalone/server.js" ]; then
