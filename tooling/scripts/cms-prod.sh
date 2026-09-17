@@ -16,7 +16,41 @@ if ! pnpm cms:migrate; then
   echo "cms:migrate failed. If logs say type/table already exists, reset the Northflank Postgres addon and restart." >&2
   exit 1
 fi
-# Northflank/k8s overwrites HOSTNAME with the pod name; Next would bind to that.
+
+# k8s/Northflank sets HOSTNAME to the pod name; Next standalone binds to that.
 export HOSTNAME=0.0.0.0
 export PORT="${PORT:-3001}"
-exec pnpm cms:start
+
+standalone="apps/cms/.next/standalone"
+if [ -f "$standalone/apps/cms/server.js" ]; then
+  mkdir -p "$standalone/apps/cms/.next"
+  if [ -d apps/cms/.next/static ]; then
+    rm -rf "$standalone/apps/cms/.next/static"
+    cp -a apps/cms/.next/static "$standalone/apps/cms/.next/static"
+  fi
+  if [ -d apps/cms/public ]; then
+    rm -rf "$standalone/apps/cms/public"
+    cp -a apps/cms/public "$standalone/apps/cms/public"
+  fi
+  cd "$standalone"
+  exec node apps/cms/server.js
+fi
+
+if [ -f "$standalone/server.js" ]; then
+  mkdir -p "$standalone/.next"
+  if [ -d apps/cms/.next/static ]; then
+    rm -rf "$standalone/.next/static"
+    cp -a apps/cms/.next/static "$standalone/.next/static"
+  fi
+  if [ -d apps/cms/public ]; then
+    rm -rf "$standalone/public"
+    cp -a apps/cms/public "$standalone/public"
+  fi
+  cd "$standalone"
+  exec node server.js
+fi
+
+echo "Next standalone server.js not found under $standalone" >&2
+ls -la apps/cms/.next 2>/dev/null || true
+ls -la "$standalone" 2>/dev/null || true
+exit 1
