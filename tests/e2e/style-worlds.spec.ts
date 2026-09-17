@@ -78,14 +78,12 @@ test("parallax planes move at distinct speeds while scroll stays native", async 
   await page.locator('[data-visual-style][value="parallax"]').check();
   await expect(page.locator("html")).toHaveAttribute("data-style", "parallax");
   const positions = () =>
-    page
-      .locator(".style-atmosphere span")
-      .evaluateAll((layers) =>
-        layers.map((el) => ({
-          y: el.getBoundingClientRect().y,
-          background: getComputedStyle(el).backgroundPositionY,
-        })),
-      );
+    page.locator(".style-atmosphere span").evaluateAll((layers) =>
+      layers.map((el) => ({
+        y: el.getBoundingClientRect().y,
+        background: getComputedStyle(el).backgroundPositionY,
+      })),
+    );
   const before = await positions();
   await page.evaluate(() => window.scrollTo({ top: 600, behavior: "instant" }));
   await expect

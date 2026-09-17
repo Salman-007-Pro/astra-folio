@@ -58,7 +58,6 @@ The transition picker saves one of five effects: **Pixel Flip** (default), **Shu
 
 Motion off and reduced-motion preferences disable animated switching and decorative movement. Liquid Glass uses CSS frosted surfaces, optical edge highlights and moving light; it is not physical refraction. Parallax uses independently moving background planes plus bounded movement inside project artwork; readable text remains in normal flow. Scrollytelling pairs sticky desktop chapter headings with a reading-progress rail. Neither effect hijacks scrolling.
 
-
 Scrollytelling adds a page-reading progress line and chapter reveals using Intersection Observer. Text is never hidden while waiting for JavaScript. Switching styles, disabling motion, or hiding the browser cancels active reveals and releases their listeners. Cartoon, Vintage, Clay, and Doodle reuse the existing content and illustrations with distinct typography, borders, and surface treatments; Doodle uses system handwriting fonts with a cursive fallback.
 
 ## Games
