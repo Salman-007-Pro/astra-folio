@@ -280,7 +280,10 @@
   display: flex;
   flex-wrap: wrap;
   gap: 14px 22px;
-  margin: 16px 0;
+  margin: 16px 0 12px;
+}
+.lab-controls:not(:has(*)) {
+  display: none;
 }
 .lab-controls label {
   font-size: 12px;
@@ -318,10 +321,10 @@
   margin-left: 14px;
 }
 .lab-result {
-  padding: 16px;
+  margin-top: 10px;
+  padding: 12px 16px;
   border-left: 3px solid var(--color-accent-signal);
   background: color-mix(in srgb, var(--color-accent-signal) 7%, transparent);
-  min-height: 80px;
 }
 .lab-result[data-error="true"] {
   border-left-style: dashed;
