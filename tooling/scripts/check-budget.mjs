@@ -1,7 +1,11 @@
-import { readdir, stat, readFile } from "node:fs/promises";
+import { readdir, stat, readFile, access } from "node:fs/promises";
 import { gzipSync } from "node:zlib";
 import path from "node:path";
-const directory = path.resolve("apps/web/dist/client");
+const client = path.resolve("apps/web/dist/client");
+const staticDist = path.resolve("apps/web/dist");
+const directory = await access(client)
+  .then(() => client)
+  .catch(() => staticDist);
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
   return (

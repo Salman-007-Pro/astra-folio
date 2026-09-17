@@ -14,3 +14,4 @@ coverage/
 *.tsbuildinfo
 apps/cms/media/
 .content-cache/
+.vercel/

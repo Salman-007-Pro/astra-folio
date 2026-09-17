@@ -53,7 +53,10 @@ export default buildConfig({
     prodMigrations: migrations,
   }),
   sharp,
-  cors: [process.env.PUBLIC_SITE_URL || "http://127.0.0.1:4321"],
+  cors: (process.env.PUBLIC_SITE_URL || "http://127.0.0.1:4321")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
   csrf: [process.env.CMS_PUBLIC_URL || "http://localhost:3001"],
   typescript: { outputFile: path.resolve(directory, "payload-types.ts") },
   endpoints,

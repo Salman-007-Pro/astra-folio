@@ -1,17 +1,19 @@
 import { portfolioSchema, type Portfolio } from "@garden/content-schema";
 import { seed } from "@garden/content-schema/seed";
 let cached: Promise<Portfolio>;
+let live: { at: number; value: Promise<Portfolio> } | undefined;
+const liveTtlMs = 30_000;
 async function read(): Promise<Portfolio> {
-  const origin = import.meta.env.CMS_URL;
+  const origin = process.env.CMS_URL || import.meta.env.CMS_URL;
   if (!origin) return portfolioSchema.parse(seed);
-  const site = import.meta.env.PUBLIC_SITE_URL;
+  const site = process.env.PUBLIC_SITE_URL || import.meta.env.PUBLIC_SITE_URL;
   if (site && new URL(origin).origin === new URL(site).origin)
     throw new Error(
       "CMS_URL must be the Payload origin (http://127.0.0.1:3001), not the Astro site.",
     );
   const headers: Record<string, string> = {};
-  if (import.meta.env.CMS_READ_TOKEN)
-    headers.Authorization = `users API-Key ${import.meta.env.CMS_READ_TOKEN}`;
+  const token = process.env.CMS_READ_TOKEN || import.meta.env.CMS_READ_TOKEN;
+  if (token) headers.Authorization = `users API-Key ${token}`;
   const response = await fetch(new URL("/api/portfolio", origin), {
     headers,
     cache: "no-store",
@@ -24,8 +26,12 @@ async function read(): Promise<Portfolio> {
   return portfolioSchema.parse(await response.json());
 }
 export function getContent() {
-  if (import.meta.env.CMS_URL) return read();
-  return (cached ||= read());
+  const origin = process.env.CMS_URL || import.meta.env.CMS_URL;
+  if (!origin) return (cached ||= read());
+  const now = Date.now();
+  if (live && now - live.at < liveTtlMs) return live.value;
+  live = { at: now, value: read() };
+  return live.value;
 }
 export function formatDate(value: string) {
   return new Date(value).toLocaleDateString("en-GB", {

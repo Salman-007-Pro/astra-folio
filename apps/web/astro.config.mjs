@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import vercel from "@astrojs/vercel";
 import node from "@astrojs/node";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
@@ -16,7 +17,7 @@ export default defineConfig({
   site:
     process.env.PUBLIC_SITE_URL || localEnv.PUBLIC_SITE_URL || content.site.url,
   output: "server",
-  adapter: node({ mode: "standalone" }),
+  adapter: process.env.VERCEL ? vercel() : node({ mode: "standalone" }),
   integrations: [react(), mdx()],
   vite: { plugins: [tailwindcss()] },
 });
