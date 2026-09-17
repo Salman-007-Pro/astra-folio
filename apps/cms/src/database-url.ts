@@ -22,6 +22,13 @@ function fromParts() {
   return `postgresql://${user}:${password}@${host}:${port}/${database}`;
 }
 
+function withLibpqSslCompat(url: string) {
+  if (/(?:127\.0\.0\.1|localhost)/i.test(url)) return url;
+  if (/uselibpqcompat=/i.test(url)) return url;
+  const join = url.includes("?") ? "&" : "?";
+  return `${url}${join}uselibpqcompat=true`;
+}
+
 export function databaseUrl() {
   const url =
     process.env.DATABASE_URL ||
@@ -42,5 +49,15 @@ export function databaseUrl() {
     throw new Error(
       "DATABASE_URL points at localhost. Use the Northflank addon internal URI (host like portfolio-cms-db), not 127.0.0.1.",
     );
-  return url;
+  return withLibpqSslCompat(url);
+}
+
+export function databasePool() {
+  const connectionString = databaseUrl();
+  const local = /(?:127\.0\.0\.1|localhost)/i.test(connectionString);
+  return {
+    connectionString,
+    max: 5,
+    ...(local ? {} : { ssl: { rejectUnauthorized: false as const } }),
+  };
 }

@@ -17,7 +17,7 @@ import {
 import { Profile, SiteSettings, ResumeSettings } from "./globals";
 import { endpoints } from "./endpoints";
 import { migrations } from "./migrations";
-import { databaseUrl } from "./database-url";
+import { databasePool } from "./database-url";
 const directory = path.dirname(fileURLToPath(import.meta.url));
 if (!process.env.PAYLOAD_SECRET || process.env.PAYLOAD_SECRET.length < 32)
   throw new Error(
@@ -48,7 +48,7 @@ export default buildConfig({
   globals: [SiteSettings, Profile, ResumeSettings],
   editor: lexicalEditor(),
   db: postgresAdapter({
-    pool: { connectionString: databaseUrl() },
+    pool: databasePool(),
     push: process.env.NODE_ENV !== "production",
     prodMigrations: migrations,
   }),

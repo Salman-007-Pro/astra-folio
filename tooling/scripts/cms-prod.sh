@@ -12,5 +12,8 @@ if [ -z "${DATABASE_URL:-}" ]; then
     fi
   fi
 fi
-pnpm cms:migrate
+if ! pnpm cms:migrate; then
+  echo "cms:migrate failed. If logs say type/table already exists, reset the Northflank Postgres addon and restart." >&2
+  exit 1
+fi
 exec pnpm cms:start
