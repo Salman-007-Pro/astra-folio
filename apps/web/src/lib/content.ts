@@ -1,4 +1,8 @@
-import { portfolioSchema, type Portfolio } from "@garden/content-schema";
+import {
+  portfolioSchema,
+  withAvatarUrl,
+  type Portfolio,
+} from "@garden/content-schema";
 import { seed } from "@garden/content-schema/seed";
 let cached: Promise<Portfolio>;
 let live: { at: number; value: Promise<Portfolio> } | undefined;
@@ -23,7 +27,26 @@ async function read(): Promise<Portfolio> {
     throw new Error(
       `CMS snapshot unavailable (${response.status}); preserving the previous production build.`,
     );
-  return portfolioSchema.parse(await response.json());
+  const content = portfolioSchema.parse(await response.json());
+  if (content.profile.avatarUrl) return content;
+  try {
+    const profileResponse = await fetch(
+      new URL("/api/globals/profile?depth=1", origin),
+      {
+        headers,
+        cache: "no-store",
+        signal: AbortSignal.timeout(8000),
+      },
+    );
+    if (!profileResponse.ok) return content;
+    return withAvatarUrl(
+      content,
+      (await profileResponse.json()).avatar,
+      origin,
+    );
+  } catch {
+    return content;
+  }
 }
 export function getContent() {
   const origin = process.env.CMS_URL || import.meta.env.CMS_URL;

@@ -7,30 +7,35 @@ interface Props {
   priority?: boolean;
   file: string;
   caption: string;
+  url?: string | null;
 }
 
-const { name, priority = false, file, caption } = Astro.props;
+const { name, priority = false, file, caption, url } = Astro.props;
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "../assets/*.{png,jpg,jpeg,webp,avif}",
   { eager: true },
 );
+const remote = url?.trim() || "";
 const portrait = images[`../assets/${file}`]?.default;
-if (!portrait)
+const src = remote || portrait;
+if (!src)
   throw new Error(
     `Portrait asset '${file}' is missing from apps/web/src/assets. Update site.portrait.file in content/portfolio.json.`,
   );
+const alt = `Professional portrait of ${name}`;
 ---
 
 <figure class="portrait">
   <div class="portrait-frame">
     <Picture
-      src={portrait}
-      alt={`Professional portrait of ${name}`}
+      src={src}
+      alt={alt}
       formats={["avif", "webp"]}
       fallbackFormat="jpg"
       widths={[400, 640, 960]}
       sizes="(max-width: 767px) 88vw, (max-width: 1100px) 38vw, 460px"
       width={960}
+      height={1200}
       quality={85}
       loading={priority ? "eager" : "lazy"}
       fetchpriority={priority ? "high" : "auto"}

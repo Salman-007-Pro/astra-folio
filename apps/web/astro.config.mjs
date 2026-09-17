@@ -13,11 +13,35 @@ for (const name of [".env", ".env.local"]) {
   if (existsSync(file))
     Object.assign(localEnv, parseEnv(readFileSync(file, "utf8")));
 }
+const cmsOrigins = [
+  process.env.PUBLIC_CMS_URL,
+  process.env.CMS_URL,
+  localEnv.PUBLIC_CMS_URL,
+  localEnv.CMS_URL,
+  "https://cms.salmanasif.pro",
+  "http://127.0.0.1:3001",
+];
+const remotePatterns = [];
+const seen = new Set();
+for (const value of cmsOrigins) {
+  if (!value) continue;
+  try {
+    const url = new URL(value);
+    const protocol = url.protocol.replace(":", "");
+    const key = `${protocol}:${url.hostname}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    remotePatterns.push({ protocol, hostname: url.hostname });
+  } catch {
+    /* skip invalid CMS origins */
+  }
+}
 export default defineConfig({
   site:
     process.env.PUBLIC_SITE_URL || localEnv.PUBLIC_SITE_URL || content.site.url,
   output: "server",
   adapter: process.env.VERCEL ? vercel() : node({ mode: "standalone" }),
   integrations: [react(), mdx()],
+  image: { remotePatterns },
   vite: { plugins: [tailwindcss()] },
 });

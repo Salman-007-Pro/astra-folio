@@ -1,7 +1,16 @@
+import { absoluteMediaUrl } from "@garden/content-schema";
 const values = (value: unknown) =>
   Array.isArray(value)
     ? value.map((item) => (typeof item === "string" ? item : item.value))
     : [];
+const cmsOrigin = () => process.env.CMS_PUBLIC_URL || "http://localhost:3001";
+export { absoluteMediaUrl };
+export function toPublicProfile(profile: Record<string, any>, avatar: unknown) {
+  return {
+    ...profile,
+    avatarUrl: absoluteMediaUrl(avatar, cmsOrigin()),
+  };
+}
 export function toPublicProject(project: Record<string, any>) {
   return {
     ...project,

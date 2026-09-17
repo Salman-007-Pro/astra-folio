@@ -1,7 +1,15 @@
 import { describe, it, expect } from "vitest";
-import { projectSchema } from "../../packages/content-schema/src/index";
+import {
+  absoluteMediaUrl,
+  portfolioSchema,
+  projectSchema,
+  withAvatarUrl,
+} from "../../packages/content-schema/src/index";
 import { seed } from "../../packages/content-schema/src/seed";
-import { toPublicProject } from "../../apps/cms/src/public-content";
+import {
+  toPublicProfile,
+  toPublicProject,
+} from "../../apps/cms/src/public-content";
 describe("CMS public project mapping", () => {
   it("maps lifecycle to status and ignores draft _status", () => {
     const source = seed.projects[0];
@@ -18,5 +26,55 @@ describe("CMS public project mapping", () => {
     expect(project.status).not.toBe("draft");
     expect(project).not.toHaveProperty("lifecycle");
     expect(project).not.toHaveProperty("_status");
+  });
+});
+describe("CMS profile avatar mapping", () => {
+  it("turns a relative media path into an absolute CMS URL", () => {
+    expect(
+      absoluteMediaUrl(
+        { url: "/api/media/file/salman-red-background.png" },
+        "https://cms.salmanasif.pro",
+      ),
+    ).toBe(
+      "https://cms.salmanasif.pro/api/media/file/salman-red-background.png",
+    );
+  });
+  it("builds a media URL from filename when Payload omits url", () => {
+    expect(
+      absoluteMediaUrl(
+        { filename: "Salman Red background.png" },
+        "https://cms.salmanasif.pro",
+      ),
+    ).toBe(
+      "https://cms.salmanasif.pro/api/media/file/Salman%20Red%20background.png",
+    );
+  });
+  it("leaves avatarUrl empty when Profile has no avatar", () => {
+    const profile = toPublicProfile(seed.profile, null);
+    expect(
+      portfolioSchema.parse({ ...seed, profile }).profile.avatarUrl,
+    ).toBeNull();
+  });
+  it("maps Profile.avatar onto profile.avatarUrl", () => {
+    const profile = toPublicProfile(seed.profile, {
+      url: "https://cms.salmanasif.pro/api/media/file/avatar.png",
+    });
+    expect(portfolioSchema.parse({ ...seed, profile }).profile.avatarUrl).toBe(
+      "https://cms.salmanasif.pro/api/media/file/avatar.png",
+    );
+  });
+  it("fills avatarUrl from Profile.avatar when the portfolio snapshot omits it", () => {
+    const content = portfolioSchema.parse(seed);
+    expect(
+      withAvatarUrl(
+        content,
+        {
+          url: "https://cms.salmanasif.pro/api/media/file/Salman%20Red%20background.png",
+        },
+        "https://cms.salmanasif.pro",
+      ).profile.avatarUrl,
+    ).toBe(
+      "https://cms.salmanasif.pro/api/media/file/Salman%20Red%20background.png",
+    );
   });
 });

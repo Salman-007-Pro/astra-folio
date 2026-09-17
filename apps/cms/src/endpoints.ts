@@ -1,8 +1,10 @@
 import type { Endpoint, PayloadRequest } from "payload";
 import { portfolioSchema, resumeSchema } from "@garden/content-schema";
 import {
+  absoluteMediaUrl,
   toPublicExperience,
   toPublicPost,
+  toPublicProfile,
   toPublicProject,
 } from "./public-content";
 const publicOptions = (req: PayloadRequest) => ({
@@ -11,6 +13,15 @@ const publicOptions = (req: PayloadRequest) => ({
   draft: false,
   depth: 1,
 });
+async function publishedMedia(req: PayloadRequest, file: unknown) {
+  if (file && typeof file === "object") return file;
+  if (typeof file !== "number") return null;
+  return req.payload.findByID({
+    collection: "media",
+    id: file,
+    ...publicOptions(req),
+  });
+}
 async function resume(req: PayloadRequest) {
   const settings = await req.payload.findGlobal({
     slug: "resume-settings",
@@ -18,10 +29,7 @@ async function resume(req: PayloadRequest) {
   });
   const pdf = settings.currentPdf as any;
   return resumeSchema.parse({
-    url: pdf?.url
-      ? new URL(pdf.url, process.env.CMS_PUBLIC_URL || "http://localhost:3001")
-          .href
-      : null,
+    url: absoluteMediaUrl(pdf),
     filename: settings.filename || "CV.pdf",
     updatedAt:
       settings.versionDate || settings.updatedAt || new Date().toISOString(),
@@ -78,7 +86,10 @@ export const endpoints: Endpoint[] = [
         }),
       ]);
       const content = portfolioSchema.parse({
-        profile,
+        profile: toPublicProfile(
+          profile,
+          await publishedMedia(req, profile.avatar),
+        ),
         projects: projects.docs.map(toPublicProject),
         experience: experience.docs.map(toPublicExperience),
         posts: posts.docs.map(toPublicPost),

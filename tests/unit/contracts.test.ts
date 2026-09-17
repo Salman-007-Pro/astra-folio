@@ -36,6 +36,11 @@ describe("published content contract", () => {
   it("supports missing CVs without inventing a URL", () => {
     expect(resumeSchema.parse({ ...seed.resume, url: null }).url).toBeNull();
   });
+  it("keeps the bundled portrait when CMS avatar URL is absent", () => {
+    const data = portfolioSchema.parse(seed);
+    expect(data.site.portrait.file).toBe("salman-asif-portrait.png");
+    expect(data.profile.avatarUrl).toBeUndefined();
+  });
   it("uses JSON appearance defaults for older CMS snapshots", () => {
     for (const site of [undefined, null])
       expect(portfolioSchema.parse({ ...seed, site }).site).toEqual(seed.site);

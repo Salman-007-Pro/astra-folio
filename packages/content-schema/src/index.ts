@@ -79,6 +79,7 @@ export const profileSchema = z.object({
   experienceLabel: z.string(),
   currentFocus: z.string(),
   collaboration: z.preprocess((value) => value ?? {}, collaborationSchema),
+  avatarUrl: safeUrl.nullish(),
 });
 export const resumeSchema = z.object({
   url: safeUrl.nullable(),
@@ -213,3 +214,32 @@ export type Post = z.infer<typeof postSchema>;
 export type Profile = z.infer<typeof profileSchema>;
 export type Resume = z.infer<typeof resumeSchema>;
 export type Portfolio = z.infer<typeof portfolioSchema>;
+export function absoluteMediaUrl(file: unknown, origin: string) {
+  let path =
+    file &&
+    typeof file === "object" &&
+    typeof (file as { url?: unknown }).url === "string"
+      ? (file as { url: string }).url
+      : "";
+  if (!path) {
+    const filename =
+      file &&
+      typeof file === "object" &&
+      typeof (file as { filename?: unknown }).filename === "string"
+        ? (file as { filename: string }).filename
+        : "";
+    if (!filename) return null;
+    path = `/api/media/file/${encodeURIComponent(filename)}`;
+  }
+  return new URL(path, origin).href;
+}
+export function withAvatarUrl(
+  content: Portfolio,
+  avatar: unknown,
+  origin: string,
+): Portfolio {
+  if (content.profile.avatarUrl) return content;
+  const avatarUrl = absoluteMediaUrl(avatar, origin);
+  if (!avatarUrl) return content;
+  return { ...content, profile: { ...content.profile, avatarUrl } };
+}
