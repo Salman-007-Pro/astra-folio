@@ -11,7 +11,7 @@ The site delivers readable static HTML first. The 3D world and games load as enh
 - Professional portrait, CV summary, PDF download, and worldwide remote contact channels
 - Mobile navigation drawer with keyboard focus handling and scroll restoration
 - **Card flip, Signal snake, Orbit shooter, and Racing Classic** on the homepage and `/play`, with encouraging win/loss messages
-- **Garden, Ocean, and Ember** palettes, each with light and dark colors; light and dark selections are remembered independently
+- **Fifteen color palettes** (Garden, Ocean, Ember, Dusk, Sage, Sand, Ink, Rose, Citrus, Glacier, Copper, Orchid, Slate, Forest, Noir), each with light and dark colors; light and dark selections are remembered independently
 - **Fifteen visual styles** with previews, smooth switching, and a saved device preference: Original, Cyberpunk, Holographic, Pixel / Game, Parallax, Liquid Glass, Neumorphism, Paper / Scrapbook, Editorial, Aurora, Cartoon / Illustrative, Scrollytelling, Retro / Vintage, Claymorphism, and Hand-drawn / Doodle
 - Reduced motion, optional sound, blueprint mode, and adaptive 3D quality
 - Reusable **[`content/portfolio.json`](content/portfolio.json)** for identity, copy, work, contact details, CV, and game quotes

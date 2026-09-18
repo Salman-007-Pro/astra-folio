@@ -1,5 +1,8 @@
+import { isPalette, type Palette } from "./palettes";
 import { isStyleTransition, type StyleTransition } from "./style-transitions";
 import { isVisualStyle, type VisualStyle } from "./visual-styles";
+export type { Palette } from "./palettes";
+export { isPalette, palettes, paletteIds } from "./palettes";
 export type Preferences = {
   style: VisualStyle;
   transition: StyleTransition;
@@ -10,10 +13,6 @@ export type Preferences = {
   lightPalette: Palette;
   darkPalette: Palette;
 };
-export const palettes = ["garden", "ocean", "ember"] as const;
-export type Palette = (typeof palettes)[number];
-export const isPalette = (value: unknown): value is Palette =>
-  palettes.includes(value as Palette);
 export const preferenceKey = "kinetic-garden-preferences-v1";
 export function readPreferences(): Preferences {
   const palette = document.documentElement.dataset.defaultPalette;

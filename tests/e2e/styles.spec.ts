@@ -31,6 +31,33 @@ test("style cards keep labels inside their borders at narrow and intermediate wi
   }
 });
 
+test("palette cards stay inside the settings dialog at narrow widths", async ({
+  page,
+}) => {
+  await page.goto("/about");
+  await page
+    .getByRole("button", { name: "Experience settings", exact: true })
+    .click();
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    const overflow = await page
+      .locator(".palette-picker:visible .palette-options")
+      .evaluate((grid) => {
+        const dialog = grid.closest("dialog")!;
+        return {
+          grid: grid.scrollWidth > grid.clientWidth + 1,
+          dialog: dialog.scrollWidth > dialog.clientWidth + 1,
+          count: grid.querySelectorAll(".palette-choice").length,
+        };
+      });
+    expect(overflow, `Palette picker at ${width}px`).toEqual({
+      grid: false,
+      dialog: false,
+      count: 15,
+    });
+  }
+});
+
 test("all fifteen styles switch in both themes and persist across routes", async ({
   page,
 }) => {

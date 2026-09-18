@@ -57,13 +57,7 @@ Rules live in `apps/web/src/games/engines.ts` and `racing-engine.ts`; React UI i
 
 ## Light and dark colors
 
-Set `site.defaultPalette` to one of these values:
-
-| Palette  | Light                                  | Dark                           |
-| -------- | -------------------------------------- | ------------------------------ |
-| `garden` | Warm paper, forest tones, blue accents | Deep green, soft blue accents  |
-| `ocean`  | Icy white, teal, ocean blue            | Navy, cyan, cool blue surfaces |
-| `ember`  | Cream, rust, warm neutrals             | Plum, coral, soft lavender     |
+Set `site.defaultPalette` to one of fifteen ids: `garden`, `ocean`, `ember`, `dusk`, `sage`, `sand`, `ink`, `rose`, `citrus`, `glacier`, `copper`, `orchid`, `slate`, `forest`, or `noir`. Each family has a light and a dark set. Garden remains the JSON default.
 
 Visitors select palettes in Experience settings. Night Shift changes mode; light and dark selections are remembered separately. Saved preferences override the site default. To test a new default, clear the `kinetic-garden-preferences-v1` local-storage entry in your own browser.
 

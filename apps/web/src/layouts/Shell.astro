@@ -16,6 +16,7 @@ import "../styles/style-worlds.css";
 import "../styles/style-compositions.css";
 import "../styles/style-chrome.css";
 import { visualStyles } from "../lib/visual-styles";
+import { palettes, paletteIds } from "../lib/palettes";
 import Brand from "../components/Brand.astro";
 import "../styles/brand.css";
 import "../styles/engineering-lab.css";
@@ -78,6 +79,7 @@ const isCurrentPage = (href: string) =>
   data-motion="on"
   data-style="default"
   data-style-options={visualStyles.map((style) => style.id).join(",")}
+  data-palette-options={paletteIds.join(",")}
   data-default-palette={site.defaultPalette}
   data-palette={site.defaultPalette}
 >
@@ -131,11 +133,11 @@ const isCurrentPage = (href: string) =>
             : "default";
         document.documentElement.dataset.theme = night ? "night" : "day";
         const palette = night ? p.darkPalette : p.lightPalette;
-        document.documentElement.dataset.palette = [
-          "garden",
-          "ocean",
-          "ember",
-        ].includes(palette)
+        document.documentElement.dataset.palette = (
+          document.documentElement.dataset.paletteOptions || ""
+        )
+          .split(",")
+          .includes(palette)
           ? palette
           : document.documentElement.dataset.defaultPalette;
         document.documentElement.dataset.motion =
@@ -270,8 +272,9 @@ const isCurrentPage = (href: string) =>
     <aside class="chrome-dock" aria-label="Quick actions">
       {
         showCv && (
-          <>
+          <div class="cv-dock-item">
             <span class="cv-dock-pointer" hidden aria-hidden="true">
+              <span class="cv-dock-pointer-label">Download CV</span>
               <svg
                 width="18"
                 height="18"
@@ -282,9 +285,9 @@ const isCurrentPage = (href: string) =>
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >
-                <path d="M5 12h12m-6-6 6 6-6 6"></path>
+                <path d="M12 5v10"></path>
+                <path d="m6 13 6 6 6-6"></path>
               </svg>
-              Download CV
             </span>
             <a
               class="cv-download-trigger"
@@ -295,7 +298,7 @@ const isCurrentPage = (href: string) =>
               <Icon name="download" size={15} />
               <span>CV</span>
             </a>
-          </>
+          </div>
         )
       }
       <button
@@ -389,10 +392,10 @@ const isCurrentPage = (href: string) =>
           <legend>{mode === "day" ? "Light color palette" : "Dark color palette"}</legend>
           <p>Your light and dark choices are saved separately.</p>
           <div class="palette-options">
-            {[{ value: "garden", label: "Garden" }, { value: "ocean", label: "Ocean" }, { value: "ember", label: "Ember" }].map((palette) => (
+            {palettes.map((palette) => (
               <label class="palette-choice">
-                <input type="radio" name={`palette-${mode}`} value={palette.value} data-palette-mode={mode} checked={site.defaultPalette === palette.value} />
-                <span class="palette-preview" data-swatch={palette.value} data-swatch-mode={mode} aria-hidden="true"></span>
+                <input type="radio" name={`palette-${mode}`} value={palette.id} data-palette-mode={mode} checked={site.defaultPalette === palette.id} />
+                <span class="palette-preview" data-swatch={palette.id} data-swatch-mode={mode} aria-hidden="true"></span>
                 <span>{palette.label}</span>
               </label>
             ))}

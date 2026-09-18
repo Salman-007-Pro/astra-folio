@@ -130,6 +130,25 @@ test("settings pause a round and remember independent light and dark palettes", 
   await expect(page.locator("html")).toHaveAttribute("data-palette", "ember");
 });
 
+test("new palettes apply in light and dark modes", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/about");
+  await page
+    .getByRole("button", { name: "Experience settings", exact: true })
+    .click();
+  await page
+    .getByRole("group", { name: "Light color palette" })
+    .getByRole("radio", { name: "Noir" })
+    .check();
+  await expect(page.locator("html")).toHaveAttribute("data-palette", "noir");
+  await page.locator("#pref-night").check();
+  await page
+    .getByRole("group", { name: "Dark color palette" })
+    .getByRole("radio", { name: "Dusk" })
+    .check();
+  await expect(page.locator("html")).toHaveAttribute("data-palette", "dusk");
+});
+
 test("all six palettes keep play and settings accessible", async ({
   page,
   isMobile,

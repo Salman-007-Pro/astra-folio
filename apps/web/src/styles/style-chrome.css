@@ -58,27 +58,45 @@ html body .settings-trigger {
   outline: 2px solid var(--color-focus);
   outline-offset: 3px;
 }
+.cv-dock-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
 .cv-dock-pointer {
   position: absolute;
-  right: calc(100% + 10px);
-  top: 0;
+  right: 0;
+  left: auto;
+  bottom: calc(100% + 8px);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   color: var(--color-accent-energy);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
   pointer-events: none;
+  z-index: 2;
+  width: max-content;
   animation: cv-pointer-nudge 1s ease-in-out infinite;
+}
+.cv-dock-pointer-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-family: "Manrope Variable", Manrope, sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
 }
 .chrome-dock[data-cv-pointer="on"] .cv-download-trigger {
   animation: cv-pill-pulse 1.2s ease-in-out infinite;
 }
 @keyframes cv-pointer-nudge {
   50% {
-    transform: translateX(6px);
+    transform: translateY(5px);
   }
 }
 @keyframes cv-pill-pulse {

@@ -5,7 +5,7 @@ test("CV pill sits above Styles and downloads a PDF", async ({
   request,
 }) => {
   await page.addInitScript(() =>
-    sessionStorage.setItem("garden-cv-pointer-v1", "1"),
+    sessionStorage.setItem("garden-cv-pointer-v2", "1"),
   );
   await page.goto("/about");
   const cv = page.getByRole("link", { name: "Download CV", exact: true });
@@ -41,12 +41,27 @@ test("CV pill sits above Styles and downloads a PDF", async ({
   await expect(styles).toBeVisible();
 });
 
-test("first-arrival pointer shows for five seconds then stays gone", async ({
+test("first-arrival pointer shows above the CV pill then stays gone", async ({
   page,
 }) => {
   await page.goto("/about");
   const pointer = page.locator(".cv-dock-pointer");
   await expect(pointer).toBeVisible();
+  const geometry = await page.evaluate(() => {
+    const hint = document.querySelector(".cv-dock-pointer")!;
+    const cv = document.querySelector(".cv-download-trigger")!;
+    const label = document.querySelector(".cv-dock-pointer-label")!;
+    const hintBox = hint.getBoundingClientRect();
+    const cvBox = cv.getBoundingClientRect();
+    return {
+      above: hintBox.bottom <= cvBox.top + 2,
+      overPill: hintBox.right >= cvBox.left && hintBox.left <= cvBox.right,
+      writingMode: getComputedStyle(label).writingMode,
+    };
+  });
+  expect(geometry.above).toBe(true);
+  expect(geometry.overPill).toBe(true);
+  expect(geometry.writingMode).toMatch(/vertical/);
   await expect(pointer).toBeHidden({ timeout: 7000 });
   await page.reload();
   await expect(pointer).toBeHidden();

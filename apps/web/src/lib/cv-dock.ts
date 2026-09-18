@@ -1,4 +1,4 @@
-export const CV_POINTER_KEY = "garden-cv-pointer-v1";
+export const CV_POINTER_KEY = "garden-cv-pointer-v2";
 export const CV_POINTER_MS = 5000;
 
 export function initCvDock() {

@@ -10,14 +10,12 @@ html[data-style]:not([data-style="default"]) {
     var(--look-canvas)
   );
   --color-section: var(--look-surface);
-  --color-accent-signal: var(--look-signal);
-  --color-focus: var(--look-signal);
-}
-html[data-style]:not([data-style="default"])[data-palette="ocean"] {
-  --color-accent-signal: color-mix(in srgb, var(--look-signal) 55%, #008aaa);
-}
-html[data-style]:not([data-style="default"])[data-palette="ember"] {
-  --color-accent-signal: color-mix(in srgb, var(--look-signal) 55%, #db674b);
+  --color-accent-signal: color-mix(
+    in srgb,
+    var(--look-signal) 55%,
+    var(--palette-tint, var(--look-signal))
+  );
+  --color-focus: var(--color-accent-signal);
 }
 html[data-style="cyberpunk"] {
   --look-canvas: #e6f4ef;
