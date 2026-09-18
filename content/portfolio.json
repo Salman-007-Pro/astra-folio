@@ -30,7 +30,7 @@
     }
   },
   "resume": {
-    "url": "/media/muhammad-salman-asif-cv.pdf",
+    "url": "https://cms.salmanasif.pro/api/media/file/Muhammad_Salman_Asif_CV.pdf",
     "filename": "Muhammad_Salman_Asif_CV.pdf",
     "updatedAt": "2026-09-02",
     "downloadEnabled": true
@@ -374,7 +374,7 @@
   ],
   "site": {
     "title": "The Kinetic Garden",
-    "url": "https://salman-asif-kinetic-garden.salmanasif36.chatgpt.site",
+    "url": "https://www.salmanasif.pro",
     "brandName": "salman asif",
     "brandMark": "s",
     "defaultPalette": "garden",

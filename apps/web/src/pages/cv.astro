@@ -3,6 +3,7 @@ import Shell from "../layouts/Shell.astro";
 import Icon from "../components/Icon.astro";
 import Experience from "../components/Experience.astro";
 import { getContent, formatDate } from "../lib/content";
+import { pdfFilename } from "../lib/cv-download";
 const { profile, resume, experience, site } = await getContent();
 const cms = import.meta.env.PUBLIC_CMS_URL || "";
 ---
@@ -18,8 +19,8 @@ const cms = import.meta.env.PUBLIC_CMS_URL || "";
       <a
         class="button"
         id="cv-download"
-        href={resume.url || undefined}
-        download={resume.filename}
+        href="/download/cv"
+        download={pdfFilename(resume.filename)}
         hidden={!resume.url || !resume.downloadEnabled}
         >Download CV <Icon name="download" size={18} /></a
       ><a
@@ -68,6 +69,7 @@ const cms = import.meta.env.PUBLIC_CMS_URL || "";
 >
 <script>
   import { resumeSchema } from "@garden/content-schema";
+  import { pdfFilename } from "../lib/cv-download";
   const root = document.querySelector<HTMLElement>("[data-cv-root]");
   if (root?.dataset.cmsUrl) {
     try {
@@ -81,8 +83,11 @@ const cms = import.meta.env.PUBLIC_CMS_URL || "";
         const link = document.getElementById(id) as HTMLAnchorElement;
         link.hidden =
           !current.url || (id === "cv-download" && !current.downloadEnabled);
-        if (current.url) link.href = current.url;
-        if (id === "cv-download") link.download = current.filename;
+        if (id === "cv-open" && current.url) link.href = current.url;
+        if (id === "cv-download") {
+          link.href = "/download/cv";
+          link.download = pdfFilename(current.filename);
+        }
       }
       const viewer = document.getElementById("cv-viewer") as HTMLObjectElement;
       viewer.hidden = !current.url;

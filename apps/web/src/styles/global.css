@@ -479,17 +479,13 @@ button {
   color: var(--color-text-muted);
 }
 .settings-trigger {
-  position: fixed;
-  bottom: 22px;
-  right: 23px;
-  z-index: 30;
   border: 1px solid var(--color-border-subtle);
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
+  border-radius: 24px;
+  min-height: 46px;
   background: var(--color-bg-surface);
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 3px 15px #17252208;
 }
 .icon-button {
@@ -875,6 +871,7 @@ html[data-motion="off"] *:after {
 }
 @media print {
   .site-header,
+  .chrome-dock,
   .settings-trigger,
   .site-footer,
   dialog,

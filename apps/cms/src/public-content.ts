@@ -3,7 +3,8 @@ const values = (value: unknown) =>
   Array.isArray(value)
     ? value.map((item) => (typeof item === "string" ? item : item.value))
     : [];
-const cmsOrigin = () => process.env.CMS_PUBLIC_URL || "http://localhost:3001";
+export const cmsOrigin = () =>
+  process.env.CMS_PUBLIC_URL || "http://localhost:3001";
 export { absoluteMediaUrl };
 export function toPublicProfile(profile: Record<string, any>, avatar: unknown) {
   return {

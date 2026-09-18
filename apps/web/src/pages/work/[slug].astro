@@ -14,6 +14,11 @@ const next = projects[(index + 1) % projects.length] ?? project;
 <Shell
   title={`${project.shortTitle} — ${profile.name}`}
   description={project.outcome}
+  work={{
+    name: project.shortTitle,
+    description: project.outcome,
+    path: `/work/${project.slug}`,
+  }}
 >
   <section class="page-intro case-intro">
     <a href="/work" class="eyebrow"

@@ -12,7 +12,8 @@
     var(--color-border-subtle)
   );
 }
-.settings-trigger {
+.settings-trigger,
+.cv-download-trigger {
   width: auto;
   padding: 0 15px;
   border-radius: 24px;

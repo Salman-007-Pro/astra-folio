@@ -61,6 +61,13 @@ export function getContent() {
   live = { at: now, value: read() };
   return live.value;
 }
+export async function getContentSafe(): Promise<Portfolio> {
+  try {
+    return await getContent();
+  } catch {
+    return portfolioSchema.parse(seed);
+  }
+}
 export function formatDate(value: string) {
   return new Date(value).toLocaleDateString("en-GB", {
     day: "numeric",

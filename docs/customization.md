@@ -10,7 +10,7 @@ Keep the existing keys and replace their values. JSON does not support comments 
 2. Update `profile.collaboration`: availability, working locations, currency/engagement copy, phone and WhatsApp labels, and both numbers.
 3. Update `site`: brand name/mark, title, URL, hero, About copy, current role/company, education, and languages.
 4. Replace `projects`, `experience`, and `posts` with your own verified work.
-5. Replace the portrait and PDF below.
+5. Replace the portrait below. Upload the CV in CMS Resume Settings.
 
 Phone numbers use international format such as `+923321318363`. The calling number produces a `tel:` link; WhatsApp produces a `wa.me` URL with digits only. The channels can use different numbers. The prefilled WhatsApp greeting uses the profile’s first name.
 
@@ -22,20 +22,7 @@ Place your portrait in `apps/web/src/assets/`, then set `site.portrait.file` to 
 
 A missing filename fails the build. Updating a CMS filename does not upload a source image into the repository: commit the new image and rebuild too. The legacy Payload Profile avatar field does not automatically replace this optimized portrait.
 
-Place a PDF in `apps/web/public/media/` and update this part of the JSON:
-
-```json
-{
-  "resume": {
-    "url": "/media/your-name-cv-2026-09.pdf",
-    "filename": "Your_Name_CV.pdf",
-    "updatedAt": "2026-09-12",
-    "downloadEnabled": true
-  }
-}
-```
-
-This is an excerpt, not a replacement for the whole file. An HTTPS PDF URL also works. Set `url` to `null` for an unavailable CV, or `downloadEnabled` to `false` to disable downloading. Use a new filename when replacing a public file to avoid old cached copies. Remove unused previous-owner assets from your copy before publishing.
+The CV PDF is uploaded in CMS **Resume Settings**. The website reads `/api/resume` and never stores a copy in `apps/web/public`. Set `resume.url` to `null` in JSON only for static mode without a CMS file. Set `downloadEnabled` to `false` to hide download.
 
 ## Projects and writing
 

@@ -2,6 +2,7 @@ import type { Endpoint, PayloadRequest } from "payload";
 import { portfolioSchema, resumeSchema } from "@garden/content-schema";
 import {
   absoluteMediaUrl,
+  cmsOrigin,
   toPublicExperience,
   toPublicPost,
   toPublicProfile,
@@ -27,9 +28,9 @@ async function resume(req: PayloadRequest) {
     slug: "resume-settings",
     ...publicOptions(req),
   });
-  const pdf = settings.currentPdf as any;
+  const pdf = await publishedMedia(req, settings.currentPdf);
   return resumeSchema.parse({
-    url: absoluteMediaUrl(pdf),
+    url: absoluteMediaUrl(pdf, cmsOrigin()),
     filename: settings.filename || "CV.pdf",
     updatedAt:
       settings.versionDate || settings.updatedAt || new Date().toISOString(),

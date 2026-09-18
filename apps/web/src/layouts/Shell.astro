@@ -21,23 +21,42 @@ import "../styles/brand.css";
 import "../styles/engineering-lab.css";
 import Icon from "../components/Icon.astro";
 import { getContent } from "../lib/content";
+import { pdfFilename } from "../lib/cv-download";
 import { contactLinks } from "../lib/contact";
-const { profile, site } = await getContent();
+import {
+  ogImageUrl,
+  schemaGraph,
+  siteOrigin,
+} from "../lib/seo";
+const { profile, site, resume } = await getContent();
 const contacts = contactLinks(profile);
 interface Props {
   title?: string;
   description?: string;
   immersive?: boolean;
   article?: boolean;
+  noindex?: boolean;
+  work?: { name: string; description: string; path: string };
+  post?: {
+    headline: string;
+    description: string;
+    datePublished: string;
+    path: string;
+  };
 }
 const {
   title = `${profile.name} — ${profile.role}`,
   description = profile.intro,
   immersive = false,
   article = false,
+  noindex = false,
+  work,
+  post,
 } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site || Astro.url.origin)
-  .href;
+const origin = siteOrigin(Astro.site || Astro.url.origin);
+const canonical = new URL(Astro.url.pathname, origin).href;
+const shareImage = ogImageUrl(origin);
+const showCv = Boolean(resume.url && resume.downloadEnabled);
 const links = [
   { label: "Work", href: "/work" },
   { label: "Experience", href: "/#experience" },
@@ -69,12 +88,26 @@ const isCurrentPage = (href: string) =>
     <title>{title}</title>
     <meta name="description" content={description}>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="canonical" href={canonical}>
+    {noindex && <meta name="robots" content="noindex, follow">}
     <meta property="og:title" content={title}>
     <meta property="og:description" content={description}>
     <meta property="og:type" content={article ? "article" : "website"}>
     <meta property="og:url" content={canonical}>
-    <meta name="twitter:card" content="summary">
+    <meta property="og:site_name" content={profile.name}>
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content={shareImage}>
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:alt" content={`Professional portrait of ${profile.name}`}>
+    <link rel="image_src" href={shareImage}>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={shareImage}>
     <link
       rel="alternate"
       type="application/rss+xml"
@@ -114,20 +147,18 @@ const isCurrentPage = (href: string) =>
     <script
       is:inline
       type="application/ld+json"
-      set:html={JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "ProfilePage",
-        url: canonical,
-        name: title,
-        mainEntity: {
-          "@type": "Person",
-          name: profile.fullName,
-          alternateName: profile.name,
-          jobTitle: profile.role,
-          url: Astro.site?.href || Astro.url.origin,
-          sameAs: [profile.github, profile.linkedin],
-        },
-      }).replaceAll("<", "\\u003c")}
+      set:html={JSON.stringify(
+        schemaGraph({
+          origin,
+          pathname: Astro.url.pathname,
+          title,
+          description,
+          profile,
+          article,
+          post,
+          work,
+        }),
+      ).replaceAll("<", "\\u003c")}
     />
     <slot name="head" />
   </head>
@@ -236,17 +267,49 @@ const isCurrentPage = (href: string) =>
         ><span class="footer-year">© {new Date().getFullYear()}</span>
       </div>
     </footer>
-    <button
-      class="settings-trigger"
-      data-settings-open
-      aria-controls="experience-settings"
-      aria-haspopup="dialog"
-      aria-label="Experience settings"
-      title="Experience settings"
-    >
-      <Icon name="settings" />
-      <span>Styles</span>
-    </button>
+    <aside class="chrome-dock" aria-label="Quick actions">
+      {
+        showCv && (
+          <>
+            <span class="cv-dock-pointer" hidden aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h12m-6-6 6 6-6 6"></path>
+              </svg>
+              Download CV
+            </span>
+            <a
+              class="cv-download-trigger"
+              href="/download/cv"
+              download={pdfFilename(resume.filename)}
+              aria-label="Download CV"
+            >
+              <Icon name="download" size={15} />
+              <span>CV</span>
+            </a>
+          </>
+        )
+      }
+      <button
+        class="settings-trigger"
+        data-settings-open
+        aria-controls="experience-settings"
+        aria-haspopup="dialog"
+        aria-label="Experience settings"
+        title="Experience settings"
+      >
+        <Icon name="settings" />
+        <span>Styles</span>
+      </button>
+    </aside>
     <dialog
       id="experience-settings"
       class="settings-dialog"

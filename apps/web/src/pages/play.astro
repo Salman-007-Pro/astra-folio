@@ -5,7 +5,7 @@ import { getContent } from "../lib/content";
 const { profile, site } = await getContent();
 ---
 
-<Shell title={`The arcade — ${profile.name}`} description={site.games.intro}>
+<Shell title={`The arcade — ${profile.name}`} description={site.games.intro} noindex>
   <section class="page-intro play-page">
     <div class="eyebrow">THE PLAYGROUND / TAKE A LITTLE BREAK</div>
     <h1>{site.games.title}</h1>

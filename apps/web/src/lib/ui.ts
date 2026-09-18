@@ -1,4 +1,5 @@
 import { initStyleChrome } from "./style-chrome";
+import { initCvDock } from "./cv-dock";
 import { playStyleSound } from "./style-audio";
 import { isStyleTransition, transitionStyle } from "./style-transitions";
 import { readPreferences, writePreferences, isPalette } from "./preferences";
@@ -7,6 +8,7 @@ let preferences = readPreferences();
 writePreferences(preferences);
 initStyleMotion();
 initStyleChrome();
+initCvDock();
 const settings = document.querySelector<HTMLDialogElement>(
   "#experience-settings",
 );

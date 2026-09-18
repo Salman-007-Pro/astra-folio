@@ -1,21 +1,16 @@
 import type { APIRoute } from "astro";
-import { getContent } from "../lib/content";
+import { getContentSafe } from "../lib/content";
+import { personImageUrl, siteOrigin } from "../lib/seo";
+import { renderSitemap, sitemapEntries } from "../lib/sitemap";
+
 export const GET: APIRoute = async ({ site, url }) => {
-  const { projects, posts } = await getContent();
-  const paths = [
-    "/",
-    "/work",
-    "/writing",
-    "/about",
-    "/cv",
-    "/contact",
-    "/play",
-    "/reading",
-    ...projects.map((p) => "/work/" + p.slug),
-    ...posts.map((p) => "/writing/" + p.slug),
-  ];
+  const origin = siteOrigin(site || url.origin);
+  const content = await getContentSafe();
   return new Response(
-    `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${paths.map((path) => `<url><loc>${new URL(path, site || url.origin).href}</loc></url>`).join("")}</urlset>`,
+    renderSitemap(sitemapEntries(content), origin, {
+      path: "/",
+      loc: personImageUrl(origin),
+    }),
     { headers: { "Content-Type": "application/xml; charset=utf-8" } },
   );
 };

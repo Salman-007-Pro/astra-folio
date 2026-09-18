@@ -31,7 +31,7 @@ Open [http://127.0.0.1:4321](http://127.0.0.1:4321). No environment file or CMS 
 
 ## Make it yours
 
-Edit [`content/portfolio.json`](content/portfolio.json), replace the portrait and PDF, then run `pnpm check` and `pnpm build`.
+Edit [`content/portfolio.json`](content/portfolio.json), replace the portrait, then run `pnpm check` and `pnpm build`. Upload the CV in CMS Resume Settings.
 
 | JSON section | Controls                                                                        |
 | ------------ | ------------------------------------------------------------------------------- |
@@ -115,7 +115,7 @@ Use [`apps/web/.env.example`](apps/web/.env.example) as a template. Edit existin
 
 Keep the output structure intact. Use normal static HTML routing with `404.html`, not a universal SPA rewrite. Payload needs its own Node deployment.
 
-Built JS/CSS and optimized portraits use content-hashed filenames. HTML should revalidate so visitors discover changed asset URLs. [`apps/web/public/_headers`](apps/web/public/_headers) supplies policies for hosts supporting that format; configure equivalent rules elsewhere. Raw `public/` files retain their names: rename replacement PDFs/images and update their JSON URLs for guaranteed versioned URLs. Cache busting still requires uploading the new build.
+Built JS/CSS and optimized portraits use content-hashed filenames. HTML should revalidate so visitors discover changed asset URLs. [`apps/web/public/_headers`](apps/web/public/_headers) supplies policies for hosts supporting that format; configure equivalent rules elsewhere. Raw `public/` files retain their names: rename replacement images for guaranteed versioned URLs. The CV PDF lives in CMS media, not `apps/web/public`. Cache busting still requires uploading the new build.
 
 CMS edits reach static pages **after a rebuild and deployment**. Optional live CV metadata is the exception. See [publishing and rebuilds](docs/payload-setup.md#publishing-and-automatic-rebuilds) before enabling webhooks.
 

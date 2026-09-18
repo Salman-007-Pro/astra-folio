@@ -16,23 +16,13 @@ const { html, headings } = await renderTrustedMdx(post.mdx);
   title={`${post.title} — ${profile.name}`}
   description={post.excerpt}
   article
-  ><script
-    is:inline
-    slot="head"
-    type="application/ld+json"
-    set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      headline: post.title,
-      description: post.excerpt,
-      datePublished: post.publishedAt,
-      author: { "@type": "Person", name: profile.fullName },
-      mainEntityOfPage: new URL(
-        `/writing/${post.slug}`,
-        Astro.site || Astro.url.origin,
-      ).href,
-    }).replaceAll("<", "\\u003c")}
-  />
+  post={{
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.publishedAt,
+    path: `/writing/${post.slug}`,
+  }}
+>
   <div class="reading-progress" aria-hidden="true"></div>
   <section class="page-intro">
     <a href="/writing" class="eyebrow"
