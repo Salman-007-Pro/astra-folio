@@ -17,8 +17,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 );
 const remote = url?.trim() || "";
 const portrait = images[`../assets/${file}`]?.default;
-const src = remote || portrait;
-if (!src)
+if (!portrait)
   throw new Error(
     `Portrait asset '${file}' is missing from apps/web/src/assets. Update site.portrait.file in content/portfolio.json.`,
   );
@@ -27,20 +26,34 @@ const alt = `Professional portrait of ${name}`;
 
 <figure class="portrait">
   <div class="portrait-frame">
-    <Picture
-      src={src}
-      alt={alt}
-      formats={["avif", "webp"]}
-      fallbackFormat="jpg"
-      widths={[400, 640, 960]}
-      sizes="(max-width: 767px) 88vw, (max-width: 1100px) 38vw, 460px"
-      width={960}
-      height={1200}
-      quality={85}
-      loading={priority ? "eager" : "lazy"}
-      fetchpriority={priority ? "high" : "auto"}
-      decoding="async"
-    />
+    {remote ? (
+        <img
+          src={remote}
+          alt={alt}
+          width={960}
+          height={1200}
+          loading={priority ? "eager" : "lazy"}
+          fetchpriority={priority ? "high" : "auto"}
+          decoding="async"
+          data-fallback={portrait.src}
+          onerror="this.onerror=null; this.src=this.dataset.fallback || '';"
+        />
+      ) : (
+        <Picture
+          src={portrait}
+          alt={alt}
+          formats={["avif", "webp"]}
+          fallbackFormat="jpg"
+          widths={[400, 640, 960]}
+          sizes="(max-width: 767px) 88vw, (max-width: 1100px) 38vw, 460px"
+          width={960}
+          height={1200}
+          quality={85}
+          loading={priority ? "eager" : "lazy"}
+          fetchpriority={priority ? "high" : "auto"}
+          decoding="async"
+        />
+      )}
   </div>
   <figcaption>
     <strong>{name}</strong>

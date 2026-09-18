@@ -78,3 +78,11 @@ describe("CMS profile avatar mapping", () => {
     );
   });
 });
+describe("CMS avatar fallback", () => {
+  it("treats JSON error payloads as unusable images", async () => {
+    const { isImageResponse } = await import("../../apps/web/src/lib/avatar");
+    expect(isImageResponse(500, "application/json")).toBe(false);
+    expect(isImageResponse(404, "application/json")).toBe(false);
+    expect(isImageResponse(200, "image/png")).toBe(true);
+  });
+});
