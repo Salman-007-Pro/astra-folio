@@ -11,7 +11,7 @@ const links = contactLinks(profile);
   role="group"
   aria-label={`Ways to contact ${profile.name.split(" ")[0]}`}
 >
-  <div class="contact-channel channel-primary">
+  <div class="contact-channel channel-primary" data-tilt data-tilt-max="5">
     <span class="channel-heading"
       ><Icon name="message" size={22} /><strong>WhatsApp</strong
       ><span class="channel-tag">MESSAGE ME</span></span
@@ -20,7 +20,7 @@ const links = contactLinks(profile);
       {links.whatsappContacts.map(contact => <a href={contact.href} target="_blank" rel="noopener noreferrer"><span>{contact.label}</span><strong>{contact.number}</strong><span>Message on WhatsApp ↗</span></a>)}
     </div>
   </div>
-  <a class="contact-channel" href={links.call}>
+  <a class="contact-channel" href={links.call} data-tilt data-tilt-max="5">
     <span class="channel-heading"
       ><Icon name="phone" size={22} /><strong>Phone</strong></span
     >
@@ -29,7 +29,7 @@ const links = contactLinks(profile);
       >Call me <Icon name="diagonal" size={18} /></span
     >
   </a>
-  <div class="contact-channel channel-email">
+  <div class="contact-channel channel-email" data-tilt data-tilt-max="5">
     <span class="channel-heading"
       ><Icon name="mail" size={22} /><strong>Email</strong></span
     >

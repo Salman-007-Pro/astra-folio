@@ -773,6 +773,8 @@
 .case-art {
   margin: 50px 5.3%;
   height: 410px;
+  overflow: hidden;
+  position: relative;
 }
 .case-art .connector-diagram {
   transform: scale(1.3);

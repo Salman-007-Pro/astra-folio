@@ -511,6 +511,9 @@ html[data-style="parallax"] .project-item > a {
   display: block;
   overflow: hidden;
 }
+html[data-style="parallax"] .project-item:hover > a {
+  overflow: visible;
+}
 @media (min-width: 1024px) {
   html[data-style="parallax"] .hero-copy {
     grid-column: 2;
@@ -1147,6 +1150,30 @@ html:is(
   h3 {
   margin-top: 16px;
 }
+html:is(
+    [data-style="cartoon"],
+    [data-style="clay"],
+    [data-style="glass"],
+    [data-style="neumorphism"],
+    [data-style="holographic"],
+    [data-style="paper"],
+    [data-style="doodle"]
+  )
+  .writing-item[data-tilt] {
+  transform: var(--tilt-transform);
+}
+html:is(
+    [data-style="cartoon"],
+    [data-style="clay"],
+    [data-style="glass"],
+    [data-style="neumorphism"],
+    [data-style="holographic"],
+    [data-style="paper"],
+    [data-style="doodle"]
+  )
+  .writing-item[data-tilt]::after {
+  content: "";
+}
 html:is([data-style="cyberpunk"], [data-style="pixel"])
   .experience-list
   details {
@@ -1154,6 +1181,16 @@ html:is([data-style="cyberpunk"], [data-style="pixel"])
   padding: 20px;
   border: 1px solid var(--look-signal);
   background: var(--look-surface);
+}
+html:is([data-style="cyberpunk"], [data-style="pixel"])
+  .experience-list
+  details[data-tilt] {
+  transform: var(--tilt-transform);
+}
+html:is([data-style="cyberpunk"], [data-style="pixel"])
+  .experience-list
+  details[data-tilt]::after {
+  content: "";
 }
 html:is([data-style="paper"], [data-style="doodle"]) .writing-item {
   padding: 30px 16px;

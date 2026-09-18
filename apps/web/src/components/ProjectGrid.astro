@@ -9,6 +9,8 @@ const { projects } = Astro.props as { projects: Project[] };
   {projects.map((project, i) => (
       <article
         class="project-item"
+        data-tilt
+        data-tilt-max="7"
         data-category={project.category}
         data-stack={project.stack.join(",")}
       >

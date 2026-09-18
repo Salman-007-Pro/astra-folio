@@ -30,7 +30,7 @@ const featured = projects.filter((project) => project.featured).slice(0, 3);
     >
   </div>
   <div class="showcase-gallery">
-    {featured.map((project, i) => <a class="gallery-sheet" href={`/work/${project.slug}`}>
+    {featured.map((project, i) => <a class="gallery-sheet" href={`/work/${project.slug}`} data-tilt data-tilt-max="7">
       <span class="gallery-label">0{i + 1} / {project.category}</span>
       <div class="gallery-diagram"><SystemDiagram project={project} compact /></div>
       <h3>{project.shortTitle}</h3><p>{project.outcome}</p>

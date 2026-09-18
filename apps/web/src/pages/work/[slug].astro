@@ -40,7 +40,7 @@ const next = projects[(index + 1) % projects.length] ?? project;
       {project.stack.map((s) => <span class="tag">{s}</span>)}
     </div>
   </section>
-  <div class="case-art"><SystemDiagram project={project} /></div>
+  <div class="case-art" data-tilt data-tilt-max="7"><SystemDiagram project={project} /></div>
   <div class="case-layout">
     <nav class="case-nav" aria-label="Case study sections">
       <span class="eyebrow">IN THIS SYSTEM</span

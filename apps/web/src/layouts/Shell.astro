@@ -337,7 +337,7 @@ const isCurrentPage = (href: string) =>
         <p>Choose how your next style arrives.</p>
         <div class="transition-options">
           {styleTransitions.map((effect) => (
-            <label class="transition-choice">
+            <label class="transition-choice" data-tilt data-tilt-max="4">
               <input type="radio" name="style-transition" value={effect.id} data-style-transition checked={effect.id === "pixels"} />
               <span class="transition-swatch" data-effect={effect.id} aria-hidden="true"><i></i><i></i><i></i><i></i></span>
               <strong>{effect.name}</strong>
@@ -358,7 +358,7 @@ const isCurrentPage = (href: string) =>
         </p>
         <div class="style-options">
           {visualStyles.map((style, index) => (
-            <label class="style-choice" data-style-preview={style.id}>
+            <label class="style-choice" data-style-preview={style.id} data-tilt data-tilt-max="4">
               <input type="radio" name="visual-style" value={style.id} data-visual-style checked={style.id === "default"} />
               <span class="style-mini" aria-hidden="true"><span>{String(index + 1).padStart(2, "0")}</span><i></i><b>Aa</b><em></em></span>
               <strong>{style.name}</strong>
@@ -393,7 +393,7 @@ const isCurrentPage = (href: string) =>
           <p>Your light and dark choices are saved separately.</p>
           <div class="palette-options">
             {palettes.map((palette) => (
-              <label class="palette-choice">
+              <label class="palette-choice" data-tilt data-tilt-max="4">
                 <input type="radio" name={`palette-${mode}`} value={palette.id} data-palette-mode={mode} checked={site.defaultPalette === palette.id} />
                 <span class="palette-preview" data-swatch={palette.id} data-swatch-mode={mode} aria-hidden="true"></span>
                 <span>{palette.label}</span>

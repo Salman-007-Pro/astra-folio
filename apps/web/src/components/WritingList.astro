@@ -9,6 +9,8 @@ const { posts } = Astro.props as { posts: Post[] };
       <a
         class="writing-item"
         href={`/writing/${post.slug}`}
+        data-tilt
+        data-tilt-max="5"
         data-post-tags={post.tags.join(",")}
       >
         <>

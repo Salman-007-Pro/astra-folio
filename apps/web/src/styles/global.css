@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./card-tilt.css";
 @theme inline {
   --color-canvas: var(--color-bg-canvas);
   --color-ink: var(--color-text-primary);

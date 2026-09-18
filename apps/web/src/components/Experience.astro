@@ -24,7 +24,7 @@ const { items, compact = false } = Astro.props as {
     )}
   <div class="experience-list">
     {items.map((item, i) => (
-        <details id={`career-${i}`} open={i === 0 || compact}>
+        <details id={`career-${i}`} open={i === 0 || compact} data-tilt data-tilt-max="5">
           <>
             <summary>
               <>

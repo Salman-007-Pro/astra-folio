@@ -1,5 +1,6 @@
 import { initStyleChrome } from "./style-chrome";
 import { initCvDock } from "./cv-dock";
+import { initCardTilt } from "./card-tilt";
 import { playStyleSound } from "./style-audio";
 import { isStyleTransition, transitionStyle } from "./style-transitions";
 import { readPreferences, writePreferences, isPalette } from "./preferences";
@@ -9,6 +10,7 @@ writePreferences(preferences);
 initStyleMotion();
 initStyleChrome();
 initCvDock();
+initCardTilt();
 const settings = document.querySelector<HTMLDialogElement>(
   "#experience-settings",
 );
